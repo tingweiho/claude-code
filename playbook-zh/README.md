@@ -1,20 +1,32 @@
-# Claude Code 使用手册（中文版）
+# Claude Code 實戰手冊（繁體中文版）
 
-互动式课程，介绍我如何实际使用 Claude Code：技能库、自动化 hooks、记忆系统与真实使用案例。
+互動式課程，分享我實際使用 Claude Code 的完整系統：技能庫、自動化 hooks、記憶功能與真實使用情境。
 
-## → [查看课程](https://tingweiho.github.io/claude-code/playbook-zh/)
+## → [開啟課程](https://tingweiho.github.io/claude-code/playbook-zh/)
 
-或克隆仓库后直接打开 `index.html`，无需任何配置。
+或 clone 專案後直接開啟 `index.html`，不需要任何環境設定。
 
-## 目录结构
+## 課程內容
+
+| 單元 | 主題 |
+|---|---|
+| 1 | 系統架構 — `~/.claude/` 作為操作核心 |
+| 2 | 技能庫 — 隨需載入的可重用能力 |
+| 3 | 使用情境 — 我實際拿來做什麼 |
+| 4 | 自動化 — hooks、排程與背景代理 |
+| 5 | 記憶功能 — 跨對話的持久脈絡 |
+| 6 | 最佳實踐 — 哪些有效、哪些沒用 |
+| 7 | 資源整理 |
+
+## 檔案結構
 
 ```
-index.html      ← 课程主文件（直接打开）
-styles.css      ← 样式表
-main.js         ← 交互逻辑
-assets/         ← 图标 SVGs
-src/            ← 源文件
-  _base.html    ← 框架（标题、导航）
-  modules/      ← 每个模块一个 HTML 文件
-  build.sh      ← 重新构建：bash src/build.sh
+index.html      ← 課程主檔（直接開啟這個）
+styles.css      ← 樣式表
+main.js         ← 互動邏輯
+assets/         ← 圖示 SVGs
+src/            ← 原始檔
+  _base.html    ← 框架（標題、導覽）
+  modules/      ← 每個單元一支 HTML 檔
+  build.sh      ← 重新建置：bash src/build.sh
 ```
