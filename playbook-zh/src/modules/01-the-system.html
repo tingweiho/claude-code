@@ -1,0 +1,292 @@
+<section class="module" id="module-1" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">系統：<code>~/.claude/</code> 是我的操作層</h1>
+      <p class="module-subtitle"><code>~/.claude/</code> 作為一個操作層——在我打出任何一個字之前，Claude Code 就已經讀過的那些檔案。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Hook + the idea -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">它早就知道我怎麼工作</h2>
+        <p>每次我打開 Claude Code，在我輸入任何東西之前，它都會先讀過一小撮檔案。正是這些檔案，讓它早就知道我怎麼工作。</p>
+        <p>這不是我每天早上貼進去的一次性提示。我的<span class="term" data-definition="設定（config 是 configuration 的簡稱）是一組儲存起來的選項，用來告訴程式該怎麼運作——就像 app 裡的偏好設定面板，只是它以檔案的形式存在，你可以編輯，也可以做版本控制。">設定</span>是一個長期存在的<strong>操作層</strong>——一套我會做版本控制、持續改進、並從這個工作階段帶到下一個工作階段的配置。</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">原來如此！</strong>
+            <p>這份設定會在啟動時由上到下讀過一遍。所以<strong>順序與精簡都很重要</strong>——檔案愈精簡，Claude 實際上就愈會確實遵循它。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The pegboard (hero: file tree) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">洞洞板</h2>
+        <p>想像一塊工作室的洞洞板：每一件工具在牆上都有一圈漆好的輪廓，所以你一眼就能看出哪些工具在、哪些不見了。<code>~/.claude/</code> 就是那塊洞洞板——每一種指示都有固定的擺放位置。</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">~/.claude/</span>
+            <span class="ft-desc">我整個操作層——一個由我擁有的資料夾</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">CLAUDE.md</span>
+                <span class="ft-desc">我是誰＋該怎麼跟我說話＋我的技能索引（48 行）</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">skills/</span>
+                <span class="ft-desc">16 個按需載入的專業能力資料夾</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">settings.json</span>
+                <span class="ft-desc">全域的防護欄、hook，以及資料連線</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">settings.local.json</span>
+                <span class="ft-desc">那份「好，這個你可以執行」的允許清單</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">hooks/</span>
+                <span class="ft-desc">在特定事件發生時觸發的小型腳本</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">reference.md</span>
+                <span class="ft-desc">我常查的 ID、檔案路徑與排程</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">known_issues.md</span>
+                <span class="ft-desc">一份持續更新的修正記錄</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">*.sh</span>
+                <span class="ft-desc">statusline-command.sh、log_usage.sh、ci-watch.sh、auto_rebase.sh</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">memory/</span>
+                <span class="ft-desc">Claude 學到、關於我的長存事實</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>一份精簡的索引檔、一個<span class="term" data-definition="技能（skill）是一個自成一體的資料夾，裡面裝著指示與參考資料，Claude 只在某個任務需要時才載入它——就像你為了某一件工作才臨時請進來的專家，而不是整天留在房間裡的人。">技能</span>資料夾、兩個權限檔、幾個 <span class="term" data-definition="hook 是一個小型腳本，會在特定事件發生時自動執行——例如在 Claude 完成任務前或後的那一刻。程式會替你觸發它，你不必開口要求。">hook</span>，再加上一個記憶資料夾。把它當成一個程式碼庫來對待，而不是一個設定畫面。</p>
+      </section>
+
+      <!-- SCREEN 3 — CLAUDE.md is a directory, not a manual -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading"><code>CLAUDE.md</code> 是一份目錄，不是一本手冊</h2>
+        <p>Claude 最先讀到的這個檔案是刻意寫得很短。它告訴 Claude 該怎麼表現，然後指向真正的細節住在哪裡。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment">## Communication</span></span>
+<span class="code-line">- Concise and direct — no filler, no trailing summaries</span>
+<span class="code-line">- Lead with the answer or action, not the reasoning</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">## Skills (load on demand)</span></span>
+<span class="code-line">- company-data-stack — Redshift / dbt / Looker / LookML</span>
+<span class="code-line">- canvas-tracker — Slack project tracker canvas ops</span>
+<span class="code-line">- data-analysis — rigor for diagnostic / exploratory work</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">首先它告訴 Claude <em>該怎麼</em>跟我說話——簡短、答案優先。</p>
+              <p class="tl">接著它列出我的技能，每一項用一行說明它在什麼時候會啟用。</p>
+              <p class="tl">它不解釋這些技能——只是指向它們。細節住在每一個技能資料夾的裡面。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">📍</div>
+          <div class="callout-content">
+            <strong class="callout-title">我整份 <code>CLAUDE.md</code> 只有 48 行。</strong>
+            <p>它的作用是一份向外指路的目錄，而不是一本把所有東西都裝進去的手冊。（最後一個模組會再回頭談為什麼這樣做。）</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Two permission files, one job each -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">兩個權限檔，各司其職</h2>
+        <p>權限被拆到兩個檔案裡，讓那份危險的清單保持簡短，而那份方便的清單可以自由地長大。</p>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🛡️</div>
+            <div>
+              <strong><code>settings.json</code>——全域防護欄</strong>
+              <p>一份破壞性指令的<span class="term" data-definition="拒絕清單（deny-list）是一份永遠被禁止的東西的清單。上面的任何項目都會被擋下，無論如何；其餘的則一律允許。">拒絕清單</span>，再加上那些 hook 與資料連線。一份很少更動的共用預設。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">✅</div>
+            <div>
+              <strong><code>settings.local.json</code>——允許清單</strong>
+              <p>一份約 322 條我事先核准過的特定指令<span class="term" data-definition="允許清單（allow-list）正好是拒絕清單的反面：一份事先明確獲准的東西的清單，這樣你就不必每一次都被要求逐一核准。">允許清單</span>，這樣我才不用整天都在點「允許」。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Bash(rm -rf*)</code>
+            <span class="badge-desc">絕不大批刪除檔案</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(git push --force*)</code>
+            <span class="badge-desc">絕不改寫共用的歷史紀錄</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(sudo*)</code>
+            <span class="badge-desc">絕不以管理員身分執行</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔎</div>
+          <div class="callout-content">
+            <strong class="callout-title">為什麼要拆開？</strong>
+            <p>把<em>拒絕</em>（全域、很少更動）和<em>允許</em>（本機、隨時間長大）分開，能讓那份危險的清單保持簡短，也方便稽核。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Connections (MCP), the breadth -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">連線——Claude 接上我真正在用的工具</h2>
+        <p>單靠它自己，Claude 只能說話。<span class="term" data-definition="MCP（Model Context Protocol，模型情境協定）是一套共通的標準，讓 Claude 接上外部工具——資料庫、Slack、電子郵件、你的 wiki。把它想成一個通用插座：做好一個轉接頭，Claude 就能接觸到那個工具。">MCP</span> 就是那個通用插座，讓它能在我實際用的工具裡<em>動手做事</em>——查詢資料倉儲、發訊息到 Slack、讀我的行事曆。一天下來，幾乎我碰到的每樣東西都接上線了。</p>
+
+        <p><strong>資料技術堆疊</strong>——用於分析：</p>
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🗄️</div>
+            <div>
+              <strong><code>Redshift</code></strong>
+              <p><span class="term" data-definition="資料倉儲是一個為分析而打造的大型中央資料庫——它把來自許多來源的資料匯聚在一起，讓你可以一次查詢全部。">分析資料所在的資料倉儲</span>（另外還有第二個、權限更高的連線，供管理任務使用）。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🧱</div>
+            <div>
+              <strong><code>dbt</code></strong>
+              <p><span class="term" data-definition="dbt（data build tool）是一套軟體，透過依照既定順序執行 SQL 轉換，把原始的倉儲資料表變成乾淨、經過測試的資料集。">dbt</span>——原始資料如何被轉換成乾淨、經過測試的資料集。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📊</div>
+            <div>
+              <strong><code>Looker</code></strong>
+              <p><span class="term" data-definition="Looker 是一套商業智慧（BI）工具——它把倉儲資料變成全公司的人都能探索的儀表板與圖表。">Looker</span>，那套 BI 工具，用來做儀表板與指標。</p>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-8)"><strong>日常 app</strong>——我其餘的工作，同一個通用插座：</p>
+        <div class="icon-rows stagger-children animate-in">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/slack.svg" alt="Slack" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Slack</strong>
+              <p>讀頻道、發布更新，並讓專案 canvas 保持最新。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/gmail.svg" alt="Gmail" style="width:24px; height:24px;"></div>
+            <div>
+              <strong>Gmail</strong>
+              <p>閱讀、搜尋並自動為我的收件匣加標籤。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/googlecalendar.svg" alt="Google Calendar" style="width:24px; height:24px;"></div>
+            <div>
+              <strong>Google Calendar</strong>
+              <p>看我今天有什麼安排，以及接下來有什麼。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/googledrive.svg" alt="Google Drive" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Google Drive</strong>
+              <p>拉出文件與會議筆記。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/confluence.svg" alt="Confluence 與 Jira" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Confluence + Jira</strong>
+              <p>我們的 <span class="term" data-definition="wiki 是一個共用、可編輯的文件網站。Confluence 是那套 wiki 工具；Jira 則是與之串連、用於任務與問題的工單追蹤器。">wiki 與工單追蹤器</span>——讀文件、查看提及。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/gitlab.svg" alt="GitLab" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>GitLab</strong>
+              <p>程式碼、合併請求與管線。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);">📓</div>
+            <div>
+              <strong>Hex</strong>
+              <p>快速開出分析用的筆記本。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔌</div>
+          <div class="callout-content">
+            <strong class="callout-title">一套標準，眾多工具</strong>
+            <p>資料技術堆疊的連線在本機執行；日常 app 則是 Claude 內建的<span class="term" data-definition="連接器（connector）在你授權下，把 Claude 連到像 Slack 或 Gmail 這樣的外部服務，讓它可以代你在那裡讀取與動手。">連接器</span>。不論哪一種，背後的想法都一樣——一個標準插座，所以加進一個新工具，並不代表要重新教 Claude 怎麼跟它對話。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6 — Under the hood (optional technical detail) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">深入內部——一個連線，已遮蔽機密</h2>
+        <p>每一個連線都只是幾行設定。這裡是資料倉儲那一個——值得認得，但你其實不太常親手寫它。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-property">"redshift"</span>: {</span>
+<span class="code-line">  <span class="code-property">"command"</span>: <span class="code-string">"uvx"</span>,</span>
+<span class="code-line">  <span class="code-property">"args"</span>: [<span class="code-string">"awslabs.redshift-mcp-server@latest"</span>],</span>
+<span class="code-line">  <span class="code-property">"env"</span>: {</span>
+<span class="code-line">    <span class="code-property">"AWS_PROFILE"</span>: <span class="code-string">"&lt;aws-account&gt;_DataRedshift"</span>,</span>
+<span class="code-line">    <span class="code-property">"AWS_REGION"</span>: <span class="code-string">"us-west-2"</span></span>
+<span class="code-line">  }</span>
+<span class="code-line">}</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">為一個叫做 <code>redshift</code> 的連線命名。</p>
+              <p class="tl"><span class="term" data-definition="uvx 是一個小小的指令，它一步就把一個 Python 工具下載下來並執行，之後再清理乾淨——所以你不必先把它永久安裝起來。">uvx</span> 即時下載並執行一個小型的輔助程式。</p>
+              <p class="tl">這份<span class="term" data-definition="環境變數（env var）是一個從程式碼外部傳給程式的具名設定——這是一種乾淨的做法，可以把像「要用哪個帳號」這種值交給它，而不必把它們寫進程式本身。">設定</span>說明了要用<em>哪一個</em>帳號與區域——真正的機密住在這個檔案之外，絕不以明文存放。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">關於你正在看到的東西的一點說明</strong>
+            <p>真正的設定裡裝著上線中的<span class="term" data-definition="憑證（credential）是一個向系統證明你是誰的機密——一組密碼、token 或金鑰。一旦外洩，別人就能假冒你動手。">憑證</span>——連線字串、用戶端密鑰、token。<strong>本課程中所顯示的一切都已遮蔽機密</strong>，而這份紀律本身就是整套配置的一部分（最後一個模組會談更多）。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

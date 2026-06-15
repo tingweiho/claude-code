@@ -1,0 +1,239 @@
+<section class="module" id="module-6" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h1 class="module-title">最佳實踐與血淚教訓</h1>
+      <p class="module-subtitle">第一線的實戰筆記 —— 都是我當初開始前希望有人能先告訴我的事，寫給下一個接手的人。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — CLAUDE.md is a directory, not a manual -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading"><code>CLAUDE.md</code> 是一份目錄，不是一本說明書</h2>
+        <p>如果你只想從我的設定裡抄一樣東西，請抄習慣 —— 而不是檔案。而第一個習慣就是這個：你的 <code>CLAUDE.md</code> 是一份目錄，不是一本教科書。</p>
+        <p>身分與偏好放在最上方，穩定而很少更動。底下放的是一份<em>索引</em> —— 每個<span class="term" data-definition="技能（skill）是一個自成一體的資料夾，裡頭裝著指示與參考檔案，只有在某個任務需要時 Claude 才會載入 —— 就像從架上抽出一本活頁夾，而不是每次都把整座圖書館讀過一遍。">技能</span>一行 —— 指向真正細節所在的地方。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment">## Who I am</span>          （1-2 行）</span>
+<span class="code-line"><span class="code-comment">## Communication</span>     （要怎麼跟我溝通）</span>
+<span class="code-line"><span class="code-comment">## Coding</span>            （我的慣例）</span>
+<span class="code-line"><span class="code-comment">## Skills</span>            （索引 —— 每個一行，指向外部）</span>
+<span class="code-line"><span class="code-comment">## Reference files</span>   （指標，不是內容）</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">身分與偏好放最上方 —— 穩定，很少改動。</p>
+              <p class="tl">我希望 Claude 怎麼說話，以及我寫程式遵循的慣例。</p>
+              <p class="tl">接著是一份技能<em>索引</em>：每個一行，沒有細節。</p>
+              <p class="tl">細節住在技能資料夾與記憶裡 —— <code>CLAUDE.md</code> 只負責把路指過去。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">我的只有 48 行</strong>
+            <p>每一行在每次工作階段開始前都會被讀過一遍 —— 那是花掉的注意力。一份臃腫的 <code>CLAUDE.md</code> 會讓 Claude 變<em>差</em>，而不是變好。把它維持成一份目錄。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The transferable habits -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">能搬到任何一套設定的那些習慣</h2>
+        <p>這套設定之所以行得通，靠的是幾個原則，而不是哪一段聰明的腳本。這四個習慣能搬到<em>任何</em>一套 Claude Code 設定、任何一個團隊。</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🎯</div>
+            <h4 class="pattern-title">按需載入</h4>
+            <p class="pattern-desc">把流程放進<span class="term" data-definition="技能（skill）是一個自成一體的資料夾，裝著指示，只有在某個任務用得上時 Claude 才會載入，而不是一直把每套流程都記在腦中。">技能</span>裡，而不是放進 <code>CLAUDE.md</code>。<span class="term" data-definition="脈絡預算（context budget）是 Claude 一次能記在腦中的文字量上限 —— 是一段工作階段的工作記憶。你載入的一切都在搶這個空間，所以只在相關時才花用它。">脈絡是一筆預算</span> —— 只在相關時才花用。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🍴</div>
+            <h4 class="pattern-title">用 fork 起家，別從零造起</h4>
+            <p class="pattern-desc">從一個好的開源技能起步（例如 Zara Zhang 的），改頭換面成自己的，再用 <span class="term" data-definition="skill-creator 是一個元技能：它的工作就是幫你打造、編輯、測試其他技能 —— 是新技能誕生的工坊。">skill-creator</span> 慢慢長出你自己的。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🧠</div>
+            <h4 class="pattern-title">把修正寫下來</h4>
+            <p class="pattern-desc">一行字的記憶檔案，能把「我得講第二次」變成「我從此再也不用講」。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">🤖</div>
+            <h4 class="pattern-title">把無聊的事自動化，把人留在迴圈裡</h4>
+            <p class="pattern-desc">預設核准的流程（像我那套下班 → canvas 的迴圈）讓事情持續推進，又不會脫韁演出。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2.5 — Plan before you build -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先計畫，再動工</h2>
+        <p>只要比一次小修改更大的事，我都會逼 Claude <em>先計畫，再碰任何一個檔案</em>。在<span class="term" data-definition="計畫模式（plan mode）是 Claude Code 的一種設定，它會研究問題並提出做法，但在你核准之前被擋著不准編輯檔案。這是寫下任何程式碼之前的唯讀思考階段。">計畫模式</span>裡，它探索問題、提出做法，然後等我核准 —— 這樣在改動還免費的時候，我就能把它導回正軌。</p>
+        <p>好處是槓桿效應：在一段話的計畫裡抓到一個錯誤假設，只花幾秒；等 Claude 已經改寫了十個檔案才抓到，得賠上一整個下午。</p>
+
+        <div class="flow-steps animate-in">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p><strong>探索</strong><br>Claude 讀過相關的檔案與模式</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p><strong>計畫</strong><br>它提出一套做法 —— 還沒動任何修改</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p><strong>確認</strong><br>我把它導正，或放行</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p><strong>動工</strong><br>到這時它才開始寫程式碼</p>
+          </div>
+        </div>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">該用</code>
+            <span class="badge-desc">多步驟的工作、任何牽動好幾個檔案的事、需求模糊、或難以復原的改動</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">免用</code>
+            <span class="badge-desc">改錯字、改一行、改個名字 —— 直接讓 Claude 做就好</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🪄</div>
+          <div class="callout-content">
+            <strong class="callout-title">這門課就是這樣做出來的</strong>
+            <p>全部六個模組都是在計畫模式裡界定範圍，而我是<em>在寫下任何一行 HTML 之前</em>就核准了大綱。在紙上重塑很便宜；在程式碼裡重塑很昂貴。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Security & redaction discipline -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">遮蔽，是分享的代價</h2>
+        <p>有幾道指令就是怎麼算都不值得冒那個險，所以它們被全域封鎖 —— 不管被怎麼要求，Claude 都不能執行。這些護欄住在 <code>settings</code> 裡，套用到每一段工作階段。</p>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Bash(rm -rf*)</code>
+            <span class="badge-desc">全域封鎖 —— 絕不遞迴強制刪除檔案</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(git push --force*)</code>
+            <span class="badge-desc">全域封鎖 —— 絕不用 force-push 覆蓋共用的歷史</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(sudo*)</code>
+            <span class="badge-desc">全域封鎖 —— 絕不以那位無所不能的管理員身分執行指令</span>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">把任何你分享出去的東西，都當成會永遠留存的截圖看待</strong>
+            <p>一套<em>可分享</em>的設定，絕不能洩漏活的<span class="term" data-definition="機密（或憑證）是任何能證明你身分或解鎖存取權的私密值 —— 一組密碼、金鑰或 token。洩漏一個，任何人就能假冒你行事。">機密</span> —— <span class="term" data-definition="連線字串（connection string）是單獨一行文字，裝著登入資料庫所需的一切：位址、使用者名稱與密碼全揉成一條。洩漏它，別人就能讀取或更動你的資料。">連線字串</span>、帳號、客戶密鑰、<span class="term" data-definition="token 是一串很長的隨機字串，作用像一組暫時密碼，讓某個應用程式代你存取某項服務。任何持有它的人在它失效前都能假冒你。">token</span>。這門課在離開我的機器之前，就被做過一次遮蔽稽核。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Keep your failures -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">把你的失敗留著 —— 那才是能重複使用的部分</h2>
+        <p>一套設定裡最能重複使用的部分，不是那份「哪些成功了」的清單。是那份「哪些<em>沒</em>成功」的清單。</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📵</div>
+            <div>
+              <strong>退役了兩支 cron 腳本</strong>
+              <p>它們想在沒有人登入的 <span class="term" data-definition="cron 是一個排程器，會在設定好的時間自動執行某項任務 —— 像是給電腦的一個循環鬧鐘，趁你不在時觸發某支腳本。">cron</span> 執行裡發出訊息，那種情況連不上那些工具。撞牆才學會了規則。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">💾</div>
+            <div>
+              <strong>觸發器的提示被一個 UI 錯誤抹掉了</strong>
+              <p>靠一個備份檔加上 API 救了回來。現在每個<span class="term" data-definition="雲端觸發器（cloud trigger）是一種自動化，依排程或事件在遠端伺服器上執行 —— 而不是在你的筆電上 —— 所以就算你的機器關機它也會觸發。">雲端觸發器</span>的提示都有備份。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🔀</div>
+            <div>
+              <strong>Rebase → merge</strong>
+              <p><span class="term" data-definition="rebase 與 merge 是合併程式碼分支的兩種方式。rebase 會把你的 commit 重播到最新的程式碼之上（而且可能憑空生出衝突）；merge 則用一個乾淨的接點把分支綁在一起。改用 merge 終結了那些衝突。">自動 rebase</span> 重播了 commit，憑空生出衝突；改用 merge 把它們終結了。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">📓</div>
+          <div class="callout-content">
+            <strong class="callout-title">一份失敗日誌是便宜的保險</strong>
+            <p>一份 <span class="term" data-definition="known_issues.md 是一份純文字日誌，記著已經踩過的問題與當初怎麼修好的 —— 一本持續更新的日記，讓未來的你（以及未來的 Claude）在重犯同樣的錯之前先讀一讀。">known_issues.md</span> 檔案，會被未來的你 —— 還有未來的 Claude —— 在任一方重蹈覆轍之前讀過。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — The whole system, one picture (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">整套系統，一張圖說完</h2>
+        <p>四層，由上而下。每一層都讓它底下的那幾層隨時間變得更聰明。</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-5)">📇</div>
+            <div>
+              <strong>設定 &mdash; <code>CLAUDE.md</code> + <code>settings</code></strong>
+              <p>我是誰，以及什麼被允許。刻意維持精簡。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📚</div>
+            <div>
+              <strong>技能</strong>
+              <p>按需取用的專業 —— 從別人那裡 fork 來，再自家培育。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">⚙️</div>
+            <div>
+              <strong>自動化</strong>
+              <p><span class="term" data-definition="hook 是一小段指令，會在某個設定好的時刻自動觸發 —— 在 Claude 做某件事之前或之後 —— 讓某條規則每次都跑，不必你記得去叫它。">Hook</span>、cron 與雲端觸發器，跑著那些循環性的工作。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🧠</div>
+            <div>
+              <strong>記憶</strong>
+              <p>那些修正，讓上面三層隨時間都變得更聰明。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🌱</div>
+          <div class="callout-content">
+            <strong class="callout-title">從小處開始</strong>
+            <p>一份精簡的 <code>CLAUDE.md</code>、一個技能、一個 hook。每當你重複講同一件事，就加一個技能；把無聊的自動化掉；讓記憶去接住那些修正。這套系統會複利成長 —— 這正是它的重點所在。</p>
+          </div>
+        </div>
+
+        <p class="caption">由 Ting-Wei 親手打造 —— 用的正是文中介紹的這套設定。</p>
+      </section>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,310 @@
+<section class="module" id="module-3" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">使用情境：工作實際怎麼完成</h1>
+      <p class="module-subtitle">工作實際上是怎麼完成的——同一個工具，四種截然不同的任務。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Four lanes -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一天就像一場接力賽</h2>
+        <p>平常的一天會橫跨四種幾乎毫無共通點的工作：算數字、畫圖表、寫給人看的東西，還有交付程式碼。同一個工具就能應付這四種——它只是切換模式，就像跑者跨越不同的地形。</p>
+        <p>把這些串起來的關鍵是：這些全都是由<em>我</em>親自推動的工作——雙手放在鍵盤上，一步步掌舵。<strong>那些不需要我也能跑的工作，是下一個模組的主題。</strong>這裡每一條賽道，都由不同的<span class="term" data-definition="技能是一包自成一體的指示與知識，Claude 會為了某種特定任務而隨需載入——就像從書架上抽出對的那本手冊，而不是一次把所有東西都背起來。">技能（skill）</span>驅動——也就是上一個模組裡那些可載入的劇本。</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📊</div>
+            <div>
+              <strong>資料分析</strong>
+              <p>「這個指標為什麼動了？」由 <code>data-analysis</code> + <code>company-data-stack</code> 驅動。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📈</div>
+            <div>
+              <strong>視覺化</strong>
+              <p>把一張表格變成別人真的看得懂的圖表。由 <code>data-viz</code> 驅動。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">✍️</div>
+            <div>
+              <strong>溝通</strong>
+              <p>狀態更新、文件、簡報。由 <code>internal-comms</code>、<code>company-confluence</code>、<code>company-slides</code>、<code>company-slack</code> 驅動。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🗂️</div>
+            <div>
+              <strong>生產力／行政雜務 <span style="font-weight:400; color: var(--color-text-muted); font-size: var(--text-xs);">——格格不入的那一個</span></strong>
+              <p>這是我<em>不再</em>親自推動的唯一一條賽道：因為太過重複，我把它交給了不需要我也能跑的機器人。這也是通往下一個模組的橋樑——<code>daily-digest</code>、<code>canvas-tracker</code>。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — Lane 1: Data analysis -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">賽道 1——資料分析</h2>
+        <p><code>data-analysis</code> 技能會強制執行那些趕時間的分析師會省略的嚴謹步驟。它把每一個問題都導向五種模式之一，每種都有自己的檢查清單。</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🔍</div>
+            <h4 class="pattern-title">診斷型</h4>
+            <p class="pattern-desc">某個<span class="term" data-definition="指標是你長期追蹤、用來衡量某件事表現如何的單一數字——例如每週的註冊數或營收。">指標</span>為什麼動了？</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🧭</div>
+            <h4 class="pattern-title">探索型</h4>
+            <p class="pattern-desc">這份新資料集裡到底有什麼？</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📋</div>
+            <h4 class="pattern-title">描述型</h4>
+            <p class="pattern-desc">乾淨俐落地總結發生了什麼事。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">⚗️</div>
+            <h4 class="pattern-title">實驗型</h4>
+            <p class="pattern-desc">這個 <span class="term" data-definition="A/B 測試把人分成兩組——一組看到某個改動，另一組沒有——好讓你能判斷差異是不是由這個改動造成的，而不只是運氣。">A/B 測試</span>有效嗎？</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">🔮</div>
+            <h4 class="pattern-title">預測型</h4>
+            <p class="pattern-desc">接下來最可能發生什麼？</p>
+          </div>
+        </div>
+
+        <p>診斷幾乎總是從一段簡單的健全性檢查查詢開始，用的是慣用的風格——<span class="term" data-definition="snake_case 是一種命名風格，用底線把詞接起來、而且全部小寫，例如 signup_week。它讓資料庫的名稱整齊又好讀。">snake_case</span>、清楚的別名、沒有花俏的子查詢。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-keyword">select</span></span>
+<span class="code-line">    signup_week,</span>
+<span class="code-line">    <span class="code-function">count</span>(<span class="code-keyword">distinct</span> user_id) <span class="code-keyword">as</span> signups</span>
+<span class="code-line"><span class="code-keyword">from</span> clean_signups</span>
+<span class="code-line"><span class="code-keyword">where</span> signup_week &gt;= <span class="code-function">date_trunc</span>(<span class="code-string">'week'</span>, current_date) - <span class="code-keyword">interval</span> <span class="code-string">'8 weeks'</span></span>
+<span class="code-line"><span class="code-keyword">group by</span> 1</span>
+<span class="code-line"><span class="code-keyword">order by</span> 1</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">數每一週的不重複使用者人數……</p>
+              <p class="tl">……涵蓋過去 8 週……</p>
+              <p class="tl">……這樣我就能看出上週的下滑是真的，還是只是雜訊。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">診斷的第一條守則</strong>
+            <p>在解釋下滑之前，<em>先</em>確認這個下滑是真的。診斷有一半的功夫，都在於抗拒大腦端給你的第一個漂亮故事。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Lane 2: Visualization -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">賽道 2——視覺化</h2>
+        <p>一張圖表只有在讀者一眼就看懂時才有用。<code>data-viz</code> 技能內建了 <span class="term" data-definition="Cleveland–McGill 階層排出了人們閱讀不同圖形時的準確度高低。長度和位置最容易判斷；角度和面積最難——所以在比較數字時，長條圖會勝過圓餅圖。">Cleveland–McGill</span> 階層，也就是關於人眼能準確讀出什麼的研究成果。</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📏</div>
+            <h4 class="pattern-title">位置勝過角度，角度勝過面積</h4>
+            <p class="pattern-desc">長條圖勝過圓餅圖——人眼讀長度遠比讀一塊扇形準確。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🚫</div>
+            <h4 class="pattern-title">不用雙 Y 軸</h4>
+            <p class="pattern-desc"><span class="term" data-definition="雙 Y 軸圖表在同一張圖的左右兩邊各疊上一種不同的刻度。這裡禁用它，是因為它會讓你暗示兩條線之間存在某種其實並不存在的關係。">雙 Y 軸</span>會憑空捏造出根本不存在的關係。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🎨</div>
+            <h4 class="pattern-title">用漸層，不用彩虹</h4>
+            <p class="pattern-desc"><span class="term" data-definition="連續型色盤用同一個顏色由淺到深漸變，來呈現由低到高的數值，所以顏色本身就編碼了順序。彩虹色盤用許多彼此無關的色相，人眼無法替它們排序——它在其實只是一個刻度的地方暗示出了分類。">連續型資料用連續型漸層</span>，絕不用彩虹色。</p>
+          </div>
+        </div>
+
+        <p>其中有兩項不是我每次都重新做的決定——它們是已存好、會自動觸發的預設值。</p>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">no gridlines</code>
+            <span class="badge-desc">預設移除，在每一個繪圖函式庫裡都一樣。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">centered titles</code>
+            <span class="badge-desc">標題預設置中，不必特別問。</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">預設值住在記憶裡</strong>
+            <p>這些偏好設定住在 Claude 的<em>記憶</em>裡，所以每一張圖一開始就是對的，不用我開口——我們會在第 5 個模組看到這套記憶系統。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Lanes 3 & 4: Communication + admin -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">賽道 3 與 4——溝通 + 行政雜務</h2>
+        <p>寫給人看是一種獨立的語氣，而且每一種載體都有自己的技能。行政這條賽道太過重複，所以大多交給了機器人。</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📝</div>
+            <div>
+              <strong><code>internal-comms</code></strong>
+              <p>用公司慣用的格式寫狀態報告、領導層更新和 FAQ。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📚</div>
+            <div>
+              <strong><code>company-confluence</code></strong>
+              <p>讓 wiki 文件落在對的空間裡、對的位置上。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-5)">🖥️</div>
+            <div>
+              <strong><code>company-slides</code></strong>
+              <p>16:9 的品牌化簡報，隨時可以上台報告。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">💬</div>
+            <div>
+              <strong><code>company-slack</code></strong>
+              <p>跨頻道發文、閱讀、搜尋。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>而這裡就是本模組與下一個模組之間的接縫：行政這條賽道，是我唯一停止<em>親自推動</em>的工作。它太過重複，於是我把它交給了不需要我也能跑的排程機器人——而這個交接，從我親自推動的工作，到自己會跑的工作，正是下一個模組的全部內容。</p>
+      </section>
+
+      <!-- SCREEN 4.5 — Driving real tools from the terminal -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">真正在操作工具，而不只是聊天</h2>
+        <p>Claude 不只是說話——它會直接從<span class="term" data-definition="命令列（或 CLI，命令列介面）是一個文字視窗，你透過打指令、而不是按按鈕來操作工具——快速、精準，而且容易自動化。">命令列</span>操作我真正的工具。它最常倚重的有兩個：</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🦊</div>
+            <div>
+              <strong>GitLab，透過 <code>glab</code> CLI</strong>
+              <p><span class="term" data-definition="GitLab 是一個用來存放程式碼、並管理它如何交付的平台：它代管你的儲存庫、執行自動化測試、處理程式碼審查。可以想成是原始碼版的 Google 文件，附帶核可流程與版本紀錄。">GitLab</span> 是我的程式碼存放與交付的地方。<code>glab</code> 是它的命令列工具，讓 Claude 可以開合併請求、盯<span class="term" data-definition="流程是你推送程式碼之後，自動跑過去的一連串檢查——建置它、跑測試——好在合併之前確認沒有東西被弄壞。">流程</span>、讀審查討論串，完全不必我去碰那個網頁。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📓</div>
+            <div>
+              <strong>Hex，透過它的 CLI</strong>
+              <p><span class="term" data-definition="Hex 是一個協作式的資料科學筆記本：你在儲存格裡混用 SQL 和 Python 來探索資料、建立可分享的儀表板——就像分析版的 Google 文件，附帶即時圖表。">Hex</span> 是我的分析筆記本所在的地方。它的 CLI 讓 Claude 可以開一個專案、丟進 SQL 和 Python 儲存格、跑一段查詢——把一個鬆散的問題，變成一份能運作、可分享的筆記本。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">⌨️</div>
+          <div class="callout-content">
+            <strong class="callout-title">CLI 是代理長出雙手的方式</strong>
+            <p>一則聊天回覆只是文字。命令列工具讓 Claude 能<em>動手做</em>——開 MR、跑查詢、交付改動。下一個畫面會讓 <code>glab</code> 那一套動起來給你看。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Shipping code: the MR relay (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">賽道 5——交付程式碼：合併請求接力</h2>
+        <p>交付程式碼是最豐富的工作流程——一根接力棒在我和三個自動化跑者之間傳遞。我開一個<span class="term" data-definition="合併請求（MR）是把你的改動併進共用程式碼庫的正式提案。隊友和自動化檢查會在它正式進去之前審查它。GitHub 把同樣的東西叫做 pull request。">合併請求（merge request, MR）</span>，接著機器人接手測試與審查。</p>
+
+        <div class="flow-animation animate-in" data-steps='[
+ {"highlight":"flow-actor-1","label":"我推送一條分支並開一個合併請求"},
+ {"highlight":"flow-actor-2","label":"GitLab 啟動一條 CI 流程來測試它","packet":true,"from":"actor-1","to":"actor-2"},
+ {"highlight":"flow-actor-3","label":"ci-watch.sh 在背景輪詢那條流程","packet":true,"from":"actor-2","to":"actor-3"},
+ {"highlight":"flow-actor-4","label":"Bugbot 留下一則自動化程式碼審查","packet":true,"from":"actor-3","to":"actor-4"},
+ {"highlight":"flow-actor-3","label":"ci-watch 回報結果：綠燈，或這些是失敗的地方","packet":true,"from":"actor-4","to":"actor-3"},
+ {"highlight":"flow-actor-5","label":"討論串都已解決、流程亮綠燈：合併進 main 分支","packet":true,"from":"actor-3","to":"actor-5"}
+]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">🧑‍💻</div>
+              <span>我</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">⚙️</div>
+              <span>GitLab 流程</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">👀</div>
+              <span>ci-watch</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">🐛</div>
+              <span>Bugbot</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-5">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">🌳</div>
+              <span>main 分支</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">點選「Next Step」開始</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">Next Step</button>
+            <button class="btn flow-reset-btn">Restart</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <p>來認識這些跑者：一條<span class="term" data-definition="分支是你自己的程式碼庫私有副本，你在上面做改動而不會打擾到共用版本，直到你準備好把它們併回去為止。">分支</span>開啟 MR；一條 <span class="term" data-definition="CI/CD 流程是一條自動化生產線，每次你改動程式碼時都會建置並測試它，好在程式碼交付之前就抓出問題。CI 代表持續整合。">CI/CD 流程</span>測試它；<code>ci-watch.sh</code> 顧著那條流程；<span class="term" data-definition="Bugbot 是一個自動化審查者，它讀你提出的改動，留下標記出可能 bug 的留言——一個不知疲倦的初步程式碼審查者。">Bugbot</span> 留下一則審查；最後由我<span class="term" data-definition="合併是把你已審查過的改動，併進共用的 main 程式碼庫，讓它們正式生效。">合併</span>進受保護的 main 主副本。</p>
+
+        <p><code>ci-watch.sh</code> 不必讓你刷十分鐘的網頁，而是把整條吵雜的流程濃縮成單一一個退出碼。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment"># ci-watch exit codes</span></span>
+<span class="code-line"><span class="code-number">0</span>   green — pipeline passed, no open threads</span>
+<span class="code-line"><span class="code-number">1</span>   failed — prints the last 120 lines of the failing job</span>
+<span class="code-line"><span class="code-number">2</span>   timeout — 40-minute cap hit</span>
+<span class="code-line"><span class="code-number">4</span>   green, but review threads still open</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">我不必刷網頁，而是拿到一個數字。</p>
+              <p class="tl"><code>1</code> 直接把我丟到失敗的紀錄上。</p>
+              <p class="tl"><code>4</code> 代表測試通過，但<span class="term" data-definition="綠燈是持續整合裡的全部放行訊號——每一項自動化檢查都通過了。紅燈流程則表示至少有一項檢查失敗。">綠燈</span>本身還不夠：Bugbot 留下的某條<span class="term" data-definition="審查討論串是附在合併請求某一行上的留言與回覆對話。它會一直開著直到被解決，並擋住合併。">審查討論串</span>要求修改——還沒完成。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">一支腳本可以把「完成」寫進去</strong>
+            <p>這些退出碼把一套<em>完成的定義</em>編碼了進去：<span class="term" data-definition="綠燈 CI 代表每一項自動化測試都通過了。它是交付的必要條件——但本身並不充分，因為還沒解決的審查討論串依然會擋住合併。">綠燈</span>是必要的，但並不充分。還開著的討論串依然會擋住合併。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code 實戰手冊</title>
+
+  <!-- Runbook editorial fonts + Noto TC for Traditional Chinese (Taiwan) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!--
+    RUNBOOK EDITORIAL STYLE — terracotta accent. Latin uses Fraunces/Inter/JetBrains Mono;
+    Traditional Chinese falls through to Noto Serif TC (headings) / Noto Sans TC (body).
+  -->
+  <style>
+    :root {
+      --color-accent:       #b8421a;
+      --color-accent-hover: #993515;
+      --color-accent-light: #f4e7dd;
+      --color-accent-muted: #e0b3a0;
+      --font-display: 'Fraunces', 'Noto Serif TC', Georgia, serif;
+      --font-body:    'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body { letter-spacing: 0.01em; }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">Claude Code 實戰手冊</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-0" data-tooltip="開場" role="tab" aria-label="開場"></button>
+        <button class="nav-dot" data-target="module-1" data-tooltip="系統" role="tab" aria-label="第 1 章：系統"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="技能庫" role="tab" aria-label="第 2 章：技能庫"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="使用情境" role="tab" aria-label="第 3 章：使用情境"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="自動化" role="tab" aria-label="第 4 章：自動化"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="記憶與回饋" role="tab" aria-label="第 5 章：記憶與回饋"></button>
+        <button class="nav-dot" data-target="module-6" data-tooltip="最佳實踐" role="tab" aria-label="第 6 章：最佳實踐"></button>
+        <button class="nav-dot" data-target="module-7" data-tooltip="資源" role="tab" aria-label="第 7 章：資源與致謝"></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Floating left-rail table of contents — auto-populated by main.js from the nav dots. -->
+  <nav class="toc" id="toc" aria-label="目錄"></nav>
+
+  <main id="main">
+    <!-- modules/*.html content is assembled here by build.sh -->
+<section class="module" id="module-0" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <p class="caption" style="margin-bottom: var(--space-2)">一份實戰指南 · by Ting-Wei</p>
+      <h1 class="module-title" style="font-size: var(--text-5xl); line-height: var(--leading-tight)">Claude Code 實戰手冊</h1>
+      <p class="module-subtitle">一位資深資料科學家實際的每日工作方式：設定、技能、自動化與記憶 &mdash; 一趟誠實的導覽。</p>
+    </header>
+
+    <div class="module-body">
+      <section class="screen animate-in">
+        <p>嗨 — 我是 Ting-Wei。<span class="term" data-definition="Claude Code 是 Anthropic 的程式設計代理 — 一個你交付實際任務（寫一段查詢、發布一項變更、草擬一則更新）後，它會跨越你的檔案與工具去完成的 AI 助理。">Claude Code</span> 已經悄悄成為我工作的骨幹：寫 SQL、發布程式碼、畫圖表、草擬更新，並在我睡覺時把那些無聊的事跑完。</p>
+        <p>這個頁面是那套設定的導覽 — 不是一本說明書，只是那些真正掙得一席之地的零件，以及幾個讓我付出代價才學到的教訓。</p>
+
+        <p><em>開始前先說一句：這只是<strong>我的工作方式</strong> — 它不一定是最佳實踐。我盡量讓自己一致地遵循它，並透過自學、反覆試誤持續打磨。所以請把這當作想法與經驗分享，而不是一套規則手冊。</em></p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">⌨️</div>
+          <div class="callout-content">
+            <strong class="callout-title">終端機或應用程式 — 由你決定</strong>
+            <p>我個人喜歡從<span class="term" data-definition="終端機（或命令列 / CLI）是那個以文字為主的視窗，你在裡面輸入指令，而不是點選按鈕。一旦習慣了，它既快又能寫成腳本。">終端機</span>來驅動 Claude Code — 那是我整天待著的地方。但這裡的一切都不限於終端機：所有內容在 <span class="term" data-definition="Claude 桌面與網頁應用程式是同一個助理的點選版本 — 一樣的能力、更友善的介面，且不需要在終端機裡安裝任何東西。">Claude 桌面與網頁應用程式</span>裡同樣行得通。用最適合你流程的方式就好。</p>
+          </div>
+        </div>
+
+        <h2 class="screen-heading">內容一覽</h2>
+        <p>六個簡短的站點，從磁碟上的檔案一路拉遠，看到把它們串在一起的習慣。</p>
+
+        <div class="icon-rows stagger-children">
+          <a class="icon-row animate-in" href="#module-1" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-5)">01</div>
+            <div>
+              <strong>系統</strong>
+              <p><code>~/.claude/</code> 資料夾 — 設定作為一層由你掌控的運作層。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-2" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-1)">02</div>
+            <div>
+              <strong>技能庫</strong>
+              <p>16 袋專業知識，會在工作對得上時自動載入。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-3" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-2)">03</div>
+            <div>
+              <strong>使用情境</strong>
+              <p>四條真實工作的路線 — 分析、圖表、寫作、發布程式碼。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-4" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-3)">04</div>
+            <div>
+              <strong>自動化</strong>
+              <p>hook、cron 與雲端機器人，在我不在時繼續工作。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-5" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-4)">05</div>
+            <div>
+              <strong>記憶與回饋</strong>
+              <p>一句只說過一次的修正，如何變成永遠保持的習慣。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-6" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-accent)">06</div>
+            <div>
+              <strong>最佳實踐</strong>
+              <p>那些可遷移的習慣 — 包括動手前先規劃。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-7" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-2)">07</div>
+            <div>
+              <strong>資源與致謝</strong>
+              <p>每一項技能與來源 — 以及你自己該去哪裡取得它們。</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">😉</div>
+          <div class="callout-content">
+            <strong class="callout-title">附註</strong>
+            <p>這整個頁面都是由 Claude Code 自己設計並打造的 — 先規劃大綱、經過核可，然後寫出來。用來導覽我如何使用它，再貼切不過。</p>
+          </div>
+        </div>
+
+        <p class="caption">點選上面任何一個站點直接跳進去 — 或繼續往下捲動，或點選頂端的圓點。→</p>
+      </section>
+    </div>
+  </div>
+</section>
+<section class="module" id="module-1" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">系統：<code>~/.claude/</code> 是我的操作層</h1>
+      <p class="module-subtitle"><code>~/.claude/</code> 作為一個操作層——在我打出任何一個字之前，Claude Code 就已經讀過的那些檔案。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Hook + the idea -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">它早就知道我怎麼工作</h2>
+        <p>每次我打開 Claude Code，在我輸入任何東西之前，它都會先讀過一小撮檔案。正是這些檔案，讓它早就知道我怎麼工作。</p>
+        <p>這不是我每天早上貼進去的一次性提示。我的<span class="term" data-definition="設定（config 是 configuration 的簡稱）是一組儲存起來的選項，用來告訴程式該怎麼運作——就像 app 裡的偏好設定面板，只是它以檔案的形式存在，你可以編輯，也可以做版本控制。">設定</span>是一個長期存在的<strong>操作層</strong>——一套我會做版本控制、持續改進、並從這個工作階段帶到下一個工作階段的配置。</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">原來如此！</strong>
+            <p>這份設定會在啟動時由上到下讀過一遍。所以<strong>順序與精簡都很重要</strong>——檔案愈精簡，Claude 實際上就愈會確實遵循它。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The pegboard (hero: file tree) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">洞洞板</h2>
+        <p>想像一塊工作室的洞洞板：每一件工具在牆上都有一圈漆好的輪廓，所以你一眼就能看出哪些工具在、哪些不見了。<code>~/.claude/</code> 就是那塊洞洞板——每一種指示都有固定的擺放位置。</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">~/.claude/</span>
+            <span class="ft-desc">我整個操作層——一個由我擁有的資料夾</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">CLAUDE.md</span>
+                <span class="ft-desc">我是誰＋該怎麼跟我說話＋我的技能索引（48 行）</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">skills/</span>
+                <span class="ft-desc">16 個按需載入的專業能力資料夾</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">settings.json</span>
+                <span class="ft-desc">全域的防護欄、hook，以及資料連線</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">settings.local.json</span>
+                <span class="ft-desc">那份「好，這個你可以執行」的允許清單</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">hooks/</span>
+                <span class="ft-desc">在特定事件發生時觸發的小型腳本</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">reference.md</span>
+                <span class="ft-desc">我常查的 ID、檔案路徑與排程</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">known_issues.md</span>
+                <span class="ft-desc">一份持續更新的修正記錄</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">*.sh</span>
+                <span class="ft-desc">statusline-command.sh、log_usage.sh、ci-watch.sh、auto_rebase.sh</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">memory/</span>
+                <span class="ft-desc">Claude 學到、關於我的長存事實</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>一份精簡的索引檔、一個<span class="term" data-definition="技能（skill）是一個自成一體的資料夾，裡面裝著指示與參考資料，Claude 只在某個任務需要時才載入它——就像你為了某一件工作才臨時請進來的專家，而不是整天留在房間裡的人。">技能</span>資料夾、兩個權限檔、幾個 <span class="term" data-definition="hook 是一個小型腳本，會在特定事件發生時自動執行——例如在 Claude 完成任務前或後的那一刻。程式會替你觸發它，你不必開口要求。">hook</span>，再加上一個記憶資料夾。把它當成一個程式碼庫來對待，而不是一個設定畫面。</p>
+      </section>
+
+      <!-- SCREEN 3 — CLAUDE.md is a directory, not a manual -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading"><code>CLAUDE.md</code> 是一份目錄，不是一本手冊</h2>
+        <p>Claude 最先讀到的這個檔案是刻意寫得很短。它告訴 Claude 該怎麼表現，然後指向真正的細節住在哪裡。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment">## Communication</span></span>
+<span class="code-line">- Concise and direct — no filler, no trailing summaries</span>
+<span class="code-line">- Lead with the answer or action, not the reasoning</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">## Skills (load on demand)</span></span>
+<span class="code-line">- company-data-stack — Redshift / dbt / Looker / LookML</span>
+<span class="code-line">- canvas-tracker — Slack project tracker canvas ops</span>
+<span class="code-line">- data-analysis — rigor for diagnostic / exploratory work</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">首先它告訴 Claude <em>該怎麼</em>跟我說話——簡短、答案優先。</p>
+              <p class="tl">接著它列出我的技能，每一項用一行說明它在什麼時候會啟用。</p>
+              <p class="tl">它不解釋這些技能——只是指向它們。細節住在每一個技能資料夾的裡面。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">📍</div>
+          <div class="callout-content">
+            <strong class="callout-title">我整份 <code>CLAUDE.md</code> 只有 48 行。</strong>
+            <p>它的作用是一份向外指路的目錄，而不是一本把所有東西都裝進去的手冊。（最後一個模組會再回頭談為什麼這樣做。）</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Two permission files, one job each -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">兩個權限檔，各司其職</h2>
+        <p>權限被拆到兩個檔案裡，讓那份危險的清單保持簡短，而那份方便的清單可以自由地長大。</p>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🛡️</div>
+            <div>
+              <strong><code>settings.json</code>——全域防護欄</strong>
+              <p>一份破壞性指令的<span class="term" data-definition="拒絕清單（deny-list）是一份永遠被禁止的東西的清單。上面的任何項目都會被擋下，無論如何；其餘的則一律允許。">拒絕清單</span>，再加上那些 hook 與資料連線。一份很少更動的共用預設。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">✅</div>
+            <div>
+              <strong><code>settings.local.json</code>——允許清單</strong>
+              <p>一份約 322 條我事先核准過的特定指令<span class="term" data-definition="允許清單（allow-list）正好是拒絕清單的反面：一份事先明確獲准的東西的清單，這樣你就不必每一次都被要求逐一核准。">允許清單</span>，這樣我才不用整天都在點「允許」。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Bash(rm -rf*)</code>
+            <span class="badge-desc">絕不大批刪除檔案</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(git push --force*)</code>
+            <span class="badge-desc">絕不改寫共用的歷史紀錄</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(sudo*)</code>
+            <span class="badge-desc">絕不以管理員身分執行</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔎</div>
+          <div class="callout-content">
+            <strong class="callout-title">為什麼要拆開？</strong>
+            <p>把<em>拒絕</em>（全域、很少更動）和<em>允許</em>（本機、隨時間長大）分開，能讓那份危險的清單保持簡短，也方便稽核。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Connections (MCP), the breadth -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">連線——Claude 接上我真正在用的工具</h2>
+        <p>單靠它自己，Claude 只能說話。<span class="term" data-definition="MCP（Model Context Protocol，模型情境協定）是一套共通的標準，讓 Claude 接上外部工具——資料庫、Slack、電子郵件、你的 wiki。把它想成一個通用插座：做好一個轉接頭，Claude 就能接觸到那個工具。">MCP</span> 就是那個通用插座，讓它能在我實際用的工具裡<em>動手做事</em>——查詢資料倉儲、發訊息到 Slack、讀我的行事曆。一天下來，幾乎我碰到的每樣東西都接上線了。</p>
+
+        <p><strong>資料技術堆疊</strong>——用於分析：</p>
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🗄️</div>
+            <div>
+              <strong><code>Redshift</code></strong>
+              <p><span class="term" data-definition="資料倉儲是一個為分析而打造的大型中央資料庫——它把來自許多來源的資料匯聚在一起，讓你可以一次查詢全部。">分析資料所在的資料倉儲</span>（另外還有第二個、權限更高的連線，供管理任務使用）。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🧱</div>
+            <div>
+              <strong><code>dbt</code></strong>
+              <p><span class="term" data-definition="dbt（data build tool）是一套軟體，透過依照既定順序執行 SQL 轉換，把原始的倉儲資料表變成乾淨、經過測試的資料集。">dbt</span>——原始資料如何被轉換成乾淨、經過測試的資料集。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📊</div>
+            <div>
+              <strong><code>Looker</code></strong>
+              <p><span class="term" data-definition="Looker 是一套商業智慧（BI）工具——它把倉儲資料變成全公司的人都能探索的儀表板與圖表。">Looker</span>，那套 BI 工具，用來做儀表板與指標。</p>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-8)"><strong>日常 app</strong>——我其餘的工作，同一個通用插座：</p>
+        <div class="icon-rows stagger-children animate-in">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/slack.svg" alt="Slack" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Slack</strong>
+              <p>讀頻道、發布更新，並讓專案 canvas 保持最新。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/gmail.svg" alt="Gmail" style="width:24px; height:24px;"></div>
+            <div>
+              <strong>Gmail</strong>
+              <p>閱讀、搜尋並自動為我的收件匣加標籤。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/googlecalendar.svg" alt="Google Calendar" style="width:24px; height:24px;"></div>
+            <div>
+              <strong>Google Calendar</strong>
+              <p>看我今天有什麼安排，以及接下來有什麼。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/googledrive.svg" alt="Google Drive" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Google Drive</strong>
+              <p>拉出文件與會議筆記。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/confluence.svg" alt="Confluence 與 Jira" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Confluence + Jira</strong>
+              <p>我們的 <span class="term" data-definition="wiki 是一個共用、可編輯的文件網站。Confluence 是那套 wiki 工具；Jira 則是與之串連、用於任務與問題的工單追蹤器。">wiki 與工單追蹤器</span>——讀文件、查看提及。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/gitlab.svg" alt="GitLab" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>GitLab</strong>
+              <p>程式碼、合併請求與管線。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);">📓</div>
+            <div>
+              <strong>Hex</strong>
+              <p>快速開出分析用的筆記本。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔌</div>
+          <div class="callout-content">
+            <strong class="callout-title">一套標準，眾多工具</strong>
+            <p>資料技術堆疊的連線在本機執行；日常 app 則是 Claude 內建的<span class="term" data-definition="連接器（connector）在你授權下，把 Claude 連到像 Slack 或 Gmail 這樣的外部服務，讓它可以代你在那裡讀取與動手。">連接器</span>。不論哪一種，背後的想法都一樣——一個標準插座，所以加進一個新工具，並不代表要重新教 Claude 怎麼跟它對話。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6 — Under the hood (optional technical detail) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">深入內部——一個連線，已遮蔽機密</h2>
+        <p>每一個連線都只是幾行設定。這裡是資料倉儲那一個——值得認得，但你其實不太常親手寫它。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-property">"redshift"</span>: {</span>
+<span class="code-line">  <span class="code-property">"command"</span>: <span class="code-string">"uvx"</span>,</span>
+<span class="code-line">  <span class="code-property">"args"</span>: [<span class="code-string">"awslabs.redshift-mcp-server@latest"</span>],</span>
+<span class="code-line">  <span class="code-property">"env"</span>: {</span>
+<span class="code-line">    <span class="code-property">"AWS_PROFILE"</span>: <span class="code-string">"&lt;aws-account&gt;_DataRedshift"</span>,</span>
+<span class="code-line">    <span class="code-property">"AWS_REGION"</span>: <span class="code-string">"us-west-2"</span></span>
+<span class="code-line">  }</span>
+<span class="code-line">}</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">為一個叫做 <code>redshift</code> 的連線命名。</p>
+              <p class="tl"><span class="term" data-definition="uvx 是一個小小的指令，它一步就把一個 Python 工具下載下來並執行，之後再清理乾淨——所以你不必先把它永久安裝起來。">uvx</span> 即時下載並執行一個小型的輔助程式。</p>
+              <p class="tl">這份<span class="term" data-definition="環境變數（env var）是一個從程式碼外部傳給程式的具名設定——這是一種乾淨的做法，可以把像「要用哪個帳號」這種值交給它，而不必把它們寫進程式本身。">設定</span>說明了要用<em>哪一個</em>帳號與區域——真正的機密住在這個檔案之外，絕不以明文存放。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">關於你正在看到的東西的一點說明</strong>
+            <p>真正的設定裡裝著上線中的<span class="term" data-definition="憑證（credential）是一個向系統證明你是誰的機密——一組密碼、token 或金鑰。一旦外洩，別人就能假冒你動手。">憑證</span>——連線字串、用戶端密鑰、token。<strong>本課程中所顯示的一切都已遮蔽機密</strong>，而這份紀律本身就是整套配置的一部分（最後一個模組會談更多）。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-2" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">技能庫：隨需載入的專業知識</h1>
+      <p class="module-subtitle">隨需載入的專業知識——一組隨傳隨到的專家，只在任務對得上時才現身。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — What a skill is -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">我從不點名召喚某位專家</h2>
+        <p>我從不輸入<em>「用 SQL 技能」</em>。我只描述我想要什麼，對的專業知識就會自己載入進來。一個
+          <span class="term" data-definition="技能是一個資料夾，裝著一份份儲存好的指示，教 Claude 用你的方式完成某一件特定的工作。你只需把流程寫一次，之後每當有請求對得上，它就會重新出現——就像一位走進門時已經完成簡報的專家。">技能</span>
+          就只是一個資料夾，裡面裝著一份
+          <span class="term" data-definition="SKILL.md 是技能資料夾裡的主要指示檔案。它存放著技能載入後 Claude 會遵循的完整逐步流程——就是這位專家的劇本。">SKILL.md</span>
+          檔案，以及一行
+          <span class="term" data-definition="這段描述就是技能的觸發語句。它是 Claude 唯一隨時記在心裡的部分；對得上它，才會把完整的指示拉進對話裡。">描述</span>
+          來決定它何時啟動。</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">company-data-stack/</span>
+            <span class="ft-desc">一個技能 = 一個資料夾</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">SKILL.md</span>
+                <span class="ft-desc">完整的指示，加上開頭那行觸發描述</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">桌上的那張名片</strong>
+            <p>啟動時，Claude 只讀那些描述——專家的名片永遠擺在桌上。完整的
+              <code>SKILL.md</code> 只在任務對得上時才走進門，讓 Claude 的
+              <span class="term" data-definition="脈絡視窗是 Claude 在一段對話中的短期工作記憶——它一次能「看見」的全部內容。它是有限的，所以只載入那些描述（而非每一份完整技能），能讓這份記憶保持精簡。">脈絡視窗</span>
+              保持精簡。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The library at a glance -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">技能庫一覽</h2>
+        <p>十六個技能，依工作性質分成三個小隊。每個小隊有自己的顏色，貫穿整個課程。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🏢</div>
+            <h4 class="pattern-title">公司營運</h4>
+            <p class="pattern-desc">領域小隊。<code>company-data-stack</code>（資料倉儲＋ BI）、<code>canvas-tracker</code>（Slack 專案追蹤器）、<code>scheduled-triggers</code> 與 <code>internal-comms</code>——再加上 <code>company-slack</code>、<code>company-confluence</code>、<code>gitlab-cli</code>。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">📊</div>
+            <h4 class="pattern-title">產出與分析</h4>
+            <p class="pattern-desc"><code>data-analysis</code>、<code>data-viz</code>、<code>company-slides</code>，以及 <code>codebase-to-course</code>——正是打造這個頁面的那個技能——還有 <code>pdf</code> 和 <code>hex</code>。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🧰</div>
+            <h4 class="pattern-title">後設</h4>
+            <p class="pattern-desc"><code>prompt-authoring</code>、<code>skill-creator</code>——做出技能的技能——還有 <code>regression-guard</code>。</p>
+          </div>
+        </div>
+
+        <p class="caption">16 個技能，依工作分組——而非按字母排序。</p>
+      </section>
+
+      <!-- SCREEN 3 — HERO: group-chat animation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">配對是怎麼運作的</h2>
+        <p>看一個用大白話寫的請求如何自行找到去向。
+          <span class="term" data-definition="路由器是 Claude 裡負責讀你的請求、判斷它對上哪些技能的那一部分——就像一位調度員，聽到問題就派出對的專家，不必你點任何人的名。">路由器</span>
+          讀的是你<em>真正想表達</em>的意思，接著對得上的專家就會走進門。按<strong>下一則訊息</strong>逐步看下去。</p>
+
+        <div class="chat-window" id="chat-skills">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="me" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-5)">M</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-5)">我</span>
+                <p>為什麼上週的每週註冊數下滑了？</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="dispatcher" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">⚙</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">調度員</span>
+                <p>這是個需要動用資料倉儲的診斷型問題——正在召喚兩位專家。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="data-analysis" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">📊</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">data-analysis</span>
+                <p>來了。載入診斷模式：先確認下滑是真的，再去解釋它。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="company-data-stack" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">🗄</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">company-data-stack</span>
+                <p>我會從 Redshift 拉數字，並檢查餵給那個指標的 dbt 模型。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="dispatcher" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">⚙</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">調度員</span>
+                <p>請求裡誰都沒被點名——兩位都是憑請求<em>真正的意思</em>對上的。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" style="display:none">
+            <div class="chat-avatar" id="chat-skills-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">下一則訊息</button>
+            <button class="btn chat-all-btn">全部播放</button>
+            <button class="btn chat-reset-btn">重播</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+
+        <p>這些技能不是被點名召喚的——它們是憑<em>意圖</em>對上的。</p>
+      </section>
+
+      <!-- SCREEN 4 — The description IS the trigger -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">描述本身就是觸發器</h2>
+        <p>打開任何一份 <code>SKILL.md</code>，最上面幾行就把整個故事說完了。這裡是
+          <span class="term" data-definition="frontmatter 是檔案最頂端那一小段，以三個破折號圍起來，存放的是關於這個檔案的設定，而非它的內容——在這裡，就是技能的名稱與它的觸發描述。">frontmatter</span>
+          ——也就是 <code>data-viz</code> 技能的開頭那段。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line">---</span>
+<span class="code-line"><span class="code-property">name</span>: data-viz</span>
+<span class="code-line"><span class="code-property">description</span>: Use whenever making a chart, plot, or</span>
+<span class="code-line">  visualization in a notebook. Trigger on <span class="code-string">"plot this"</span>,</span>
+<span class="code-line">  <span class="code-string">"visualize"</span>, <span class="code-string">"show the distribution"</span>, <span class="code-string">"compare segments"</span>.</span>
+<span class="code-line">---</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">每個技能都從一個名稱和一段描述開始。</p>
+              <p class="tl">名稱只是資料夾的標籤。</p>
+              <p class="tl">只有這段描述會一直待在 Claude 的記憶裡，直到被需要為止。</p>
+              <p class="tl">那些範例語句就是觸發線——只要你說出接近的話，完整的技能就會載入。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info animate-in">
+          <div class="callout-icon">ℹ️</div>
+          <div class="callout-content">
+            <strong class="callout-title">寫好一段描述，本身就是一門手藝</strong>
+            <p>太籠統，技能就會一直觸發；太狹窄，它就永遠不觸發。甚至還有一個
+              <code>prompt-authoring</code> 技能，專門用來微調這件事——而且沒錯，一個
+              <span class="term" data-definition="筆記本是一種把可執行的程式碼、它的結果（例如圖表）和筆記放在同一個地方的文件——在資料分析裡很受歡迎。Jupyter 和 Hex 都是常見的例子。">筆記本</span>
+              就是資料分析師的工作畫布。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Where the skills came from -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">這些技能從哪裡來</h2>
+        <p>這一切都不是從零打造的。整座技能庫是三種來源交織而成。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🛠️</div>
+            <h4 class="pattern-title">從零自建</h4>
+            <p class="pattern-desc">這些公司專屬的技能，封裝了任何下載都帶不來的內部知識——資料倉儲慣例、canvas 規則，以及公司內部的文件風格。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🍴</div>
+            <h4 class="pattern-title">Fork 後重新品牌化</h4>
+            <p class="pattern-desc"><code>codebase-to-course</code>，以及 <code>company-slides</code> 背後的 <code>frontend-slides</code> 引擎，都來自開源打造者
+              <span class="term" data-definition="fork 就是把別人的專案複製一份，讓你能自由修改自己的版本，同時原版維持不動。這是在開源成果上接著開發的標準做法。">Zara Zhang</span>
+              （<code>github.com/zarazhangrui</code>）。我把它們
+              <span class="term" data-definition="開放原始碼指的是程式碼公開出來，任何人都能讀取、複製、改編——通常是免費的。正因如此，你才能 fork 一個陌生人的技能，把它變成你自己的。">fork</span>
+              下來，換上我自己的品牌與慣例。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📦</div>
+            <h4 class="pattern-title">直接來自 Anthropic</h4>
+            <p class="pattern-desc"><code>skill-creator</code> 和 <code>pdf</code> 是 Anthropic 自家的技能；<code>ralph-loop</code>
+              <span class="term" data-definition="外掛是一種附加元件，不必重建工具就能為它裝上額外能力——就像安裝瀏覽器擴充功能。這裡它把一個你能一步安裝的技能打包起來。">外掛</span>
+              則從官方的 <code>anthropics/claude-plugins-official</code>
+              <span class="term" data-definition="marketplace 是一個經過策劃的目錄，你能從這裡一鍵安裝附加元件——就像外掛與技能的 app 商店。">marketplace</span>
+              安裝。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">別從零開始打造</strong>
+            <p>從一個
+              <span class="term" data-definition="儲存庫（repository）是一個專案的程式碼與歷史紀錄的存放資料夾，通常託管在像 GitHub 這樣的網站上，方便別人找到並複製。">儲存庫</span>
+              fork 一個好技能，重新品牌化，再把它彎成你自己的慣例——接著用 <code>skill-creator</code> 培養出你自己的技能。這是我們在最後會一起收攏的最佳實務線索之一。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-3" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">使用情境：工作實際怎麼完成</h1>
+      <p class="module-subtitle">工作實際上是怎麼完成的——同一個工具，四種截然不同的任務。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Four lanes -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一天就像一場接力賽</h2>
+        <p>平常的一天會橫跨四種幾乎毫無共通點的工作：算數字、畫圖表、寫給人看的東西，還有交付程式碼。同一個工具就能應付這四種——它只是切換模式，就像跑者跨越不同的地形。</p>
+        <p>把這些串起來的關鍵是：這些全都是由<em>我</em>親自推動的工作——雙手放在鍵盤上，一步步掌舵。<strong>那些不需要我也能跑的工作，是下一個模組的主題。</strong>這裡每一條賽道，都由不同的<span class="term" data-definition="技能是一包自成一體的指示與知識，Claude 會為了某種特定任務而隨需載入——就像從書架上抽出對的那本手冊，而不是一次把所有東西都背起來。">技能（skill）</span>驅動——也就是上一個模組裡那些可載入的劇本。</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📊</div>
+            <div>
+              <strong>資料分析</strong>
+              <p>「這個指標為什麼動了？」由 <code>data-analysis</code> + <code>company-data-stack</code> 驅動。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📈</div>
+            <div>
+              <strong>視覺化</strong>
+              <p>把一張表格變成別人真的看得懂的圖表。由 <code>data-viz</code> 驅動。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">✍️</div>
+            <div>
+              <strong>溝通</strong>
+              <p>狀態更新、文件、簡報。由 <code>internal-comms</code>、<code>company-confluence</code>、<code>company-slides</code>、<code>company-slack</code> 驅動。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🗂️</div>
+            <div>
+              <strong>生產力／行政雜務 <span style="font-weight:400; color: var(--color-text-muted); font-size: var(--text-xs);">——格格不入的那一個</span></strong>
+              <p>這是我<em>不再</em>親自推動的唯一一條賽道：因為太過重複，我把它交給了不需要我也能跑的機器人。這也是通往下一個模組的橋樑——<code>daily-digest</code>、<code>canvas-tracker</code>。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — Lane 1: Data analysis -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">賽道 1——資料分析</h2>
+        <p><code>data-analysis</code> 技能會強制執行那些趕時間的分析師會省略的嚴謹步驟。它把每一個問題都導向五種模式之一，每種都有自己的檢查清單。</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🔍</div>
+            <h4 class="pattern-title">診斷型</h4>
+            <p class="pattern-desc">某個<span class="term" data-definition="指標是你長期追蹤、用來衡量某件事表現如何的單一數字——例如每週的註冊數或營收。">指標</span>為什麼動了？</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🧭</div>
+            <h4 class="pattern-title">探索型</h4>
+            <p class="pattern-desc">這份新資料集裡到底有什麼？</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📋</div>
+            <h4 class="pattern-title">描述型</h4>
+            <p class="pattern-desc">乾淨俐落地總結發生了什麼事。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">⚗️</div>
+            <h4 class="pattern-title">實驗型</h4>
+            <p class="pattern-desc">這個 <span class="term" data-definition="A/B 測試把人分成兩組——一組看到某個改動，另一組沒有——好讓你能判斷差異是不是由這個改動造成的，而不只是運氣。">A/B 測試</span>有效嗎？</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">🔮</div>
+            <h4 class="pattern-title">預測型</h4>
+            <p class="pattern-desc">接下來最可能發生什麼？</p>
+          </div>
+        </div>
+
+        <p>診斷幾乎總是從一段簡單的健全性檢查查詢開始，用的是慣用的風格——<span class="term" data-definition="snake_case 是一種命名風格，用底線把詞接起來、而且全部小寫，例如 signup_week。它讓資料庫的名稱整齊又好讀。">snake_case</span>、清楚的別名、沒有花俏的子查詢。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-keyword">select</span></span>
+<span class="code-line">    signup_week,</span>
+<span class="code-line">    <span class="code-function">count</span>(<span class="code-keyword">distinct</span> user_id) <span class="code-keyword">as</span> signups</span>
+<span class="code-line"><span class="code-keyword">from</span> clean_signups</span>
+<span class="code-line"><span class="code-keyword">where</span> signup_week &gt;= <span class="code-function">date_trunc</span>(<span class="code-string">'week'</span>, current_date) - <span class="code-keyword">interval</span> <span class="code-string">'8 weeks'</span></span>
+<span class="code-line"><span class="code-keyword">group by</span> 1</span>
+<span class="code-line"><span class="code-keyword">order by</span> 1</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">數每一週的不重複使用者人數……</p>
+              <p class="tl">……涵蓋過去 8 週……</p>
+              <p class="tl">……這樣我就能看出上週的下滑是真的，還是只是雜訊。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">診斷的第一條守則</strong>
+            <p>在解釋下滑之前，<em>先</em>確認這個下滑是真的。診斷有一半的功夫，都在於抗拒大腦端給你的第一個漂亮故事。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Lane 2: Visualization -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">賽道 2——視覺化</h2>
+        <p>一張圖表只有在讀者一眼就看懂時才有用。<code>data-viz</code> 技能內建了 <span class="term" data-definition="Cleveland–McGill 階層排出了人們閱讀不同圖形時的準確度高低。長度和位置最容易判斷；角度和面積最難——所以在比較數字時，長條圖會勝過圓餅圖。">Cleveland–McGill</span> 階層，也就是關於人眼能準確讀出什麼的研究成果。</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📏</div>
+            <h4 class="pattern-title">位置勝過角度，角度勝過面積</h4>
+            <p class="pattern-desc">長條圖勝過圓餅圖——人眼讀長度遠比讀一塊扇形準確。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🚫</div>
+            <h4 class="pattern-title">不用雙 Y 軸</h4>
+            <p class="pattern-desc"><span class="term" data-definition="雙 Y 軸圖表在同一張圖的左右兩邊各疊上一種不同的刻度。這裡禁用它，是因為它會讓你暗示兩條線之間存在某種其實並不存在的關係。">雙 Y 軸</span>會憑空捏造出根本不存在的關係。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🎨</div>
+            <h4 class="pattern-title">用漸層，不用彩虹</h4>
+            <p class="pattern-desc"><span class="term" data-definition="連續型色盤用同一個顏色由淺到深漸變，來呈現由低到高的數值，所以顏色本身就編碼了順序。彩虹色盤用許多彼此無關的色相，人眼無法替它們排序——它在其實只是一個刻度的地方暗示出了分類。">連續型資料用連續型漸層</span>，絕不用彩虹色。</p>
+          </div>
+        </div>
+
+        <p>其中有兩項不是我每次都重新做的決定——它們是已存好、會自動觸發的預設值。</p>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">no gridlines</code>
+            <span class="badge-desc">預設移除，在每一個繪圖函式庫裡都一樣。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">centered titles</code>
+            <span class="badge-desc">標題預設置中，不必特別問。</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">預設值住在記憶裡</strong>
+            <p>這些偏好設定住在 Claude 的<em>記憶</em>裡，所以每一張圖一開始就是對的，不用我開口——我們會在第 5 個模組看到這套記憶系統。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Lanes 3 & 4: Communication + admin -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">賽道 3 與 4——溝通 + 行政雜務</h2>
+        <p>寫給人看是一種獨立的語氣，而且每一種載體都有自己的技能。行政這條賽道太過重複，所以大多交給了機器人。</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📝</div>
+            <div>
+              <strong><code>internal-comms</code></strong>
+              <p>用公司慣用的格式寫狀態報告、領導層更新和 FAQ。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📚</div>
+            <div>
+              <strong><code>company-confluence</code></strong>
+              <p>讓 wiki 文件落在對的空間裡、對的位置上。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-5)">🖥️</div>
+            <div>
+              <strong><code>company-slides</code></strong>
+              <p>16:9 的品牌化簡報，隨時可以上台報告。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">💬</div>
+            <div>
+              <strong><code>company-slack</code></strong>
+              <p>跨頻道發文、閱讀、搜尋。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>而這裡就是本模組與下一個模組之間的接縫：行政這條賽道，是我唯一停止<em>親自推動</em>的工作。它太過重複，於是我把它交給了不需要我也能跑的排程機器人——而這個交接，從我親自推動的工作，到自己會跑的工作，正是下一個模組的全部內容。</p>
+      </section>
+
+      <!-- SCREEN 4.5 — Driving real tools from the terminal -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">真正在操作工具，而不只是聊天</h2>
+        <p>Claude 不只是說話——它會直接從<span class="term" data-definition="命令列（或 CLI，命令列介面）是一個文字視窗，你透過打指令、而不是按按鈕來操作工具——快速、精準，而且容易自動化。">命令列</span>操作我真正的工具。它最常倚重的有兩個：</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🦊</div>
+            <div>
+              <strong>GitLab，透過 <code>glab</code> CLI</strong>
+              <p><span class="term" data-definition="GitLab 是一個用來存放程式碼、並管理它如何交付的平台：它代管你的儲存庫、執行自動化測試、處理程式碼審查。可以想成是原始碼版的 Google 文件，附帶核可流程與版本紀錄。">GitLab</span> 是我的程式碼存放與交付的地方。<code>glab</code> 是它的命令列工具，讓 Claude 可以開合併請求、盯<span class="term" data-definition="流程是你推送程式碼之後，自動跑過去的一連串檢查——建置它、跑測試——好在合併之前確認沒有東西被弄壞。">流程</span>、讀審查討論串，完全不必我去碰那個網頁。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📓</div>
+            <div>
+              <strong>Hex，透過它的 CLI</strong>
+              <p><span class="term" data-definition="Hex 是一個協作式的資料科學筆記本：你在儲存格裡混用 SQL 和 Python 來探索資料、建立可分享的儀表板——就像分析版的 Google 文件，附帶即時圖表。">Hex</span> 是我的分析筆記本所在的地方。它的 CLI 讓 Claude 可以開一個專案、丟進 SQL 和 Python 儲存格、跑一段查詢——把一個鬆散的問題，變成一份能運作、可分享的筆記本。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">⌨️</div>
+          <div class="callout-content">
+            <strong class="callout-title">CLI 是代理長出雙手的方式</strong>
+            <p>一則聊天回覆只是文字。命令列工具讓 Claude 能<em>動手做</em>——開 MR、跑查詢、交付改動。下一個畫面會讓 <code>glab</code> 那一套動起來給你看。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Shipping code: the MR relay (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">賽道 5——交付程式碼：合併請求接力</h2>
+        <p>交付程式碼是最豐富的工作流程——一根接力棒在我和三個自動化跑者之間傳遞。我開一個<span class="term" data-definition="合併請求（MR）是把你的改動併進共用程式碼庫的正式提案。隊友和自動化檢查會在它正式進去之前審查它。GitHub 把同樣的東西叫做 pull request。">合併請求（merge request, MR）</span>，接著機器人接手測試與審查。</p>
+
+        <div class="flow-animation animate-in" data-steps='[
+ {"highlight":"flow-actor-1","label":"我推送一條分支並開一個合併請求"},
+ {"highlight":"flow-actor-2","label":"GitLab 啟動一條 CI 流程來測試它","packet":true,"from":"actor-1","to":"actor-2"},
+ {"highlight":"flow-actor-3","label":"ci-watch.sh 在背景輪詢那條流程","packet":true,"from":"actor-2","to":"actor-3"},
+ {"highlight":"flow-actor-4","label":"Bugbot 留下一則自動化程式碼審查","packet":true,"from":"actor-3","to":"actor-4"},
+ {"highlight":"flow-actor-3","label":"ci-watch 回報結果：綠燈，或這些是失敗的地方","packet":true,"from":"actor-4","to":"actor-3"},
+ {"highlight":"flow-actor-5","label":"討論串都已解決、流程亮綠燈：合併進 main 分支","packet":true,"from":"actor-3","to":"actor-5"}
+]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">🧑‍💻</div>
+              <span>我</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">⚙️</div>
+              <span>GitLab 流程</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">👀</div>
+              <span>ci-watch</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">🐛</div>
+              <span>Bugbot</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-5">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">🌳</div>
+              <span>main 分支</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">點選「Next Step」開始</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">Next Step</button>
+            <button class="btn flow-reset-btn">Restart</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <p>來認識這些跑者：一條<span class="term" data-definition="分支是你自己的程式碼庫私有副本，你在上面做改動而不會打擾到共用版本，直到你準備好把它們併回去為止。">分支</span>開啟 MR；一條 <span class="term" data-definition="CI/CD 流程是一條自動化生產線，每次你改動程式碼時都會建置並測試它，好在程式碼交付之前就抓出問題。CI 代表持續整合。">CI/CD 流程</span>測試它；<code>ci-watch.sh</code> 顧著那條流程；<span class="term" data-definition="Bugbot 是一個自動化審查者，它讀你提出的改動，留下標記出可能 bug 的留言——一個不知疲倦的初步程式碼審查者。">Bugbot</span> 留下一則審查；最後由我<span class="term" data-definition="合併是把你已審查過的改動，併進共用的 main 程式碼庫，讓它們正式生效。">合併</span>進受保護的 main 主副本。</p>
+
+        <p><code>ci-watch.sh</code> 不必讓你刷十分鐘的網頁，而是把整條吵雜的流程濃縮成單一一個退出碼。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment"># ci-watch exit codes</span></span>
+<span class="code-line"><span class="code-number">0</span>   green — pipeline passed, no open threads</span>
+<span class="code-line"><span class="code-number">1</span>   failed — prints the last 120 lines of the failing job</span>
+<span class="code-line"><span class="code-number">2</span>   timeout — 40-minute cap hit</span>
+<span class="code-line"><span class="code-number">4</span>   green, but review threads still open</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">我不必刷網頁，而是拿到一個數字。</p>
+              <p class="tl"><code>1</code> 直接把我丟到失敗的紀錄上。</p>
+              <p class="tl"><code>4</code> 代表測試通過，但<span class="term" data-definition="綠燈是持續整合裡的全部放行訊號——每一項自動化檢查都通過了。紅燈流程則表示至少有一項檢查失敗。">綠燈</span>本身還不夠：Bugbot 留下的某條<span class="term" data-definition="審查討論串是附在合併請求某一行上的留言與回覆對話。它會一直開著直到被解決，並擋住合併。">審查討論串</span>要求修改——還沒完成。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">一支腳本可以把「完成」寫進去</strong>
+            <p>這些退出碼把一套<em>完成的定義</em>編碼了進去：<span class="term" data-definition="綠燈 CI 代表每一項自動化測試都通過了。它是交付的必要條件——但本身並不充分，因為還沒解決的審查討論串依然會擋住合併。">綠燈</span>是必要的，但並不充分。還開著的討論串依然會擋住合併。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-4" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">自動化：全天候運作的系統</h1>
+      <p class="module-subtitle">全天候運作的系統——當我不在鍵盤前時，依然在進行的工作。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Three mechanisms -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">三種自動化</h2>
+        <p>上一個模組談的是我親手<em>主導</em>的工作，而這一層正好相反：在我睡覺或開會時，<em>不需要</em>我也能運作的工作。我在 <span class="term" data-definition="Claude Code 是 Anthropic 的命令列工具——你在終端機裡對 AI 代理輸入指示，它就會編輯檔案、執行指令，在你的機器上完成實際的工作。">Claude Code</span> 上的一天，很多事都是這樣發生的。把它想成智慧家庭：三種自動化，各由不同的觸發器啟動，各能觸及不同的東西。分辨哪個是哪個，正是整套技巧的核心——它們的差別在於<em>能觸及什麼</em>，而大多數人只認識三者中的一種。</p>
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">&#128161;</div>
+            <h4 class="pattern-title">Hook</h4>
+            <p class="pattern-desc">動作感應燈。由<strong>事件</strong>觸發——一場工作階段結束、一個檔案被儲存。本機且即時。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">&#9200;</div>
+            <h4 class="pattern-title">本機 cron</h4>
+            <p class="pattern-desc">灑水器定時器。由<strong>時鐘</strong>觸發。本機且 <span class="term" data-definition="headless（無頭）指在沒有互動畫面或已登入工作階段的情況下執行——程式在背景默默完成工作，沒有人盯著，所以它無法使用任何需要你登入的東西。">headless</span>——沒有登入工作階段，所以也接不上任何連接的應用程式。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">&#9729;&#65039;</div>
+            <h4 class="pattern-title">雲端觸發器</h4>
+            <p class="pattern-desc">替你看家的人。由<strong>雲端</strong>裡的時鐘觸發，而且<em>能</em>應門——它可以連到 Slack、Gmail、Google Calendar 等連接的應用程式。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — Hooks -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Hook——事件驅動、本機</h2>
+        <p><span class="term" data-definition="hook 是一段小腳本，每當某件特定的事發生時，工具就會自動執行它——就像門鈴接上了門鈴聲。你決定事件，它決定執行什麼。">hook</span> 是<span class="term" data-definition="事件驅動指的是動作會在某件事發生（一個事件）時執行，而不是依固定排程。觸發條件是「當 X 發生時」，而不是「早上九點」。">事件驅動</span>的：它監看某一個特定時刻，一到就立刻執行一段腳本。以下是我目前設定裡接上的三個。</p>
+        <div class="badge-list">
+          <div class="badge-item">
+            <code class="badge-code">Stop</code>
+            <span class="badge-desc">當一場工作階段結束時，執行 <code>log_usage.sh</code>——把 token 與成本記到一份帳本裡。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">slack_update_canvas</code>
+            <span class="badge-desc">當專案 canvas 變動時，執行 <code>canvas_backup_sync.sh</code>——把它鏡像到一個本機檔案。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">statusLine</code>
+            <span class="badge-desc">執行 <code>statusline-command.sh</code>——我終端機裡那行 模型 / context% / git 的資訊。</span>
+          </div>
+        </div>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-property">"Stop"</span>: [{ <span class="code-property">"hooks"</span>: [{</span>
+<span class="code-line">  <span class="code-property">"type"</span>: <span class="code-string">"command"</span>,</span>
+<span class="code-line">  <span class="code-property">"command"</span>: <span class="code-string">"bash ~/.claude/log_usage.sh"</span>,</span>
+<span class="code-line">  <span class="code-property">"timeout"</span>: <span class="code-number">10</span></span>
+<span class="code-line">}]}]</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">當一場工作階段結束時（<code>Stop</code> 事件），執行以下動作……</p>
+              <p class="tl">……執行一個 shell 指令……</p>
+              <p class="tl">……具體來說是這支腳本，<code>log_usage.sh</code>……</p>
+              <p class="tl">……並給它 10 秒完成。</p>
+              <p class="tl">它會讀取我燒掉了多少 token，再把成本附加到一份試算表裡。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Local cron -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">本機 cron——時鐘驅動、本機</h2>
+        <p><span class="term" data-definition="cron 是 Mac 和 Linux 內建的經典定時器——你給它一個排程和一個指令，它就會準時執行那個指令，永遠執行下去，不需要你做任何事。">cron</span> 工作是我自己機器上的一個定時任務：在固定的時鐘時間，執行這件事。我目前唯一啟用的工作，是讓我的程式碼<span class="term" data-definition="分支是專案的一份平行副本，你可以在上面改動而不碰到主版本——就像修改草稿，讓已發佈的頁面在你準備好之前都保持安全。">分支</span>不要愈離愈遠。</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-number">0</span> <span class="code-number">6,8,10,12,14,16</span> * * <span class="code-number">1-5</span>   ~/.claude/auto_rebase.sh</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">在早上 6 點、8 點、10 點、中午、下午 2 點、下午 4 點的第 0 分鐘……</p>
+              <p class="tl">……週一到週五……</p>
+              <p class="tl">……執行 <code>auto_rebase.sh</code>：把 main 分支拉進我的工作分支，讓我永遠不會落後太多。</p>
+            </div>
+          </div>
+        </div>
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#128161;</div>
+          <div class="callout-content">
+            <strong class="callout-title">它用 merge，絕不用 rebase</strong>
+            <p>儘管名字叫 rebase，這支腳本其實是<span class="term" data-definition="merge（合併）會新增一個把兩條工作線接起來的 commit，同時保留兩邊的歷史。rebase 則會重寫你的工作，讓它看起來像一直都建立在最新的 main 之上——比較乾淨，但可能製造出令人困惑的衝突。">用 merge 而非 rebase</span>。merge 可以避免重寫歷史所製造出來的假衝突。這是一條得來不易的規則——存進記憶，讓我永遠不必重新學一次。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Cloud triggers / daily rhythm -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">雲端觸發器——每日節奏</h2>
+        <p>這些以<span class="term" data-definition="CCR（一種雲端排程觸發器）是一個在雲端依排程執行的 Claude 代理。因為它是在已登入的狀態下執行，所以能連到 Slack、Gmail 等連接的應用程式——這一點和本機 cron 工作不同。">雲端排程觸發器（CCR）</span>的形式執行：像 cron 一樣由時鐘驅動，但在雲端、且已登入，所以能連到我<span class="term" data-definition="連接器（或連接的應用程式）在你的允許下，把 Claude 連到 Slack 或 Gmail 等外部服務，讓它能代你讀取與張貼。">連接的應用程式</span>。其中四個，塑造了我的一整天。</p>
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong><code>daily-digest</code> &middot; 早晨</strong>
+              <p>把我的專案 canvas、未讀的 Slack、行事曆、Gmail，以及 Gemini 會議紀錄，縫成一份簡報——然後在我還沒打開任何一個分頁之前，就<span class="term" data-definition="DM（私訊）是 Slack 裡一對一的私人訊息——只在你和寄件者之間，不是公開頻道。">DM</span> 給我。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong><code>daily-progress-check</code>（EOD）&middot; 傍晚</strong>
+              <p>重建我今天實際交付了什麼——從我的 GitLab 通知信裡撈出 commit 和合併請求，因為我的技術工作從來不會落在 Slack 上——然後提出追蹤器的更新建議。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong><code>canvas-updater</code> &middot; 夜間</strong>
+              <p>把核准過的更新套用到專案 canvas 上。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong><code>gmail-auto-label</code> &middot; 每 2 小時</strong>
+              <p>一個安靜的收件匣清潔工：依寄件者貼標籤、歸檔郵件，把雜訊封存起來。</p>
+              <p style="font-family: var(--font-display); font-style: italic; color: var(--color-text-secondary); font-size: var(--text-sm); margin-top: var(--space-1);">（沒錯——Gmail 自己的篩選器不知為何對我就是不太管用。所以我讓 Claude 來做。別評判我 🫣）</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4.5 — What the agents read -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">它們讀什麼，才懂我的一天</h2>
+        <p>我的一天散落在五六個工具裡。這些代理替我把它們收攏起來——而每一個來源，都補上其他來源補不了的缺口。</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📧</div>
+            <div>
+              <strong>GitLab 通知信</strong>
+              <p>我的技術進度——commit、<span class="term" data-definition="合併請求（MR）是把一條程式碼分支併進主程式庫的提案，會先經過審查與測試，才被接受。GitHub 把同樣的東西叫做 pull request。">合併請求</span>、審查——都待在 <span class="term" data-definition="GitLab 是一個儲存程式碼並管理出貨流程的平台：它代管你的儲存庫、執行自動化測試、處理程式碼審查。可以想成原始碼版的 Google 文件，附帶核准流程與版本歷史。">GitLab</span> 裡，不在 Slack。讀它的郵件通知，就是 Claude 知道我交付了什麼的方法。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">💬</div>
+            <div>
+              <strong>Slack 訊息</strong>
+              <p>掃過我的頻道與討論串，找出決策、討論，以及任何指向我的內容——這樣一句被埋住的「嘿，你能不能……」就不會溜過去。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📝</div>
+            <div>
+              <strong>Gemini 會議紀錄</strong>
+              <p>讀我通話時自動產生的 <span class="term" data-definition="Gemini 是 Google 的 AI 助理。在 Google Meet 裡，它可以旁聽通話並自動寫下紀錄與待辦事項——這樣不必有人做會議記錄，也會有一份文字紀錄留下說過的話。">Gemini</span> 紀錄，讓會議結論不必我打一段摘要，就能進到簡報裡。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📅</div>
+            <div>
+              <strong>行事曆、Jira 與 Confluence</strong>
+              <p>發生了什麼、接下來有什麼，以及任何提到我的票或文件。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔗</div>
+          <div class="callout-content">
+            <strong class="callout-title">有憑有據，不是猜的</strong>
+            <p>簡報裡的每一行，都必須能追溯回代理那次執行時讀到的真實憑據——某一封具體的 GitLab 信、某一條 Slack 討論串，或某一份會議紀錄。不做合成，不發明沒發生過的進度。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4.7 — The tracker canvas structure -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">追蹤器：一個 canvas，專案雷達</h2>
+        <p>這一切都指向同一個 <span class="term" data-definition="Slack canvas 是一份活在 Slack 裡的文件——就像釘在頻道上的 Google 文件，有標題、檢查清單和連結，團隊裡任何人都能打開。">Slack canvas</span>。它的結構，讓進度一眼就看得懂：專案依優先順序分桶，每一個都會自我說明。</p>
+
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; max-width: 600px; margin: var(--space-8) auto;">
+          <div style="padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-light); font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg);">📝 專案追蹤器 — Ting-Wei</div>
+          <div style="padding: var(--space-4) var(--space-5);">
+            <div style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-error); font-weight: 700;">🔴 P1 — 優先處理</div>
+            <div style="border: 1px solid var(--color-border); border-left: 3px solid var(--color-accent); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); margin: var(--space-3) 0;">
+              <strong>啟用漏斗深入分析</strong>
+              <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-2); line-height: 1.9;">
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">範圍</span> 成長</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">頻道</span> <span style="color: var(--color-teach);">#growth-analytics</span></div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">狀態</span> 🟡 進行中</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">預計完成</span> 六月底</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">下一步</span> 與成長團隊一起檢視 cohort 定義，再重建模型</div>
+                <div style="margin-top: var(--space-1);"><span style="color: var(--color-text-muted);">紀錄</span></div>
+                <div style="padding-left: var(--space-4);">• 06-11 — 非同步分享了 v1 數字；標記出一個追蹤缺口</div>
+                <div style="padding-left: var(--space-4);">• 06-09 — 啟動；界定了漏斗各階段</div>
+              </div>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 2.2; border-top: 1px dashed var(--color-border); padding-top: var(--space-2); margin-top: var(--space-2);">
+              <div>🟠 P2 — 高優先 <span style="color: var(--color-text-muted);">· 2</span></div>
+              <div>🟡 P3 — 中優先 <span style="color: var(--color-text-muted);">· 3</span></div>
+              <div>🟢 P4 — 低優先 <span style="color: var(--color-text-muted);">· 4</span></div>
+              <div>✅ 已完成 <span style="color: var(--color-text-muted);">· 20+</span></div>
+              <div>💬 監看中的頻道 <span style="color: var(--color-text-muted);">· 12</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="caption">一個真實的條目，去識別化後——形狀就跟我實際在用的完全一樣。</p>
+
+        <p>每個專案都帶著同樣的四個欄位，而每一個都回答了一個我原本得去追問的問題：</p>
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Status</code>
+            <span class="badge-desc">它現在處在什麼狀態？——🟡 進行中、🔴 受阻、⏸️ 已降優先</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">ETA</code>
+            <span class="badge-desc">它什麼時候會完成？——我正瞄準的那個日期</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Next</code>
+            <span class="badge-desc">下一個動作究竟是什麼？——這樣我重啟一個專案時不會從零開始摸索</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Log</code>
+            <span class="badge-desc">發生過什麼、各在哪天？——一條帶時間戳的軌跡，我可以據此重建脈絡</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🛰️</div>
+          <div class="callout-content">
+            <strong class="callout-title">查進度 = 打開一份文件</strong>
+            <p>優先順序放在最上面，狀態與下一步寫在每一張卡片上，底下是一條附日期的紀錄。早晨摘要會讀最上面的桶；EOD 代理會把內容附加到 <code>Log</code>。我從不手動編輯它——我只要說一句<em>「在〔某專案〕加上更新：……」</em>或<em>「把〔某專案〕的 ETA 設成……」</em>，<code>canvas-tracker</code> 技能就會把它重寫好。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — HERO: data-flow animation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">追一遍這個迴圈：EOD &rarr; canvas</h2>
+        <p>看一個完整的循環。這是一個預設為<em>同意</em>的人在迴圈中流程——沉默就代表提案放行，所以即使在我最忙的日子，追蹤器也能保持最新。</p>
+        <div class="flow-animation" data-steps='[
+ {"highlight":"flow-eod-1","label":"傍晚：EOD 代理草擬我今天交付了什麼"},
+ {"highlight":"flow-eod-2","label":"它把那份草稿送進我的 Slack DM","packet":true,"from":"eod-1","to":"eod-2"},
+ {"highlight":"flow-eod-3","label":"我回覆調整——或什麼都不說","packet":true,"from":"eod-2","to":"eod-3"},
+ {"highlight":"flow-eod-4","label":"夜裡，canvas-updater 讀那條討論串","packet":true,"from":"eod-3","to":"eod-4"},
+ {"highlight":"flow-eod-5","label":"它重寫專案追蹤器——若我保持安靜就預設核准","packet":true,"from":"eod-4","to":"eod-5"}
+]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-eod-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">&#127769;</div>
+              <span>EOD 代理</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">&#128172;</div>
+              <span>我的 DM</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">&#129489;</div>
+              <span>我</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">&#9999;&#65039;</div>
+              <span>canvas-updater</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-5">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">&#128203;</div>
+              <span>專案追蹤 canvas</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet-eod"></div>
+
+          <div class="flow-step-label" id="flow-label-eod">點「下一步」開始</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重新開始</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6 — The payoff: before & after -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">這套節奏真正解決了什麼</h2>
+        <p>這一切都不是為了自動化而自動化。這套每日節奏的存在，是為了消滅具體、每天都在發生的痛點。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-error)">
+            <div class="pattern-icon" style="background: var(--color-error)">😵‍💫</div>
+            <h4 class="pattern-title">之前</h4>
+            <ul class="pattern-desc" style="margin: 0; padding-left: 1.1em">
+              <li>過夜的變動散落在 Slack、郵件、行事曆和 Jira 裡——每天早上沒有一張完整的全貌。</li>
+              <li>我交付的工作都待在 GitLab 裡；到了傍晚，我已經半忘了自己究竟做了什麼。</li>
+              <li>專案追蹤器漸漸過時——我老是想著要更新它。</li>
+              <li>團隊和主管能不能看見進度，全看我記不記得去張貼。</li>
+            </ul>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-success)">
+            <div class="pattern-icon" style="background: var(--color-success)">😌</div>
+            <h4 class="pattern-title">之後</h4>
+            <ul class="pattern-desc" style="margin: 0; padding-left: 1.1em">
+              <li>一份有憑有據的早晨簡報，由每個來源縫合而成，已經在我的 DM 裡等著。</li>
+              <li>EOD 直接從 GitLab 的信裡抓出當天的 commit 和合併請求。</li>
+              <li>追蹤器每晚自我更新——沉默就只代表「放行」。</li>
+              <li>狀態自動產生；沒有東西會從縫隙裡漏掉。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">⏳</div>
+          <div class="callout-content">
+            <strong class="callout-title">真正的勝利是注意力，不是分鐘數</strong>
+            <p>我一開始這一天就已經進入狀況，結束時也不必寫一份狀態更新。這套節奏替我扛起脈絡，讓我能把專注力花在真正的工作上。</p>
+          </div>
+        </div>
+
+        <p class="caption">接下來：Claude 如何<em>記住</em>像「用 merge，絕不用 rebase」這樣的修正——讓我只要說一次就好。</p>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-5" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">記憶與自我精進：回饋的循環</h1>
+      <p class="module-subtitle">一次性的更正如何變成永久的習慣——讓 Claude 從工具變成隊友的回饋循環。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — The memory folder -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一位真的記得住的同事</h2>
+        <p>告訴一位好員工一次——<em>「我們一律用 merge，絕不 rebase」</em>——你就再也不必重複。<span class="term" data-definition="這裡的「記憶」指的是能跨工作階段保留的筆記。多數聊天助理在你關掉視窗時就忘光一切；這套設定會把持久的事實寫進小檔案，讓下一場對話一開始就已經知道。">記憶</span>正是讓 Claude 成為那位員工，而不是每週一都要重新訓練的那位的關鍵。</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">memory/</span>
+            <span class="ft-desc">約 20 個單一事實檔案——每個只放一件事</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">MEMORY.md</span>
+                <span class="ft-desc">索引：每則記憶一行，每個工作階段都會載入</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">feedback-viz-no-gridlines.md</span>
+                <span class="ft-desc">我喜歡的工作方式——更正與已確認的做法</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">project-pro-plan-cutout.md</span>
+                <span class="ft-desc">程式碼無法告訴你的、持續進行中的脈絡</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">reference-confluence-map.md</span>
+                <span class="ft-desc">指向各種 ID、文件、儀表板的指標</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="caption">約 20 個單一事實檔案。每個檔案一件事——好新增，也好淘汰。</p>
+      </section>
+
+      <!-- SCREEN 2 — How a correction becomes permanent (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一次更正如何變成永久</h2>
+        <p>我第一次更正 Claude 時，它到下個工作階段就忘了。現在不會了——因為那次更正被寫進了像這樣的一個小檔案。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+<pre><code><span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line"><span class="code-property">name</span>: feedback-viz-no-gridlines</span>
+<span class="code-line"><span class="code-property">description</span>: No gridlines + centered titles by default</span>
+<span class="code-line"><span class="code-property">metadata</span>:</span>
+<span class="code-line">  <span class="code-property">type</span>: feedback</span>
+<span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line">預設不要格線、標題置中；適用於</span>
+<span class="code-line">每一個繪圖函式庫。原因：更乾淨、墨水更少。</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">一個 <span class="term" data-definition="檔案最頂端、由 --- 線框起來的區塊，存放機器可讀的設定（這裡是 name、description、type）。下方的文字則是給人讀的內容。">frontmatter</span> name——一個簡短的 <span class="term" data-definition="slug 是一個簡短、全小寫、以連字號分隔的標籤，當作識別字使用——就像網址的尾巴。在這裡它讓我能用名稱指向某一則特定記憶。">slug</span>，讓我能連結到這則確切的記憶。</p>
+              <p class="tl">一段 description——Claude 會掃描的那一行，用來判斷這則記憶<em>此刻</em>是否相關。</p>
+              <p class="tl">事實本身，再加上<em>原因</em>，這樣它才會帶著判斷力套用——而不是盲目照做。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#128161;</div>
+          <div class="callout-content">
+            <strong class="callout-title">說一次，永遠套用</strong>
+            <p>我<em>只</em>說過一次「拿掉格線」。現在每張圖一開始就是那樣——橫跨 Matplotlib、Plotly，任何東西都一樣。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — The compounding loop -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">隨時間愈收愈緊的循環</h2>
+        <p>每一次更正都讓下一個工作階段更敏銳一點。這是一個循環——我用得愈多，這套設定就愈好。</p>
+
+        <div class="flow-steps animate-in">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p>我在對話中更正 Claude</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p>它寫出一個單行的記憶檔案</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p>下個工作階段，<span class="term" data-definition="索引是一份快速參照清單——就像目錄。MEMORY.md 把每則記憶各列一行，讓 Claude 能快速掃過，只打開真正重要的檔案。">索引</span>載入，而 description 與我的任務相符</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p>行為改變了——不需要任何提醒</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">&#129504;</div>
+          <div class="callout-content">
+            <strong class="callout-title">三層彼此強化</strong>
+            <p><code>CLAUDE.md</code> 說明<em>我是誰</em>，<strong>skills</strong> 說明<em>如何執行某個流程</em>，而 <code>memory/</code> 存放<em>對前兩者的更正</em>。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Where should a fact live? -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一件事實該住在哪裡？</h2>
+        <p>不是每件事都屬於記憶。每一種知識都有它的歸屬——而把它放進對的地方，正是這門手藝的一半。</p>
+
+        <div class="pattern-cards animate-in">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">&#128100;</div>
+            <h4 class="pattern-title"><code>CLAUDE.md</code></h4>
+            <p class="pattern-desc">穩定的身分與全域偏好——「精簡一點」、「SQL 用 snake_case」。永遠為真的事。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">&#128296;</div>
+            <h4 class="pattern-title">一個 skill</h4>
+            <p class="pattern-desc">一個你會重複的<em>流程</em>——「如何 QA 一個 <span class="term" data-definition="dbt（data build tool）是一套用 SQL 建立並測試資料表的軟體。「dbt model」就是其中一個資料表定義。">dbt</span> model」、「如何排版一份給領導層的更新」。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">&#128221;</div>
+            <h4 class="pattern-title"><code>memory/</code></h4>
+            <p class="pattern-desc">一個曾經讓你意外、且不該再意外的<em>特定更正或事實</em>。</p>
+          </div>
+        </div>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">&#128203;</div>
+            <div>
+              <strong><code>known_issues.md</code>——一份持續累積的修正紀錄</strong>
+              <p>約 16 則「這裡壞了、原因在此、修法在此」。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">&#128737;&#65039;</div>
+            <div>
+              <strong><code>regression-guard</code>——一個安全防護 skill</strong>
+              <p>強制執行<span class="term" data-definition="基準是某件事在你改動它之前的行為快照——你的「改前」照片，好讓你能證明「改後」沒有弄壞任何東西。">基準</span> &rarr; 改動 &rarr; 重新驗證，這樣新功能就不會悄悄弄壞舊的路徑（一個<span class="term" data-definition="迴歸是指某個改動意外弄壞了原本能運作的東西——藏在一步前進裡的一步倒退。">迴歸</span>）。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Real standing orders -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">真實的常設指令</h2>
+        <p>這些是實際存下來的學習成果——這套系統在運作中。每一則都曾是一個摩擦的瞬間，後來變成了永久的習慣。</p>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">&#128260;</div>
+            <div>
+              <strong>用 merge，絕不 <span class="term" data-definition="rebase 會重寫一條分支的歷史，讓它看起來像是建立在最新改動之上。整齊，但可能製造出假的衝突——所以這套設定避免使用它。">rebase</span> + <span class="term" data-definition="force-push 會用你本機的版本覆蓋掉伺服器上共享的歷史。強大又危險——它可能抹掉隊友的工作，所以在這裡被禁用。">force-push</span></strong>
+              <p>避免假衝突與被重寫的歷史。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">&#128202;</div>
+            <div>
+              <strong>不要格線、標題置中</strong>
+              <p>每一張圖、每一個繪圖函式庫。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">&#9989;</div>
+            <div>
+              <strong>一律把我的 merge request 自我指派</strong>
+              <p>並在回報工作完成之前解決所有衝突。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">&#129521;</div>
+            <div>
+              <strong>專案 <span class="term" data-definition="canvas 是釘在 Slack 頻道裡、可共同編輯的文件——這裡當作即時的專案追蹤器使用。">canvas</span> 只能整份替換</strong>
+              <p>區段層級的編輯會弄壞它。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">&#128268;</div>
+            <div>
+              <strong>無頭（headless）執行無法使用 <span class="term" data-definition="connector 把 Claude 連到外部服務——Slack、Gmail、行事曆——讓它能在那裡讀取與動作。自動化的背景執行沒有這些，所以工作流程要繞著這個缺口設計。">connector</span></strong>
+              <p>繞著它設計——這是第 4 模組的教訓，現在成了一則記憶。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#10024;</div>
+          <div class="callout-content">
+            <strong class="callout-title">我工作方式的紋理</strong>
+            <p>這些都不在程式碼裡。它們是<em>我工作的方式</em>——而且因為被寫了下來，它們能跨越每一個工作階段存活。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-6" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h1 class="module-title">最佳實踐與血淚教訓</h1>
+      <p class="module-subtitle">第一線的實戰筆記 —— 都是我當初開始前希望有人能先告訴我的事，寫給下一個接手的人。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — CLAUDE.md is a directory, not a manual -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading"><code>CLAUDE.md</code> 是一份目錄，不是一本說明書</h2>
+        <p>如果你只想從我的設定裡抄一樣東西，請抄習慣 —— 而不是檔案。而第一個習慣就是這個：你的 <code>CLAUDE.md</code> 是一份目錄，不是一本教科書。</p>
+        <p>身分與偏好放在最上方，穩定而很少更動。底下放的是一份<em>索引</em> —— 每個<span class="term" data-definition="技能（skill）是一個自成一體的資料夾，裡頭裝著指示與參考檔案，只有在某個任務需要時 Claude 才會載入 —— 就像從架上抽出一本活頁夾，而不是每次都把整座圖書館讀過一遍。">技能</span>一行 —— 指向真正細節所在的地方。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment">## Who I am</span>          （1-2 行）</span>
+<span class="code-line"><span class="code-comment">## Communication</span>     （要怎麼跟我溝通）</span>
+<span class="code-line"><span class="code-comment">## Coding</span>            （我的慣例）</span>
+<span class="code-line"><span class="code-comment">## Skills</span>            （索引 —— 每個一行，指向外部）</span>
+<span class="code-line"><span class="code-comment">## Reference files</span>   （指標，不是內容）</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">身分與偏好放最上方 —— 穩定，很少改動。</p>
+              <p class="tl">我希望 Claude 怎麼說話，以及我寫程式遵循的慣例。</p>
+              <p class="tl">接著是一份技能<em>索引</em>：每個一行，沒有細節。</p>
+              <p class="tl">細節住在技能資料夾與記憶裡 —— <code>CLAUDE.md</code> 只負責把路指過去。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">我的只有 48 行</strong>
+            <p>每一行在每次工作階段開始前都會被讀過一遍 —— 那是花掉的注意力。一份臃腫的 <code>CLAUDE.md</code> 會讓 Claude 變<em>差</em>，而不是變好。把它維持成一份目錄。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The transferable habits -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">能搬到任何一套設定的那些習慣</h2>
+        <p>這套設定之所以行得通，靠的是幾個原則，而不是哪一段聰明的腳本。這四個習慣能搬到<em>任何</em>一套 Claude Code 設定、任何一個團隊。</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🎯</div>
+            <h4 class="pattern-title">按需載入</h4>
+            <p class="pattern-desc">把流程放進<span class="term" data-definition="技能（skill）是一個自成一體的資料夾，裝著指示，只有在某個任務用得上時 Claude 才會載入，而不是一直把每套流程都記在腦中。">技能</span>裡，而不是放進 <code>CLAUDE.md</code>。<span class="term" data-definition="脈絡預算（context budget）是 Claude 一次能記在腦中的文字量上限 —— 是一段工作階段的工作記憶。你載入的一切都在搶這個空間，所以只在相關時才花用它。">脈絡是一筆預算</span> —— 只在相關時才花用。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🍴</div>
+            <h4 class="pattern-title">用 fork 起家，別從零造起</h4>
+            <p class="pattern-desc">從一個好的開源技能起步（例如 Zara Zhang 的），改頭換面成自己的，再用 <span class="term" data-definition="skill-creator 是一個元技能：它的工作就是幫你打造、編輯、測試其他技能 —— 是新技能誕生的工坊。">skill-creator</span> 慢慢長出你自己的。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🧠</div>
+            <h4 class="pattern-title">把修正寫下來</h4>
+            <p class="pattern-desc">一行字的記憶檔案，能把「我得講第二次」變成「我從此再也不用講」。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">🤖</div>
+            <h4 class="pattern-title">把無聊的事自動化，把人留在迴圈裡</h4>
+            <p class="pattern-desc">預設核准的流程（像我那套下班 → canvas 的迴圈）讓事情持續推進，又不會脫韁演出。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2.5 — Plan before you build -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先計畫，再動工</h2>
+        <p>只要比一次小修改更大的事，我都會逼 Claude <em>先計畫，再碰任何一個檔案</em>。在<span class="term" data-definition="計畫模式（plan mode）是 Claude Code 的一種設定，它會研究問題並提出做法，但在你核准之前被擋著不准編輯檔案。這是寫下任何程式碼之前的唯讀思考階段。">計畫模式</span>裡，它探索問題、提出做法，然後等我核准 —— 這樣在改動還免費的時候，我就能把它導回正軌。</p>
+        <p>好處是槓桿效應：在一段話的計畫裡抓到一個錯誤假設，只花幾秒；等 Claude 已經改寫了十個檔案才抓到，得賠上一整個下午。</p>
+
+        <div class="flow-steps animate-in">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p><strong>探索</strong><br>Claude 讀過相關的檔案與模式</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p><strong>計畫</strong><br>它提出一套做法 —— 還沒動任何修改</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p><strong>確認</strong><br>我把它導正，或放行</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p><strong>動工</strong><br>到這時它才開始寫程式碼</p>
+          </div>
+        </div>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">該用</code>
+            <span class="badge-desc">多步驟的工作、任何牽動好幾個檔案的事、需求模糊、或難以復原的改動</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">免用</code>
+            <span class="badge-desc">改錯字、改一行、改個名字 —— 直接讓 Claude 做就好</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🪄</div>
+          <div class="callout-content">
+            <strong class="callout-title">這門課就是這樣做出來的</strong>
+            <p>全部六個模組都是在計畫模式裡界定範圍，而我是<em>在寫下任何一行 HTML 之前</em>就核准了大綱。在紙上重塑很便宜；在程式碼裡重塑很昂貴。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Security & redaction discipline -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">遮蔽，是分享的代價</h2>
+        <p>有幾道指令就是怎麼算都不值得冒那個險，所以它們被全域封鎖 —— 不管被怎麼要求，Claude 都不能執行。這些護欄住在 <code>settings</code> 裡，套用到每一段工作階段。</p>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Bash(rm -rf*)</code>
+            <span class="badge-desc">全域封鎖 —— 絕不遞迴強制刪除檔案</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(git push --force*)</code>
+            <span class="badge-desc">全域封鎖 —— 絕不用 force-push 覆蓋共用的歷史</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(sudo*)</code>
+            <span class="badge-desc">全域封鎖 —— 絕不以那位無所不能的管理員身分執行指令</span>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">把任何你分享出去的東西，都當成會永遠留存的截圖看待</strong>
+            <p>一套<em>可分享</em>的設定，絕不能洩漏活的<span class="term" data-definition="機密（或憑證）是任何能證明你身分或解鎖存取權的私密值 —— 一組密碼、金鑰或 token。洩漏一個，任何人就能假冒你行事。">機密</span> —— <span class="term" data-definition="連線字串（connection string）是單獨一行文字，裝著登入資料庫所需的一切：位址、使用者名稱與密碼全揉成一條。洩漏它，別人就能讀取或更動你的資料。">連線字串</span>、帳號、客戶密鑰、<span class="term" data-definition="token 是一串很長的隨機字串，作用像一組暫時密碼，讓某個應用程式代你存取某項服務。任何持有它的人在它失效前都能假冒你。">token</span>。這門課在離開我的機器之前，就被做過一次遮蔽稽核。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Keep your failures -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">把你的失敗留著 —— 那才是能重複使用的部分</h2>
+        <p>一套設定裡最能重複使用的部分，不是那份「哪些成功了」的清單。是那份「哪些<em>沒</em>成功」的清單。</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📵</div>
+            <div>
+              <strong>退役了兩支 cron 腳本</strong>
+              <p>它們想在沒有人登入的 <span class="term" data-definition="cron 是一個排程器，會在設定好的時間自動執行某項任務 —— 像是給電腦的一個循環鬧鐘，趁你不在時觸發某支腳本。">cron</span> 執行裡發出訊息，那種情況連不上那些工具。撞牆才學會了規則。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">💾</div>
+            <div>
+              <strong>觸發器的提示被一個 UI 錯誤抹掉了</strong>
+              <p>靠一個備份檔加上 API 救了回來。現在每個<span class="term" data-definition="雲端觸發器（cloud trigger）是一種自動化，依排程或事件在遠端伺服器上執行 —— 而不是在你的筆電上 —— 所以就算你的機器關機它也會觸發。">雲端觸發器</span>的提示都有備份。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🔀</div>
+            <div>
+              <strong>Rebase → merge</strong>
+              <p><span class="term" data-definition="rebase 與 merge 是合併程式碼分支的兩種方式。rebase 會把你的 commit 重播到最新的程式碼之上（而且可能憑空生出衝突）；merge 則用一個乾淨的接點把分支綁在一起。改用 merge 終結了那些衝突。">自動 rebase</span> 重播了 commit，憑空生出衝突；改用 merge 把它們終結了。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">📓</div>
+          <div class="callout-content">
+            <strong class="callout-title">一份失敗日誌是便宜的保險</strong>
+            <p>一份 <span class="term" data-definition="known_issues.md 是一份純文字日誌，記著已經踩過的問題與當初怎麼修好的 —— 一本持續更新的日記，讓未來的你（以及未來的 Claude）在重犯同樣的錯之前先讀一讀。">known_issues.md</span> 檔案，會被未來的你 —— 還有未來的 Claude —— 在任一方重蹈覆轍之前讀過。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — The whole system, one picture (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">整套系統，一張圖說完</h2>
+        <p>四層，由上而下。每一層都讓它底下的那幾層隨時間變得更聰明。</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-5)">📇</div>
+            <div>
+              <strong>設定 &mdash; <code>CLAUDE.md</code> + <code>settings</code></strong>
+              <p>我是誰，以及什麼被允許。刻意維持精簡。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📚</div>
+            <div>
+              <strong>技能</strong>
+              <p>按需取用的專業 —— 從別人那裡 fork 來，再自家培育。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">⚙️</div>
+            <div>
+              <strong>自動化</strong>
+              <p><span class="term" data-definition="hook 是一小段指令，會在某個設定好的時刻自動觸發 —— 在 Claude 做某件事之前或之後 —— 讓某條規則每次都跑，不必你記得去叫它。">Hook</span>、cron 與雲端觸發器，跑著那些循環性的工作。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🧠</div>
+            <div>
+              <strong>記憶</strong>
+              <p>那些修正，讓上面三層隨時間都變得更聰明。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🌱</div>
+          <div class="callout-content">
+            <strong class="callout-title">從小處開始</strong>
+            <p>一份精簡的 <code>CLAUDE.md</code>、一個技能、一個 hook。每當你重複講同一件事，就加一個技能；把無聊的自動化掉；讓記憶去接住那些修正。這套系統會複利成長 —— 這正是它的重點所在。</p>
+          </div>
+        </div>
+
+        <p class="caption">由 Ting-Wei 親手打造 —— 用的正是文中介紹的這套設定。</p>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-7" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">07</span>
+      <h1 class="module-title">資源與致謝</h1>
+      <p class="module-subtitle">這套設定背後的開源資源 —— 以及你可以從哪裡取得。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN — Links / start here -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">從這裡開始</h2>
+        <p>想打造你自己的版本嗎？這些都是敞開的大門 —— 我所有的起點全都是公開的。</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-accent)">📘</div>
+            <div>
+              <strong><a href="https://code.claude.com/docs" target="_blank" rel="noopener" style="color: var(--color-accent);">Claude Code 官方文件</a></strong>
+              <p>這裡的一切都跑在這個工具上。先從總覽開始，再讀技能與 hooks。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📦</div>
+            <div>
+              <strong><a href="https://github.com/anthropics/skills" target="_blank" rel="noopener" style="color: var(--color-accent);">Anthropic Agent Skills（官方技能庫）</a></strong>
+              <p>Anthropic 的公開技能 —— <code>pdf</code>、<code>skill-creator</code>、<code>mcp-builder</code> 以及文件技能都住在這裡。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🔌</div>
+            <div>
+              <strong><a href="https://github.com/anthropics/claude-plugins-official" target="_blank" rel="noopener" style="color: var(--color-accent);">Claude Code 外掛市集</a></strong>
+              <p>Anthropic 精選的外掛目錄 —— 我就是在這裡安裝了 <code>ralph-loop</code>。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🦊</div>
+            <div>
+              <strong><a href="https://github.com/zarazhangrui" target="_blank" rel="noopener" style="color: var(--color-accent);">Zara Zhang 的技能</a></strong>
+              <p><code>codebase-to-course</code>、<code>frontend-slides</code> 與 <code>beautiful-html-templates</code> —— 就是我 fork 下來並重新換上品牌的那幾個。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">👋</div>
+          <div class="callout-content">
+            <strong class="callout-title">現在，動手打造你自己的</strong>
+            <p>安裝一個技能、fork 另一個，下次當你又重複做同一件事時，就寫下你的第一個技能。這就是全部的訣竅 —— 其餘的自然會層層累積。</p>
+          </div>
+        </div>
+
+        <p class="caption">以 <code>codebase-to-course</code> 打造 —— fork 自 Zara Zhang，重新換上自己的品牌，並對準我自己的設定。&mdash; Ting-Wei</p>
+      </section>
+
+    </div>
+  </div>
+</section>
+  </main>
+
+</body>
+</html>

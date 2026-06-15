@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code 實戰手冊</title>
+
+  <!-- Runbook editorial fonts + Noto TC for Traditional Chinese (Taiwan) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!--
+    RUNBOOK EDITORIAL STYLE — terracotta accent. Latin uses Fraunces/Inter/JetBrains Mono;
+    Traditional Chinese falls through to Noto Serif TC (headings) / Noto Sans TC (body).
+  -->
+  <style>
+    :root {
+      --color-accent:       #b8421a;
+      --color-accent-hover: #993515;
+      --color-accent-light: #f4e7dd;
+      --color-accent-muted: #e0b3a0;
+      --font-display: 'Fraunces', 'Noto Serif TC', Georgia, serif;
+      --font-body:    'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body { letter-spacing: 0.01em; }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">Claude Code 實戰手冊</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-0" data-tooltip="開場" role="tab" aria-label="開場"></button>
+        <button class="nav-dot" data-target="module-1" data-tooltip="系統" role="tab" aria-label="第 1 章：系統"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="技能庫" role="tab" aria-label="第 2 章：技能庫"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="使用情境" role="tab" aria-label="第 3 章：使用情境"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="自動化" role="tab" aria-label="第 4 章：自動化"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="記憶與回饋" role="tab" aria-label="第 5 章：記憶與回饋"></button>
+        <button class="nav-dot" data-target="module-6" data-tooltip="最佳實踐" role="tab" aria-label="第 6 章：最佳實踐"></button>
+        <button class="nav-dot" data-target="module-7" data-tooltip="資源" role="tab" aria-label="第 7 章：資源與致謝"></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Floating left-rail table of contents — auto-populated by main.js from the nav dots. -->
+  <nav class="toc" id="toc" aria-label="目錄"></nav>
+
+  <main id="main">
+    <!-- modules/*.html content is assembled here by build.sh -->

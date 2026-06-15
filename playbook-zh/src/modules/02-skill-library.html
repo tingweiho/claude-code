@@ -1,0 +1,223 @@
+<section class="module" id="module-2" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">技能庫：隨需載入的專業知識</h1>
+      <p class="module-subtitle">隨需載入的專業知識——一組隨傳隨到的專家，只在任務對得上時才現身。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — What a skill is -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">我從不點名召喚某位專家</h2>
+        <p>我從不輸入<em>「用 SQL 技能」</em>。我只描述我想要什麼，對的專業知識就會自己載入進來。一個
+          <span class="term" data-definition="技能是一個資料夾，裝著一份份儲存好的指示，教 Claude 用你的方式完成某一件特定的工作。你只需把流程寫一次，之後每當有請求對得上，它就會重新出現——就像一位走進門時已經完成簡報的專家。">技能</span>
+          就只是一個資料夾，裡面裝著一份
+          <span class="term" data-definition="SKILL.md 是技能資料夾裡的主要指示檔案。它存放著技能載入後 Claude 會遵循的完整逐步流程——就是這位專家的劇本。">SKILL.md</span>
+          檔案，以及一行
+          <span class="term" data-definition="這段描述就是技能的觸發語句。它是 Claude 唯一隨時記在心裡的部分；對得上它，才會把完整的指示拉進對話裡。">描述</span>
+          來決定它何時啟動。</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">company-data-stack/</span>
+            <span class="ft-desc">一個技能 = 一個資料夾</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">SKILL.md</span>
+                <span class="ft-desc">完整的指示，加上開頭那行觸發描述</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">桌上的那張名片</strong>
+            <p>啟動時，Claude 只讀那些描述——專家的名片永遠擺在桌上。完整的
+              <code>SKILL.md</code> 只在任務對得上時才走進門，讓 Claude 的
+              <span class="term" data-definition="脈絡視窗是 Claude 在一段對話中的短期工作記憶——它一次能「看見」的全部內容。它是有限的，所以只載入那些描述（而非每一份完整技能），能讓這份記憶保持精簡。">脈絡視窗</span>
+              保持精簡。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The library at a glance -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">技能庫一覽</h2>
+        <p>十六個技能，依工作性質分成三個小隊。每個小隊有自己的顏色，貫穿整個課程。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🏢</div>
+            <h4 class="pattern-title">公司營運</h4>
+            <p class="pattern-desc">領域小隊。<code>company-data-stack</code>（資料倉儲＋ BI）、<code>canvas-tracker</code>（Slack 專案追蹤器）、<code>scheduled-triggers</code> 與 <code>internal-comms</code>——再加上 <code>company-slack</code>、<code>company-confluence</code>、<code>gitlab-cli</code>。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">📊</div>
+            <h4 class="pattern-title">產出與分析</h4>
+            <p class="pattern-desc"><code>data-analysis</code>、<code>data-viz</code>、<code>company-slides</code>，以及 <code>codebase-to-course</code>——正是打造這個頁面的那個技能——還有 <code>pdf</code> 和 <code>hex</code>。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🧰</div>
+            <h4 class="pattern-title">後設</h4>
+            <p class="pattern-desc"><code>prompt-authoring</code>、<code>skill-creator</code>——做出技能的技能——還有 <code>regression-guard</code>。</p>
+          </div>
+        </div>
+
+        <p class="caption">16 個技能，依工作分組——而非按字母排序。</p>
+      </section>
+
+      <!-- SCREEN 3 — HERO: group-chat animation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">配對是怎麼運作的</h2>
+        <p>看一個用大白話寫的請求如何自行找到去向。
+          <span class="term" data-definition="路由器是 Claude 裡負責讀你的請求、判斷它對上哪些技能的那一部分——就像一位調度員，聽到問題就派出對的專家，不必你點任何人的名。">路由器</span>
+          讀的是你<em>真正想表達</em>的意思，接著對得上的專家就會走進門。按<strong>下一則訊息</strong>逐步看下去。</p>
+
+        <div class="chat-window" id="chat-skills">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="me" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-5)">M</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-5)">我</span>
+                <p>為什麼上週的每週註冊數下滑了？</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="dispatcher" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">⚙</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">調度員</span>
+                <p>這是個需要動用資料倉儲的診斷型問題——正在召喚兩位專家。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="data-analysis" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">📊</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">data-analysis</span>
+                <p>來了。載入診斷模式：先確認下滑是真的，再去解釋它。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="company-data-stack" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">🗄</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">company-data-stack</span>
+                <p>我會從 Redshift 拉數字，並檢查餵給那個指標的 dbt 模型。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="dispatcher" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">⚙</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">調度員</span>
+                <p>請求裡誰都沒被點名——兩位都是憑請求<em>真正的意思</em>對上的。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" style="display:none">
+            <div class="chat-avatar" id="chat-skills-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">下一則訊息</button>
+            <button class="btn chat-all-btn">全部播放</button>
+            <button class="btn chat-reset-btn">重播</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+
+        <p>這些技能不是被點名召喚的——它們是憑<em>意圖</em>對上的。</p>
+      </section>
+
+      <!-- SCREEN 4 — The description IS the trigger -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">描述本身就是觸發器</h2>
+        <p>打開任何一份 <code>SKILL.md</code>，最上面幾行就把整個故事說完了。這裡是
+          <span class="term" data-definition="frontmatter 是檔案最頂端那一小段，以三個破折號圍起來，存放的是關於這個檔案的設定，而非它的內容——在這裡，就是技能的名稱與它的觸發描述。">frontmatter</span>
+          ——也就是 <code>data-viz</code> 技能的開頭那段。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line">---</span>
+<span class="code-line"><span class="code-property">name</span>: data-viz</span>
+<span class="code-line"><span class="code-property">description</span>: Use whenever making a chart, plot, or</span>
+<span class="code-line">  visualization in a notebook. Trigger on <span class="code-string">"plot this"</span>,</span>
+<span class="code-line">  <span class="code-string">"visualize"</span>, <span class="code-string">"show the distribution"</span>, <span class="code-string">"compare segments"</span>.</span>
+<span class="code-line">---</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">每個技能都從一個名稱和一段描述開始。</p>
+              <p class="tl">名稱只是資料夾的標籤。</p>
+              <p class="tl">只有這段描述會一直待在 Claude 的記憶裡，直到被需要為止。</p>
+              <p class="tl">那些範例語句就是觸發線——只要你說出接近的話，完整的技能就會載入。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info animate-in">
+          <div class="callout-icon">ℹ️</div>
+          <div class="callout-content">
+            <strong class="callout-title">寫好一段描述，本身就是一門手藝</strong>
+            <p>太籠統，技能就會一直觸發；太狹窄，它就永遠不觸發。甚至還有一個
+              <code>prompt-authoring</code> 技能，專門用來微調這件事——而且沒錯，一個
+              <span class="term" data-definition="筆記本是一種把可執行的程式碼、它的結果（例如圖表）和筆記放在同一個地方的文件——在資料分析裡很受歡迎。Jupyter 和 Hex 都是常見的例子。">筆記本</span>
+              就是資料分析師的工作畫布。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Where the skills came from -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">這些技能從哪裡來</h2>
+        <p>這一切都不是從零打造的。整座技能庫是三種來源交織而成。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🛠️</div>
+            <h4 class="pattern-title">從零自建</h4>
+            <p class="pattern-desc">這些公司專屬的技能，封裝了任何下載都帶不來的內部知識——資料倉儲慣例、canvas 規則，以及公司內部的文件風格。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🍴</div>
+            <h4 class="pattern-title">Fork 後重新品牌化</h4>
+            <p class="pattern-desc"><code>codebase-to-course</code>，以及 <code>company-slides</code> 背後的 <code>frontend-slides</code> 引擎，都來自開源打造者
+              <span class="term" data-definition="fork 就是把別人的專案複製一份，讓你能自由修改自己的版本，同時原版維持不動。這是在開源成果上接著開發的標準做法。">Zara Zhang</span>
+              （<code>github.com/zarazhangrui</code>）。我把它們
+              <span class="term" data-definition="開放原始碼指的是程式碼公開出來，任何人都能讀取、複製、改編——通常是免費的。正因如此，你才能 fork 一個陌生人的技能，把它變成你自己的。">fork</span>
+              下來，換上我自己的品牌與慣例。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📦</div>
+            <h4 class="pattern-title">直接來自 Anthropic</h4>
+            <p class="pattern-desc"><code>skill-creator</code> 和 <code>pdf</code> 是 Anthropic 自家的技能；<code>ralph-loop</code>
+              <span class="term" data-definition="外掛是一種附加元件，不必重建工具就能為它裝上額外能力——就像安裝瀏覽器擴充功能。這裡它把一個你能一步安裝的技能打包起來。">外掛</span>
+              則從官方的 <code>anthropics/claude-plugins-official</code>
+              <span class="term" data-definition="marketplace 是一個經過策劃的目錄，你能從這裡一鍵安裝附加元件——就像外掛與技能的 app 商店。">marketplace</span>
+              安裝。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">別從零開始打造</strong>
+            <p>從一個
+              <span class="term" data-definition="儲存庫（repository）是一個專案的程式碼與歷史紀錄的存放資料夾，通常託管在像 GitHub 這樣的網站上，方便別人找到並複製。">儲存庫</span>
+              fork 一個好技能，重新品牌化，再把它彎成你自己的慣例——接著用 <code>skill-creator</code> 培養出你自己的技能。這是我們在最後會一起收攏的最佳實務線索之一。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,332 @@
+<section class="module" id="module-4" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">自動化：全天候運作的系統</h1>
+      <p class="module-subtitle">全天候運作的系統——當我不在鍵盤前時，依然在進行的工作。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Three mechanisms -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">三種自動化</h2>
+        <p>上一個模組談的是我親手<em>主導</em>的工作，而這一層正好相反：在我睡覺或開會時，<em>不需要</em>我也能運作的工作。我在 <span class="term" data-definition="Claude Code 是 Anthropic 的命令列工具——你在終端機裡對 AI 代理輸入指示，它就會編輯檔案、執行指令，在你的機器上完成實際的工作。">Claude Code</span> 上的一天，很多事都是這樣發生的。把它想成智慧家庭：三種自動化，各由不同的觸發器啟動，各能觸及不同的東西。分辨哪個是哪個，正是整套技巧的核心——它們的差別在於<em>能觸及什麼</em>，而大多數人只認識三者中的一種。</p>
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">&#128161;</div>
+            <h4 class="pattern-title">Hook</h4>
+            <p class="pattern-desc">動作感應燈。由<strong>事件</strong>觸發——一場工作階段結束、一個檔案被儲存。本機且即時。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">&#9200;</div>
+            <h4 class="pattern-title">本機 cron</h4>
+            <p class="pattern-desc">灑水器定時器。由<strong>時鐘</strong>觸發。本機且 <span class="term" data-definition="headless（無頭）指在沒有互動畫面或已登入工作階段的情況下執行——程式在背景默默完成工作，沒有人盯著，所以它無法使用任何需要你登入的東西。">headless</span>——沒有登入工作階段，所以也接不上任何連接的應用程式。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">&#9729;&#65039;</div>
+            <h4 class="pattern-title">雲端觸發器</h4>
+            <p class="pattern-desc">替你看家的人。由<strong>雲端</strong>裡的時鐘觸發，而且<em>能</em>應門——它可以連到 Slack、Gmail、Google Calendar 等連接的應用程式。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — Hooks -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Hook——事件驅動、本機</h2>
+        <p><span class="term" data-definition="hook 是一段小腳本，每當某件特定的事發生時，工具就會自動執行它——就像門鈴接上了門鈴聲。你決定事件，它決定執行什麼。">hook</span> 是<span class="term" data-definition="事件驅動指的是動作會在某件事發生（一個事件）時執行，而不是依固定排程。觸發條件是「當 X 發生時」，而不是「早上九點」。">事件驅動</span>的：它監看某一個特定時刻，一到就立刻執行一段腳本。以下是我目前設定裡接上的三個。</p>
+        <div class="badge-list">
+          <div class="badge-item">
+            <code class="badge-code">Stop</code>
+            <span class="badge-desc">當一場工作階段結束時，執行 <code>log_usage.sh</code>——把 token 與成本記到一份帳本裡。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">slack_update_canvas</code>
+            <span class="badge-desc">當專案 canvas 變動時，執行 <code>canvas_backup_sync.sh</code>——把它鏡像到一個本機檔案。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">statusLine</code>
+            <span class="badge-desc">執行 <code>statusline-command.sh</code>——我終端機裡那行 模型 / context% / git 的資訊。</span>
+          </div>
+        </div>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-property">"Stop"</span>: [{ <span class="code-property">"hooks"</span>: [{</span>
+<span class="code-line">  <span class="code-property">"type"</span>: <span class="code-string">"command"</span>,</span>
+<span class="code-line">  <span class="code-property">"command"</span>: <span class="code-string">"bash ~/.claude/log_usage.sh"</span>,</span>
+<span class="code-line">  <span class="code-property">"timeout"</span>: <span class="code-number">10</span></span>
+<span class="code-line">}]}]</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">當一場工作階段結束時（<code>Stop</code> 事件），執行以下動作……</p>
+              <p class="tl">……執行一個 shell 指令……</p>
+              <p class="tl">……具體來說是這支腳本，<code>log_usage.sh</code>……</p>
+              <p class="tl">……並給它 10 秒完成。</p>
+              <p class="tl">它會讀取我燒掉了多少 token，再把成本附加到一份試算表裡。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Local cron -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">本機 cron——時鐘驅動、本機</h2>
+        <p><span class="term" data-definition="cron 是 Mac 和 Linux 內建的經典定時器——你給它一個排程和一個指令，它就會準時執行那個指令，永遠執行下去，不需要你做任何事。">cron</span> 工作是我自己機器上的一個定時任務：在固定的時鐘時間，執行這件事。我目前唯一啟用的工作，是讓我的程式碼<span class="term" data-definition="分支是專案的一份平行副本，你可以在上面改動而不碰到主版本——就像修改草稿，讓已發佈的頁面在你準備好之前都保持安全。">分支</span>不要愈離愈遠。</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-number">0</span> <span class="code-number">6,8,10,12,14,16</span> * * <span class="code-number">1-5</span>   ~/.claude/auto_rebase.sh</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">在早上 6 點、8 點、10 點、中午、下午 2 點、下午 4 點的第 0 分鐘……</p>
+              <p class="tl">……週一到週五……</p>
+              <p class="tl">……執行 <code>auto_rebase.sh</code>：把 main 分支拉進我的工作分支，讓我永遠不會落後太多。</p>
+            </div>
+          </div>
+        </div>
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#128161;</div>
+          <div class="callout-content">
+            <strong class="callout-title">它用 merge，絕不用 rebase</strong>
+            <p>儘管名字叫 rebase，這支腳本其實是<span class="term" data-definition="merge（合併）會新增一個把兩條工作線接起來的 commit，同時保留兩邊的歷史。rebase 則會重寫你的工作，讓它看起來像一直都建立在最新的 main 之上——比較乾淨，但可能製造出令人困惑的衝突。">用 merge 而非 rebase</span>。merge 可以避免重寫歷史所製造出來的假衝突。這是一條得來不易的規則——存進記憶，讓我永遠不必重新學一次。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Cloud triggers / daily rhythm -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">雲端觸發器——每日節奏</h2>
+        <p>這些以<span class="term" data-definition="CCR（一種雲端排程觸發器）是一個在雲端依排程執行的 Claude 代理。因為它是在已登入的狀態下執行，所以能連到 Slack、Gmail 等連接的應用程式——這一點和本機 cron 工作不同。">雲端排程觸發器（CCR）</span>的形式執行：像 cron 一樣由時鐘驅動，但在雲端、且已登入，所以能連到我<span class="term" data-definition="連接器（或連接的應用程式）在你的允許下，把 Claude 連到 Slack 或 Gmail 等外部服務，讓它能代你讀取與張貼。">連接的應用程式</span>。其中四個，塑造了我的一整天。</p>
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong><code>daily-digest</code> &middot; 早晨</strong>
+              <p>把我的專案 canvas、未讀的 Slack、行事曆、Gmail，以及 Gemini 會議紀錄，縫成一份簡報——然後在我還沒打開任何一個分頁之前，就<span class="term" data-definition="DM（私訊）是 Slack 裡一對一的私人訊息——只在你和寄件者之間，不是公開頻道。">DM</span> 給我。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong><code>daily-progress-check</code>（EOD）&middot; 傍晚</strong>
+              <p>重建我今天實際交付了什麼——從我的 GitLab 通知信裡撈出 commit 和合併請求，因為我的技術工作從來不會落在 Slack 上——然後提出追蹤器的更新建議。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong><code>canvas-updater</code> &middot; 夜間</strong>
+              <p>把核准過的更新套用到專案 canvas 上。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong><code>gmail-auto-label</code> &middot; 每 2 小時</strong>
+              <p>一個安靜的收件匣清潔工：依寄件者貼標籤、歸檔郵件，把雜訊封存起來。</p>
+              <p style="font-family: var(--font-display); font-style: italic; color: var(--color-text-secondary); font-size: var(--text-sm); margin-top: var(--space-1);">（沒錯——Gmail 自己的篩選器不知為何對我就是不太管用。所以我讓 Claude 來做。別評判我 🫣）</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4.5 — What the agents read -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">它們讀什麼，才懂我的一天</h2>
+        <p>我的一天散落在五六個工具裡。這些代理替我把它們收攏起來——而每一個來源，都補上其他來源補不了的缺口。</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📧</div>
+            <div>
+              <strong>GitLab 通知信</strong>
+              <p>我的技術進度——commit、<span class="term" data-definition="合併請求（MR）是把一條程式碼分支併進主程式庫的提案，會先經過審查與測試，才被接受。GitHub 把同樣的東西叫做 pull request。">合併請求</span>、審查——都待在 <span class="term" data-definition="GitLab 是一個儲存程式碼並管理出貨流程的平台：它代管你的儲存庫、執行自動化測試、處理程式碼審查。可以想成原始碼版的 Google 文件，附帶核准流程與版本歷史。">GitLab</span> 裡，不在 Slack。讀它的郵件通知，就是 Claude 知道我交付了什麼的方法。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">💬</div>
+            <div>
+              <strong>Slack 訊息</strong>
+              <p>掃過我的頻道與討論串，找出決策、討論，以及任何指向我的內容——這樣一句被埋住的「嘿，你能不能……」就不會溜過去。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📝</div>
+            <div>
+              <strong>Gemini 會議紀錄</strong>
+              <p>讀我通話時自動產生的 <span class="term" data-definition="Gemini 是 Google 的 AI 助理。在 Google Meet 裡，它可以旁聽通話並自動寫下紀錄與待辦事項——這樣不必有人做會議記錄，也會有一份文字紀錄留下說過的話。">Gemini</span> 紀錄，讓會議結論不必我打一段摘要，就能進到簡報裡。</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📅</div>
+            <div>
+              <strong>行事曆、Jira 與 Confluence</strong>
+              <p>發生了什麼、接下來有什麼，以及任何提到我的票或文件。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔗</div>
+          <div class="callout-content">
+            <strong class="callout-title">有憑有據，不是猜的</strong>
+            <p>簡報裡的每一行，都必須能追溯回代理那次執行時讀到的真實憑據——某一封具體的 GitLab 信、某一條 Slack 討論串，或某一份會議紀錄。不做合成，不發明沒發生過的進度。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4.7 — The tracker canvas structure -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">追蹤器：一個 canvas，專案雷達</h2>
+        <p>這一切都指向同一個 <span class="term" data-definition="Slack canvas 是一份活在 Slack 裡的文件——就像釘在頻道上的 Google 文件，有標題、檢查清單和連結，團隊裡任何人都能打開。">Slack canvas</span>。它的結構，讓進度一眼就看得懂：專案依優先順序分桶，每一個都會自我說明。</p>
+
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; max-width: 600px; margin: var(--space-8) auto;">
+          <div style="padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-light); font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg);">📝 專案追蹤器 — Ting-Wei</div>
+          <div style="padding: var(--space-4) var(--space-5);">
+            <div style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-error); font-weight: 700;">🔴 P1 — 優先處理</div>
+            <div style="border: 1px solid var(--color-border); border-left: 3px solid var(--color-accent); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); margin: var(--space-3) 0;">
+              <strong>啟用漏斗深入分析</strong>
+              <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-2); line-height: 1.9;">
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">範圍</span> 成長</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">頻道</span> <span style="color: var(--color-teach);">#growth-analytics</span></div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">狀態</span> 🟡 進行中</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">預計完成</span> 六月底</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">下一步</span> 與成長團隊一起檢視 cohort 定義，再重建模型</div>
+                <div style="margin-top: var(--space-1);"><span style="color: var(--color-text-muted);">紀錄</span></div>
+                <div style="padding-left: var(--space-4);">• 06-11 — 非同步分享了 v1 數字；標記出一個追蹤缺口</div>
+                <div style="padding-left: var(--space-4);">• 06-09 — 啟動；界定了漏斗各階段</div>
+              </div>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 2.2; border-top: 1px dashed var(--color-border); padding-top: var(--space-2); margin-top: var(--space-2);">
+              <div>🟠 P2 — 高優先 <span style="color: var(--color-text-muted);">· 2</span></div>
+              <div>🟡 P3 — 中優先 <span style="color: var(--color-text-muted);">· 3</span></div>
+              <div>🟢 P4 — 低優先 <span style="color: var(--color-text-muted);">· 4</span></div>
+              <div>✅ 已完成 <span style="color: var(--color-text-muted);">· 20+</span></div>
+              <div>💬 監看中的頻道 <span style="color: var(--color-text-muted);">· 12</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="caption">一個真實的條目，去識別化後——形狀就跟我實際在用的完全一樣。</p>
+
+        <p>每個專案都帶著同樣的四個欄位，而每一個都回答了一個我原本得去追問的問題：</p>
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Status</code>
+            <span class="badge-desc">它現在處在什麼狀態？——🟡 進行中、🔴 受阻、⏸️ 已降優先</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">ETA</code>
+            <span class="badge-desc">它什麼時候會完成？——我正瞄準的那個日期</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Next</code>
+            <span class="badge-desc">下一個動作究竟是什麼？——這樣我重啟一個專案時不會從零開始摸索</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Log</code>
+            <span class="badge-desc">發生過什麼、各在哪天？——一條帶時間戳的軌跡，我可以據此重建脈絡</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🛰️</div>
+          <div class="callout-content">
+            <strong class="callout-title">查進度 = 打開一份文件</strong>
+            <p>優先順序放在最上面，狀態與下一步寫在每一張卡片上，底下是一條附日期的紀錄。早晨摘要會讀最上面的桶；EOD 代理會把內容附加到 <code>Log</code>。我從不手動編輯它——我只要說一句<em>「在〔某專案〕加上更新：……」</em>或<em>「把〔某專案〕的 ETA 設成……」</em>，<code>canvas-tracker</code> 技能就會把它重寫好。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — HERO: data-flow animation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">追一遍這個迴圈：EOD &rarr; canvas</h2>
+        <p>看一個完整的循環。這是一個預設為<em>同意</em>的人在迴圈中流程——沉默就代表提案放行，所以即使在我最忙的日子，追蹤器也能保持最新。</p>
+        <div class="flow-animation" data-steps='[
+ {"highlight":"flow-eod-1","label":"傍晚：EOD 代理草擬我今天交付了什麼"},
+ {"highlight":"flow-eod-2","label":"它把那份草稿送進我的 Slack DM","packet":true,"from":"eod-1","to":"eod-2"},
+ {"highlight":"flow-eod-3","label":"我回覆調整——或什麼都不說","packet":true,"from":"eod-2","to":"eod-3"},
+ {"highlight":"flow-eod-4","label":"夜裡，canvas-updater 讀那條討論串","packet":true,"from":"eod-3","to":"eod-4"},
+ {"highlight":"flow-eod-5","label":"它重寫專案追蹤器——若我保持安靜就預設核准","packet":true,"from":"eod-4","to":"eod-5"}
+]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-eod-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">&#127769;</div>
+              <span>EOD 代理</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">&#128172;</div>
+              <span>我的 DM</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">&#129489;</div>
+              <span>我</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">&#9999;&#65039;</div>
+              <span>canvas-updater</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-5">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">&#128203;</div>
+              <span>專案追蹤 canvas</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet-eod"></div>
+
+          <div class="flow-step-label" id="flow-label-eod">點「下一步」開始</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重新開始</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6 — The payoff: before & after -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">這套節奏真正解決了什麼</h2>
+        <p>這一切都不是為了自動化而自動化。這套每日節奏的存在，是為了消滅具體、每天都在發生的痛點。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-error)">
+            <div class="pattern-icon" style="background: var(--color-error)">😵‍💫</div>
+            <h4 class="pattern-title">之前</h4>
+            <ul class="pattern-desc" style="margin: 0; padding-left: 1.1em">
+              <li>過夜的變動散落在 Slack、郵件、行事曆和 Jira 裡——每天早上沒有一張完整的全貌。</li>
+              <li>我交付的工作都待在 GitLab 裡；到了傍晚，我已經半忘了自己究竟做了什麼。</li>
+              <li>專案追蹤器漸漸過時——我老是想著要更新它。</li>
+              <li>團隊和主管能不能看見進度，全看我記不記得去張貼。</li>
+            </ul>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-success)">
+            <div class="pattern-icon" style="background: var(--color-success)">😌</div>
+            <h4 class="pattern-title">之後</h4>
+            <ul class="pattern-desc" style="margin: 0; padding-left: 1.1em">
+              <li>一份有憑有據的早晨簡報，由每個來源縫合而成，已經在我的 DM 裡等著。</li>
+              <li>EOD 直接從 GitLab 的信裡抓出當天的 commit 和合併請求。</li>
+              <li>追蹤器每晚自我更新——沉默就只代表「放行」。</li>
+              <li>狀態自動產生；沒有東西會從縫隙裡漏掉。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">⏳</div>
+          <div class="callout-content">
+            <strong class="callout-title">真正的勝利是注意力，不是分鐘數</strong>
+            <p>我一開始這一天就已經進入狀況，結束時也不必寫一份狀態更新。這套節奏替我扛起脈絡，讓我能把專注力花在真正的工作上。</p>
+          </div>
+        </div>
+
+        <p class="caption">接下來：Claude 如何<em>記住</em>像「用 merge，絕不用 rebase」這樣的修正——讓我只要說一次就好。</p>
+      </section>
+
+    </div>
+  </div>
+</section>

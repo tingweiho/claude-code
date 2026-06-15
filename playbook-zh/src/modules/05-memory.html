@@ -1,0 +1,210 @@
+<section class="module" id="module-5" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">記憶與自我精進：回饋的循環</h1>
+      <p class="module-subtitle">一次性的更正如何變成永久的習慣——讓 Claude 從工具變成隊友的回饋循環。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — The memory folder -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一位真的記得住的同事</h2>
+        <p>告訴一位好員工一次——<em>「我們一律用 merge，絕不 rebase」</em>——你就再也不必重複。<span class="term" data-definition="這裡的「記憶」指的是能跨工作階段保留的筆記。多數聊天助理在你關掉視窗時就忘光一切；這套設定會把持久的事實寫進小檔案，讓下一場對話一開始就已經知道。">記憶</span>正是讓 Claude 成為那位員工，而不是每週一都要重新訓練的那位的關鍵。</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">memory/</span>
+            <span class="ft-desc">約 20 個單一事實檔案——每個只放一件事</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">MEMORY.md</span>
+                <span class="ft-desc">索引：每則記憶一行，每個工作階段都會載入</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">feedback-viz-no-gridlines.md</span>
+                <span class="ft-desc">我喜歡的工作方式——更正與已確認的做法</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">project-pro-plan-cutout.md</span>
+                <span class="ft-desc">程式碼無法告訴你的、持續進行中的脈絡</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">reference-confluence-map.md</span>
+                <span class="ft-desc">指向各種 ID、文件、儀表板的指標</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="caption">約 20 個單一事實檔案。每個檔案一件事——好新增，也好淘汰。</p>
+      </section>
+
+      <!-- SCREEN 2 — How a correction becomes permanent (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一次更正如何變成永久</h2>
+        <p>我第一次更正 Claude 時，它到下個工作階段就忘了。現在不會了——因為那次更正被寫進了像這樣的一個小檔案。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+<pre><code><span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line"><span class="code-property">name</span>: feedback-viz-no-gridlines</span>
+<span class="code-line"><span class="code-property">description</span>: No gridlines + centered titles by default</span>
+<span class="code-line"><span class="code-property">metadata</span>:</span>
+<span class="code-line">  <span class="code-property">type</span>: feedback</span>
+<span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line">預設不要格線、標題置中；適用於</span>
+<span class="code-line">每一個繪圖函式庫。原因：更乾淨、墨水更少。</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">一個 <span class="term" data-definition="檔案最頂端、由 --- 線框起來的區塊，存放機器可讀的設定（這裡是 name、description、type）。下方的文字則是給人讀的內容。">frontmatter</span> name——一個簡短的 <span class="term" data-definition="slug 是一個簡短、全小寫、以連字號分隔的標籤，當作識別字使用——就像網址的尾巴。在這裡它讓我能用名稱指向某一則特定記憶。">slug</span>，讓我能連結到這則確切的記憶。</p>
+              <p class="tl">一段 description——Claude 會掃描的那一行，用來判斷這則記憶<em>此刻</em>是否相關。</p>
+              <p class="tl">事實本身，再加上<em>原因</em>，這樣它才會帶著判斷力套用——而不是盲目照做。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#128161;</div>
+          <div class="callout-content">
+            <strong class="callout-title">說一次，永遠套用</strong>
+            <p>我<em>只</em>說過一次「拿掉格線」。現在每張圖一開始就是那樣——橫跨 Matplotlib、Plotly，任何東西都一樣。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — The compounding loop -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">隨時間愈收愈緊的循環</h2>
+        <p>每一次更正都讓下一個工作階段更敏銳一點。這是一個循環——我用得愈多，這套設定就愈好。</p>
+
+        <div class="flow-steps animate-in">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p>我在對話中更正 Claude</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p>它寫出一個單行的記憶檔案</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p>下個工作階段，<span class="term" data-definition="索引是一份快速參照清單——就像目錄。MEMORY.md 把每則記憶各列一行，讓 Claude 能快速掃過，只打開真正重要的檔案。">索引</span>載入，而 description 與我的任務相符</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p>行為改變了——不需要任何提醒</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">&#129504;</div>
+          <div class="callout-content">
+            <strong class="callout-title">三層彼此強化</strong>
+            <p><code>CLAUDE.md</code> 說明<em>我是誰</em>，<strong>skills</strong> 說明<em>如何執行某個流程</em>，而 <code>memory/</code> 存放<em>對前兩者的更正</em>。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Where should a fact live? -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一件事實該住在哪裡？</h2>
+        <p>不是每件事都屬於記憶。每一種知識都有它的歸屬——而把它放進對的地方，正是這門手藝的一半。</p>
+
+        <div class="pattern-cards animate-in">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">&#128100;</div>
+            <h4 class="pattern-title"><code>CLAUDE.md</code></h4>
+            <p class="pattern-desc">穩定的身分與全域偏好——「精簡一點」、「SQL 用 snake_case」。永遠為真的事。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">&#128296;</div>
+            <h4 class="pattern-title">一個 skill</h4>
+            <p class="pattern-desc">一個你會重複的<em>流程</em>——「如何 QA 一個 <span class="term" data-definition="dbt（data build tool）是一套用 SQL 建立並測試資料表的軟體。「dbt model」就是其中一個資料表定義。">dbt</span> model」、「如何排版一份給領導層的更新」。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">&#128221;</div>
+            <h4 class="pattern-title"><code>memory/</code></h4>
+            <p class="pattern-desc">一個曾經讓你意外、且不該再意外的<em>特定更正或事實</em>。</p>
+          </div>
+        </div>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">&#128203;</div>
+            <div>
+              <strong><code>known_issues.md</code>——一份持續累積的修正紀錄</strong>
+              <p>約 16 則「這裡壞了、原因在此、修法在此」。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">&#128737;&#65039;</div>
+            <div>
+              <strong><code>regression-guard</code>——一個安全防護 skill</strong>
+              <p>強制執行<span class="term" data-definition="基準是某件事在你改動它之前的行為快照——你的「改前」照片，好讓你能證明「改後」沒有弄壞任何東西。">基準</span> &rarr; 改動 &rarr; 重新驗證，這樣新功能就不會悄悄弄壞舊的路徑（一個<span class="term" data-definition="迴歸是指某個改動意外弄壞了原本能運作的東西——藏在一步前進裡的一步倒退。">迴歸</span>）。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Real standing orders -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">真實的常設指令</h2>
+        <p>這些是實際存下來的學習成果——這套系統在運作中。每一則都曾是一個摩擦的瞬間，後來變成了永久的習慣。</p>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">&#128260;</div>
+            <div>
+              <strong>用 merge，絕不 <span class="term" data-definition="rebase 會重寫一條分支的歷史，讓它看起來像是建立在最新改動之上。整齊，但可能製造出假的衝突——所以這套設定避免使用它。">rebase</span> + <span class="term" data-definition="force-push 會用你本機的版本覆蓋掉伺服器上共享的歷史。強大又危險——它可能抹掉隊友的工作，所以在這裡被禁用。">force-push</span></strong>
+              <p>避免假衝突與被重寫的歷史。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">&#128202;</div>
+            <div>
+              <strong>不要格線、標題置中</strong>
+              <p>每一張圖、每一個繪圖函式庫。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">&#9989;</div>
+            <div>
+              <strong>一律把我的 merge request 自我指派</strong>
+              <p>並在回報工作完成之前解決所有衝突。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">&#129521;</div>
+            <div>
+              <strong>專案 <span class="term" data-definition="canvas 是釘在 Slack 頻道裡、可共同編輯的文件——這裡當作即時的專案追蹤器使用。">canvas</span> 只能整份替換</strong>
+              <p>區段層級的編輯會弄壞它。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">&#128268;</div>
+            <div>
+              <strong>無頭（headless）執行無法使用 <span class="term" data-definition="connector 把 Claude 連到外部服務——Slack、Gmail、行事曆——讓它能在那裡讀取與動作。自動化的背景執行沒有這些，所以工作流程要繞著這個缺口設計。">connector</span></strong>
+              <p>繞著它設計——這是第 4 模組的教訓，現在成了一則記憶。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#10024;</div>
+          <div class="callout-content">
+            <strong class="callout-title">我工作方式的紋理</strong>
+            <p>這些都不在程式碼裡。它們是<em>我工作的方式</em>——而且因為被寫了下來，它們能跨越每一個工作階段存活。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

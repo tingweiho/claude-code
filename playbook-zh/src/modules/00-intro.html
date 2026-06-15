@@ -1,0 +1,91 @@
+<section class="module" id="module-0" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <p class="caption" style="margin-bottom: var(--space-2)">一份實戰指南 · by Ting-Wei</p>
+      <h1 class="module-title" style="font-size: var(--text-5xl); line-height: var(--leading-tight)">Claude Code 實戰手冊</h1>
+      <p class="module-subtitle">一位資深資料科學家實際的每日工作方式：設定、技能、自動化與記憶 &mdash; 一趟誠實的導覽。</p>
+    </header>
+
+    <div class="module-body">
+      <section class="screen animate-in">
+        <p>嗨 — 我是 Ting-Wei。<span class="term" data-definition="Claude Code 是 Anthropic 的程式設計代理 — 一個你交付實際任務（寫一段查詢、發布一項變更、草擬一則更新）後，它會跨越你的檔案與工具去完成的 AI 助理。">Claude Code</span> 已經悄悄成為我工作的骨幹：寫 SQL、發布程式碼、畫圖表、草擬更新，並在我睡覺時把那些無聊的事跑完。</p>
+        <p>這個頁面是那套設定的導覽 — 不是一本說明書，只是那些真正掙得一席之地的零件，以及幾個讓我付出代價才學到的教訓。</p>
+
+        <p><em>開始前先說一句：這只是<strong>我的工作方式</strong> — 它不一定是最佳實踐。我盡量讓自己一致地遵循它，並透過自學、反覆試誤持續打磨。所以請把這當作想法與經驗分享，而不是一套規則手冊。</em></p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">⌨️</div>
+          <div class="callout-content">
+            <strong class="callout-title">終端機或應用程式 — 由你決定</strong>
+            <p>我個人喜歡從<span class="term" data-definition="終端機（或命令列 / CLI）是那個以文字為主的視窗，你在裡面輸入指令，而不是點選按鈕。一旦習慣了，它既快又能寫成腳本。">終端機</span>來驅動 Claude Code — 那是我整天待著的地方。但這裡的一切都不限於終端機：所有內容在 <span class="term" data-definition="Claude 桌面與網頁應用程式是同一個助理的點選版本 — 一樣的能力、更友善的介面，且不需要在終端機裡安裝任何東西。">Claude 桌面與網頁應用程式</span>裡同樣行得通。用最適合你流程的方式就好。</p>
+          </div>
+        </div>
+
+        <h2 class="screen-heading">內容一覽</h2>
+        <p>六個簡短的站點，從磁碟上的檔案一路拉遠，看到把它們串在一起的習慣。</p>
+
+        <div class="icon-rows stagger-children">
+          <a class="icon-row animate-in" href="#module-1" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-5)">01</div>
+            <div>
+              <strong>系統</strong>
+              <p><code>~/.claude/</code> 資料夾 — 設定作為一層由你掌控的運作層。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-2" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-1)">02</div>
+            <div>
+              <strong>技能庫</strong>
+              <p>16 袋專業知識，會在工作對得上時自動載入。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-3" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-2)">03</div>
+            <div>
+              <strong>使用情境</strong>
+              <p>四條真實工作的路線 — 分析、圖表、寫作、發布程式碼。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-4" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-3)">04</div>
+            <div>
+              <strong>自動化</strong>
+              <p>hook、cron 與雲端機器人，在我不在時繼續工作。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-5" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-4)">05</div>
+            <div>
+              <strong>記憶與回饋</strong>
+              <p>一句只說過一次的修正，如何變成永遠保持的習慣。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-6" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-accent)">06</div>
+            <div>
+              <strong>最佳實踐</strong>
+              <p>那些可遷移的習慣 — 包括動手前先規劃。</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-7" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-2)">07</div>
+            <div>
+              <strong>資源與致謝</strong>
+              <p>每一項技能與來源 — 以及你自己該去哪裡取得它們。</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">😉</div>
+          <div class="callout-content">
+            <strong class="callout-title">附註</strong>
+            <p>這整個頁面都是由 Claude Code 自己設計並打造的 — 先規劃大綱、經過核可，然後寫出來。用來導覽我如何使用它，再貼切不過。</p>
+          </div>
+        </div>
+
+        <p class="caption">點選上面任何一個站點直接跳進去 — 或繼續往下捲動，或點選頂端的圓點。→</p>
+      </section>
+    </div>
+  </div>
+</section>
