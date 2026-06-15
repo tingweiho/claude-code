@@ -2,13 +2,9 @@
 
 An interactive course on how I actually use Claude Code — not the basics, but the full system: skill libraries, automation hooks, memory, and real use cases.
 
-Built with the [`codebase-to-course`](https://github.com/anthropics/claude-code) skill. Runs entirely in the browser with no setup required.
+## → [View the playbook](https://tingweiho.github.io/claude-code)
 
-## View it
-
-**[→ Open the playbook](https://tingweiho.github.io/claude-code)**
-
-Or clone and open `index.html` locally.
+Or clone and open `index.html` locally — no setup required.
 
 ## What's inside
 
@@ -22,15 +18,15 @@ Or clone and open `index.html` locally.
 | 6 | Best Practices — what works, what doesn't |
 | 7 | Resources |
 
-## Run locally
+## Repo structure
 
-```bash
-git clone https://github.com/tingweiho/claude-code.git
-open claude-code/index.html
 ```
-
-To rebuild from source after editing modules:
-
-```bash
-cd claude-code && bash build.sh
+index.html      ← the course (open this)
+styles.css      ← stylesheet
+main.js         ← interactivity
+assets/         ← logo SVGs
+src/            ← source files
+  _base.html    ← shell (title, nav dots)
+  modules/      ← one HTML file per module
+  build.sh      ← rebuild: bash src/build.sh
 ```
