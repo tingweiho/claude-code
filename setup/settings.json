@@ -1,0 +1,58 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(: >*)",
+      "Bash(chmod -R 777 *)",
+      "Bash(chmod 777 *)",
+      "Bash(dd *)",
+      "Bash(diskutil erase*)",
+      "Bash(git branch -D*)",
+      "Bash(git clean -f*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f *)",
+      "Bash(git reset --hard*)",
+      "Bash(mkfs*)",
+      "Bash(reboot*)",
+      "Bash(rm -R *)",
+      "Bash(rm -f *)",
+      "Bash(rm -fr *)",
+      "Bash(rm -r *)",
+      "Bash(rm -rf *)",
+      "Bash(shutdown*)",
+      "Bash(truncate *)",
+      "Bash(git push --force-with-lease*)",
+      "Bash(chmod -R *)",
+      "Bash(eval *)",
+      "Bash(crontab -r*)",
+      "Bash(find * -delete*)",
+      "Bash(find * -exec rm*)",
+      "Bash(curl * | sh*)",
+      "Bash(curl * | bash*)",
+      "Bash(wget * | sh*)",
+      "Bash(wget * | bash*)",
+      "Bash(* > /dev/sd*)",
+      "Bash(* > /dev/disk*)",
+      "Bash(* > /dev/rdisk*)",
+      "Write(~/.ssh/**)",
+      "Edit(~/.ssh/**)",
+      "Read(~/.ssh/id_*)",
+      "Write(~/.aws/**)",
+      "Edit(~/.aws/**)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "mcp__claude_ai_Slack__slack_update_canvas",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/canvas_backup_sync.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Aircall Slide Template</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/white.css">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Poppins:wght@300;400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* ─── 4:3 LOCK ────────────────────────────────────────────── */
+html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #1a1a1a; }
+.reveal .slides section { width: 960px !important; height: 720px !important; overflow: hidden; }
+
+/* ─── TOKENS ──────────────────────────────────────────────── */
+:root {
+  --ink:    #002620;
+  --ink2:   #749E98;
+  --green:  #008F6D;
+  --page:   #FAFBFD;
+  --border: #E5EAE9;
+  --fh: 'Instrument Serif', Georgia, serif;
+  --fb: 'Poppins', system-ui, sans-serif;
+  --fm: 'JetBrains Mono', monospace;
+
+  /* Gradients */
+  --g-city-nights: linear-gradient(135deg,#3B396A 0%,#665774 25%,#963B5C 50%,#766257 75%,#32516D 100%);
+  --g-dusk:        linear-gradient(135deg,#9FB7C3 0%,#9792B8 25%,#585C94 50%,#293063 75%,#1A1E3B 100%);
+  --g-midday:      linear-gradient(135deg,#B8C5DB 0%,#A2D3DE 25%,#A6D7E2 50%,#B0C9DC 75%,#7A7FBB 100%);
+  --g-morning:     linear-gradient(135deg,#B3BEBC 0%,#CCC8E4 25%,#DED8E9 50%,#D1DCEA 75%,#B3BEBC 100%);
+}
+
+/* ─── BASE ────────────────────────────────────────────────── */
+.reveal { font-family: var(--fb); font-weight: 300; color: var(--ink); background: var(--page); }
+.reveal .slides section { padding: 56px 64px; box-sizing: border-box; }
+.reveal h1,.reveal h2,.reveal h3,.reveal h4 {
+  font-family: var(--fh); font-weight: 400; text-transform: none;
+  letter-spacing: 0; color: var(--ink); margin: 0;
+}
+.reveal h1 { font-size: 3rem;    line-height: 1.1; }
+.reveal h2 { font-size: 2.25rem; line-height: 1.2; }
+.reveal h3 { font-size: 1.625rem; }
+.reveal h4 { font-size: 1.25rem; }
+.reveal p  { font-size: 0.9375rem; font-weight: 300; line-height: 1.7; margin: 0; }
+.reveal ul { padding-left: 1.2em; }
+.reveal li { font-size: 0.9375rem; font-weight: 300; line-height: 1.7; margin-bottom: 0.4rem; }
+.reveal a  { color: var(--green); }
+
+/* ─── UTILITY ─────────────────────────────────────────────── */
+.label   { font-family: var(--fm); font-size: 0.72rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink2); }
+.label-light { color: rgba(255,255,255,0.55); }
+.muted   { color: var(--ink2); }
+.accent  { color: var(--green); }
+.mt-sm   { margin-top: 0.75rem; }
+.mt-md   { margin-top: 1.25rem; }
+.mt-lg   { margin-top: 2rem; }
+
+hr.rule  { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+hr.rule-light { border-top-color: rgba(255,255,255,0.2); }
+
+.cols    { display: flex; gap: 2rem; align-items: flex-start; }
+.cols > * { flex: 1; }
+.cols.center { align-items: center; }
+
+/* ─── COMPONENTS ──────────────────────────────────────────── */
+.chip {
+  display: inline-block; padding: 0.2rem 0.8rem; border-radius: 100px;
+  font-family: var(--fm); font-size: 0.72rem; font-weight: 400;
+  border: 1px solid var(--border); color: var(--ink2); background: rgba(0,38,32,0.04);
+}
+.chip-white {
+  border-color: rgba(255,255,255,0.35); color: #fff; background: rgba(255,255,255,0.12);
+}
+.chip-green { border-color: var(--green); color: var(--green); background: rgba(0,143,109,0.06); }
+
+.card {
+  border-radius: 10px; padding: 1.25rem 1.5rem;
+  background: #fff; border: 1px solid var(--border);
+}
+.card-glass {
+  border-radius: 10px; padding: 1.25rem 1.5rem;
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+}
+
+.stat        { font-family: var(--fh); font-size: 2.75rem; font-weight: 400; line-height: 1; }
+.stat-label  { font-family: var(--fb); font-size: 0.8125rem; font-weight: 300; margin-top: 0.3rem; }
+
+.tag-row     { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+
+.bullet-row  { display: flex; gap: 1rem; align-items: baseline; margin-bottom: 0.85rem; }
+.bullet-row .chip { flex-shrink: 0; }
+
+.icon-circle {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(0,143,109,0.1); display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem; flex-shrink: 0;
+}
+
+/* ─── GRAIN OVERLAY ───────────────────────────────────────── */
+.grain { position: relative; overflow: hidden; }
+.grain > * { position: relative; z-index: 2; }
+.grain::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px; opacity: 0.10;
+}
+
+/* ─── GRADIENT SLIDE THEMES ───────────────────────────────── */
+.city-nights { background: var(--g-city-nights) !important; }
+.dusk        { background: var(--g-dusk) !important; }
+.midday      { background: var(--g-midday) !important; }
+.morning     { background: var(--g-morning) !important; }
+
+.city-nights *, .dusk * { color: #fff !important; }
+.city-nights hr.rule, .dusk hr.rule { border-top-color: rgba(255,255,255,0.2); }
+
+/* ─── DIVIDER SLIDE ───────────────────────────────────────── */
+.slide-divider { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+
+/* ─── QUOTE ───────────────────────────────────────────────── */
+blockquote.brand {
+  border: none; margin: 0; padding: 0;
+  font-family: var(--fh); font-size: 1.75rem; font-weight: 400;
+  line-height: 1.4; color: var(--ink); font-style: normal;
+}
+blockquote.brand cite {
+  display: block; margin-top: 1rem;
+  font-family: var(--fm); font-size: 0.75rem; font-weight: 400;
+  color: var(--ink2); font-style: normal;
+}
+
+/* ─── TABLE ───────────────────────────────────────────────── */
+table.brand { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+table.brand th {
+  font-family: var(--fm); font-size: 0.72rem; font-weight: 400;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink2);
+  border-bottom: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left;
+}
+table.brand td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); font-weight: 300; }
+table.brand tr:last-child td { border-bottom: none; }
+table.brand tr:hover td { background: rgba(0,38,32,0.03); }
+
+/* ─── TIMELINE / STEPS ────────────────────────────────────── */
+.steps { display: flex; gap: 0; align-items: flex-start; }
+.step  { flex: 1; position: relative; }
+.step:not(:last-child)::after {
+  content: ''; position: absolute; top: 22px; left: calc(50% + 22px);
+  right: 0; height: 1px; background: var(--border);
+}
+.step-num {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--green);
+  color: #fff; font-family: var(--fm); font-size: 0.8rem; font-weight: 400;
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem;
+}
+.step-label { font-size: 0.8125rem; font-weight: 300; text-align: center; color: var(--ink); }
+.step-title { font-family: var(--fh); font-size: 1rem; font-weight: 400; text-align: center; margin-bottom: 0.25rem; }
+
+/* ─── PROGRESS BAR ────────────────────────────────────────── */
+.progress-bar { height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; margin-top: 0.5rem; }
+.progress-fill { height: 100%; background: var(--green); border-radius: 100px; }
+
+/* ─── VERTICAL CENTERING ──────────────────────────────────── */
+/* Use .centered on section for title, divider, quote, closing slides */
+.reveal .slides section.centered {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+.reveal .slides section.centered.text-center {
+  align-items: center;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ════════════════════════════════════════════════════════
+     1 · TITLE SLIDE — City Nights gradient (dark hero)
+     Use for: opening slide, keynote, executive decks
+     ════════════════════════════════════════════════════════ -->
+<section class="city-nights grain centered">
+  <div>
+    <span class="chip chip-white">Presentation Type · Month Year</span>
+    <h1 style="margin-top:1.5rem;line-height:1.1;max-width:600px">
+      Presentation Title Goes Here
+    </h1>
+    <p style="margin-top:1rem;opacity:.65;max-width:480px">
+      One-line description of what this deck is about. Keep it short and punchy.
+    </p>
+    <div class="tag-row" style="margin-top:2rem">
+      <span class="chip chip-white">Presenter Name</span>
+      <span class="chip chip-white">Team Name</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     2 · AGENDA SLIDE — White
+     Use for: table of contents, session overview
+     ════════════════════════════════════════════════════════ -->
+<section>
+  <span class="label">Overview</span>
+  <h2 style="margin-top:.4rem">Today's agenda</h2>
+  <hr class="rule" style="margin-top:1rem">
+  <div class="cols mt-md">
+    <div class="card" style="text-align:center">
+      <div class="label" style="color:var(--green)">01</div>
+      <h4 style="margin-top:.5rem">Context</h4>
+      <p class="muted" style="font-size:.8125rem;margin-top:.25rem">Background & goals</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="label" style="color:var(--green)">02</div>
+      <h4 style="margin-top:.5rem">Findings</h4>
+      <p class="muted" style="font-size:.8125rem;margin-top:.25rem">Data & insights</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="label" style="color:var(--green)">03</div>
+      <h4 style="margin-top:.5rem">Proposal</h4>
+      <p class="muted" style="font-size:.8125rem;margin-top:.25rem">Recommendation</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="label" style="color:var(--green)">04</div>
+      <h4 style="margin-top:.5rem">Next Steps</h4>
+      <p class="muted" style="font-size:.8125rem;margin-top:.25rem">Actions & owners</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     3 · SECTION DIVIDER — Dusk gradient
+     Use for: transitioning between chapters
+     ════════════════════════════════════════════════════════ -->
+<section class="dusk grain centered">
+  <div>
+    <span class="chip chip-white">Section 01</span>
+    <h2 style="margin-top:1rem;font-size:2.75rem">Context</h2>
+    <p style="opacity:.6;margin-top:.5rem;max-width:420px">Background & goals</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     4 · CONTENT — Two columns (White)
+     Use for: compare two things, text + visual
+     ════════════════════════════════════════════════════════ -->
+<section>
+  <span class="label">Context</span>
+  <h2 style="margin-top:.4rem">Two-column layout</h2>
+  <hr class="rule" style="margin-top:1rem">
+  <div class="cols mt-md">
+    <div>
+      <h4>Left heading</h4>
+      <p class="mt-sm">Body copy goes here. Poppins Light at 15px. Keep it tight — two or three sentences max per column.</p>
+      <p class="mt-sm muted">Secondary point with muted colour to create hierarchy without extra weight.</p>
+      <div class="tag-row">
+        <span class="chip">Tag one</span>
+        <span class="chip">Tag two</span>
+      </div>
+    </div>
+    <div>
+      <h4>Right heading</h4>
+      <p class="mt-sm">Second column content. Use this layout when comparing approaches, before/after, or pairing a chart with commentary.</p>
+      <p class="mt-sm muted">Supporting detail in muted tone.</p>
+      <div class="tag-row">
+        <span class="chip chip-green">Recommended</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     5 · STATS — Dusk gradient (dark)
+     Use for: KPI highlights, metrics snapshots
+     ════════════════════════════════════════════════════════ -->
+<section class="dusk grain">
+  <span class="label label-light">Q1 2026 · Highlights</span>
+  <h2 style="margin-top:.4rem">Key metrics</h2>
+  <hr class="rule rule-light" style="margin-top:1rem">
+  <div class="cols mt-md">
+    <div class="card-glass" style="text-align:center">
+      <div class="stat" style="color:#AACFD7">+34%</div>
+      <div class="stat-label" style="opacity:.75">Pipeline influenced</div>
+    </div>
+    <div class="card-glass" style="text-align:center">
+      <div class="stat" style="color:#D9CBE8">98.2%</div>
+      <div class="stat-label" style="opacity:.75">Model coverage</div>
+    </div>
+    <div class="card-glass" style="text-align:center">
+      <div class="stat" style="color:#AACFD7">12</div>
+      <div class="stat-label" style="opacity:.75">Models shipped</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     6 · CONTENT — Bullet list with priority chips (White)
+     Use for: roadmap, action items, findings
+     ════════════════════════════════════════════════════════ -->
+<section>
+  <span class="label">Roadmap</span>
+  <h2 style="margin-top:.4rem">Priorities</h2>
+  <hr class="rule" style="margin-top:1rem">
+  <div style="margin-top:1.25rem">
+    <div class="bullet-row">
+      <span class="chip" style="color:var(--green);border-color:var(--green)">P1</span>
+      <div>
+        <h4 style="font-size:1rem">Initiative name</h4>
+        <p class="muted" style="font-size:.875rem">Short description — owner · ETA date</p>
+      </div>
+    </div>
+    <div class="bullet-row">
+      <span class="chip" style="color:var(--green);border-color:var(--green)">P1</span>
+      <div>
+        <h4 style="font-size:1rem">Another initiative</h4>
+        <p class="muted" style="font-size:.875rem">Short description — owner · ETA date</p>
+      </div>
+    </div>
+    <div class="bullet-row">
+      <span class="chip">P2</span>
+      <div>
+        <h4 style="font-size:1rem">Lower priority item</h4>
+        <p class="muted" style="font-size:.875rem">Short description — owner · ETA date</p>
+      </div>
+    </div>
+    <div class="bullet-row">
+      <span class="chip">P3</span>
+      <div>
+        <h4 style="font-size:1rem">Backlog item</h4>
+        <p class="muted" style="font-size:.875rem">Short description — owner · ETA date</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     7 · CONTENT — Steps / Timeline (White)
+     Use for: process flows, project phases
+     ════════════════════════════════════════════════════════ -->
+<section>
+  <span class="label">Process</span>
+  <h2 style="margin-top:.4rem">How it works</h2>
+  <hr class="rule" style="margin-top:1rem">
+  <div class="steps mt-lg">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Discover</div>
+      <div class="step-label">Define scope and gather requirements</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Build</div>
+      <div class="step-label">Implement and iterate</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Validate</div>
+      <div class="step-label">Test, QA, stakeholder review</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Ship</div>
+      <div class="step-label">Deploy and monitor</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     8 · TABLE — Comparison (White)
+     Use for: feature matrix, data summary, before/after
+     ════════════════════════════════════════════════════════ -->
+<section>
+  <span class="label">Analysis</span>
+  <h2 style="margin-top:.4rem">Comparison table</h2>
+  <hr class="rule" style="margin-top:1rem">
+  <table class="brand mt-md">
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>Option A</th>
+        <th>Option B</th>
+        <th>Recommended</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Metric one</td>
+        <td>Value</td>
+        <td>Value</td>
+        <td><span class="chip chip-green">Option B</span></td>
+      </tr>
+      <tr>
+        <td>Metric two</td>
+        <td>Value</td>
+        <td>Value</td>
+        <td><span class="chip chip-green">Option A</span></td>
+      </tr>
+      <tr>
+        <td>Metric three</td>
+        <td>Value</td>
+        <td>Value</td>
+        <td><span class="chip chip-green">Option B</span></td>
+      </tr>
+      <tr>
+        <td>Complexity</td>
+        <td>Low</td>
+        <td>Medium</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     9 · PROGRESS — Status tracker (White)
+     Use for: project health, initiative status
+     ════════════════════════════════════════════════════════ -->
+<section>
+  <span class="label">Status</span>
+  <h2 style="margin-top:.4rem">Project progress</h2>
+  <hr class="rule" style="margin-top:1rem">
+  <div style="margin-top:1.25rem;display:flex;flex-direction:column;gap:1.1rem">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <span style="font-size:.9375rem;font-weight:300">Initiative A</span>
+        <span class="label">85%</span>
+      </div>
+      <div class="progress-bar mt-sm"><div class="progress-fill" style="width:85%"></div></div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <span style="font-size:.9375rem;font-weight:300">Initiative B</span>
+        <span class="label">60%</span>
+      </div>
+      <div class="progress-bar mt-sm"><div class="progress-fill" style="width:60%"></div></div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <span style="font-size:.9375rem;font-weight:300">Initiative C</span>
+        <span class="label">30%</span>
+      </div>
+      <div class="progress-bar mt-sm"><div class="progress-fill" style="width:30%;background:#A0A8DB"></div></div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <span style="font-size:.9375rem;font-weight:300">Initiative D</span>
+        <span class="label">100%</span>
+      </div>
+      <div class="progress-bar mt-sm"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     10 · QUOTE — Morning gradient (light)
+     Use for: customer quote, key insight callout
+     ════════════════════════════════════════════════════════ -->
+<section class="morning grain centered">
+  <div style="max-width:600px">
+    <blockquote class="brand">
+      "A compelling quote or key insight from a customer, stakeholder, or data finding goes here. Keep it to two or three lines."
+      <cite>— Source Name, Role · Company</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     11 · CLOSING — City Nights (dark)
+     Use for: thank you, Q&A, contact
+     ════════════════════════════════════════════════════════ -->
+<section class="city-nights grain centered text-center">
+  <div>
+    <h2 style="font-size:2.75rem">Thank you</h2>
+    <p style="opacity:.6;margin-top:.75rem">Questions? Let's discuss.</p>
+    <div class="tag-row" style="justify-content:center;margin-top:2rem">
+      <span class="chip chip-white">Presenter Name</span>
+      <span class="chip chip-white">presenter@aircall.io</span>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    width: 960,
+    height: 720,
+    margin: 0,
+    minScale: 0.2,
+    maxScale: 2.0,
+    center: false,
+    transition: 'fade',
+    transitionSpeed: 'fast',
+    controls: true,
+    progress: true,
+  });
+</script>
+</body>
+</html>
