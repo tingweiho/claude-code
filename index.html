@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Claude Code Playbook</title>
+
+  <!-- Runbook editorial fonts: Fraunces (display/headings) · Inter (body) · JetBrains Mono (code) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!--
+    RUNBOOK EDITORIAL STYLE — warm cream background, terracotta accent, teal "teach"
+    secondary, Fraunces + Inter + JetBrains Mono. Default accent is terracotta.
+      Terracotta  #b8421a / #993515 / #f4e7dd / #e0b3a0  (default)
+    Typography is set in styles.css (Fraunces / Inter / JetBrains Mono).
+  -->
+  <style>
+    :root {
+      --color-accent:       #b8421a;
+      --color-accent-hover: #993515;
+      --color-accent-light: #f4e7dd;
+      --color-accent-muted: #e0b3a0;
+    }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">The Claude Code Playbook</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-0" data-tooltip="Welcome" role="tab" aria-label="Welcome"></button>
+        <button class="nav-dot" data-target="module-1" data-tooltip="The System" role="tab" aria-label="Module 1: The System"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="The Skill Library" role="tab" aria-label="Module 2: The Skill Library"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="Use Cases" role="tab" aria-label="Module 3: Use Cases"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="The Automation Layer" role="tab" aria-label="Module 4: The Automation Layer"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="Memory & Feedback" role="tab" aria-label="Module 5: Memory & Feedback"></button>
+        <button class="nav-dot" data-target="module-6" data-tooltip="Best Practices" role="tab" aria-label="Module 6: Best Practices"></button>
+        <button class="nav-dot" data-target="module-7" data-tooltip="Resources" role="tab" aria-label="Module 7: Resources &amp; Credits"></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Floating left-rail table of contents — auto-populated by main.js from the nav dots. -->
+  <nav class="toc" id="toc" aria-label="Table of contents"></nav>
+
+  <main id="main">
+    <!-- modules/*.html content is assembled here by build.sh -->
+<section class="module" id="module-0" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <p class="caption" style="margin-bottom: var(--space-2)">A field guide by Ting-Wei</p>
+      <h1 class="module-title" style="font-size: var(--text-5xl); line-height: var(--leading-tight)">The Claude Code Playbook</h1>
+      <p class="module-subtitle">How a senior data scientist actually runs the day-to-day: config, skills, automation, and memory &mdash; in one honest tour.</p>
+    </header>
+
+    <div class="module-body">
+      <section class="screen animate-in">
+        <p>Hi — I'm Ting-Wei. <span class="term" data-definition="Claude Code is Anthropic's coding agent — an AI assistant you give real tasks (write a query, ship a change, draft an update) and it carries them out across your files and tools.">Claude Code</span> has quietly become the backbone of how I work: writing SQL, shipping code, drawing charts, drafting updates, and running the boring stuff while I'm asleep.</p>
+        <p>This page is a tour of that setup — not a manual, just the pieces that earned their place and a few lessons that cost me something to learn.</p>
+
+        <p><em>One caveat before we start: this is simply <strong>how I work</strong> — it may or may not be best practice. I try to follow it as consistently as I can and keep refining it by learning on my own, trial and error. So treat this as ideas and experience sharing, not a rulebook.</em></p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">⌨️</div>
+          <div class="callout-content">
+            <strong class="callout-title">Terminal or app — your choice</strong>
+            <p>I personally like driving Claude Code from the <span class="term" data-definition="The terminal (or command line / CLI) is the text-based window where you type commands instead of clicking buttons. It's fast and scriptable once you're used to it.">terminal</span> — it's where I live all day. But none of this is terminal-only: everything here works just as well in the <span class="term" data-definition="The Claude desktop and web apps are point-and-click versions of the same assistant — same capabilities, friendlier surface, nothing to install in a terminal.">Claude desktop and web apps</span>. Use whatever fits your flow.</p>
+          </div>
+        </div>
+
+        <h2 class="screen-heading">What's inside</h2>
+        <p>Six short stops, zooming from the files on disk out to the habits that tie them together.</p>
+
+        <div class="icon-rows stagger-children">
+          <a class="icon-row animate-in" href="#module-1" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-5)">01</div>
+            <div>
+              <strong>The System</strong>
+              <p>The <code>~/.claude/</code> folder — config as an operating layer you own.</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-2" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-1)">02</div>
+            <div>
+              <strong>The Skill Library</strong>
+              <p>16 pockets of expertise that load themselves when the work matches.</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-3" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-2)">03</div>
+            <div>
+              <strong>Use Cases</strong>
+              <p>Four lanes of real work — analysis, charts, writing, shipping code.</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-4" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-3)">04</div>
+            <div>
+              <strong>The Automation Layer</strong>
+              <p>Hooks, cron, and cloud robots that work while I'm away.</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-5" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-4)">05</div>
+            <div>
+              <strong>Memory &amp; Feedback</strong>
+              <p>How a correction said once becomes a habit kept forever.</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-6" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-accent)">06</div>
+            <div>
+              <strong>Best Practices</strong>
+              <p>The transferable habits — including planning before building.</p>
+            </div>
+          </a>
+          <a class="icon-row animate-in" href="#module-7" style="text-decoration:none; color:inherit; cursor:pointer">
+            <div class="icon-circle" style="background: var(--color-actor-2)">07</div>
+            <div>
+              <strong>Resources &amp; Credits</strong>
+              <p>Every skill and source — and where to get them yourself.</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">😉</div>
+          <div class="callout-content">
+            <strong class="callout-title">P.S.</strong>
+            <p>This whole page was designed and built <em>by</em> Claude Code itself — outline planned, approved, then written. Fitting, for a tour of how I use it.</p>
+          </div>
+        </div>
+
+        <p class="caption">Click any stop above to jump straight in — or scroll on, or tap the dots up top. →</p>
+      </section>
+    </div>
+  </div>
+</section>
+<section class="module" id="module-1" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">The System</h1>
+      <p class="module-subtitle"><code>~/.claude/</code> as an operating layer — the files Claude Code reads before I type a word.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Hook + the idea -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">It already knows how I work</h2>
+        <p>Every time I open Claude Code, it reads a handful of files before I type anything. Those files are why it already knows how I work.</p>
+        <p>This isn't a one-off prompt I paste in each morning. My <span class="term" data-definition="Config (short for configuration) is the set of saved settings that tells a program how to behave — like the preferences panel in an app, but stored as files you can edit and version.">config</span> is a standing <strong>operating layer</strong> — a setup I version, improve, and carry from session to session.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Aha!</strong>
+            <p>The config is read top-to-bottom at startup. So <strong>order and brevity matter</strong> — the leaner the file, the more reliably Claude actually follows it.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The pegboard (hero: file tree) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The pegboard</h2>
+        <p>Think of a workshop pegboard: every tool has a painted outline on the wall, so you see at a glance what's there and what's missing. <code>~/.claude/</code> is that pegboard — a fixed place for every kind of instruction.</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">~/.claude/</span>
+            <span class="ft-desc">My whole operating layer — one folder I own</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">CLAUDE.md</span>
+                <span class="ft-desc">Who I am + how to talk to me + an index of my skills (48 lines)</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">skills/</span>
+                <span class="ft-desc">16 folders of on-demand expertise</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">settings.json</span>
+                <span class="ft-desc">Global guardrails, hooks, and data connections</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">settings.local.json</span>
+                <span class="ft-desc">The "yes, you may run this" allow-list</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">hooks/</span>
+                <span class="ft-desc">Small scripts that fire on events</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">reference.md</span>
+                <span class="ft-desc">IDs, file paths, schedules I look up often</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">known_issues.md</span>
+                <span class="ft-desc">A running fixes log</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">*.sh</span>
+                <span class="ft-desc">statusline-command.sh, log_usage.sh, ci-watch.sh, auto_rebase.sh</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">memory/</span>
+                <span class="ft-desc">Durable facts Claude has learned about me</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>A lean index file, a <span class="term" data-definition="A skill is a self-contained folder of instructions and reference material that Claude loads only when a task needs it — like a specialist you call in for one job rather than keeping in the room all day.">skill</span>s folder, two permission files, some <span class="term" data-definition="A hook is a small script that runs automatically when a specific event happens — for example, right before or after Claude finishes a task. The program fires it for you; you don't have to ask.">hook</span>s, and a memory folder. Treat it like a codebase, not a settings screen.</p>
+      </section>
+
+      <!-- SCREEN 3 — CLAUDE.md is a directory, not a manual -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading"><code>CLAUDE.md</code> is a directory, not a manual</h2>
+        <p>The file Claude reads first is short on purpose. It tells Claude how to behave, then points at where the real detail lives.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment">## Communication</span></span>
+<span class="code-line">- Concise and direct — no filler, no trailing summaries</span>
+<span class="code-line">- Lead with the answer or action, not the reasoning</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">## Skills (load on demand)</span></span>
+<span class="code-line">- company-data-stack — Redshift / dbt / Looker / LookML</span>
+<span class="code-line">- canvas-tracker — Slack project tracker canvas ops</span>
+<span class="code-line">- data-analysis — rigor for diagnostic / exploratory work</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">First it tells Claude <em>how</em> to talk to me — short, answer-first.</p>
+              <p class="tl">Then it lists my skills with one line each on when they fire.</p>
+              <p class="tl">It doesn't explain the skills — it just points to them. The detail lives inside each skill folder.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">📍</div>
+          <div class="callout-content">
+            <strong class="callout-title">My whole <code>CLAUDE.md</code> is 48 lines.</strong>
+            <p>It works as a table of contents that points outward, not a manual that holds everything. (We'll come back to why in the last module.)</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Two permission files, one job each -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Two permission files, one job each</h2>
+        <p>Permissions are split across two files so the dangerous list stays short and the convenient list can grow freely.</p>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🛡️</div>
+            <div>
+              <strong><code>settings.json</code> — global guardrails</strong>
+              <p>A <span class="term" data-definition="A deny-list is a list of things that are always forbidden. Anything on it is blocked no matter what; everything else is allowed.">deny-list</span> of destructive commands, plus the hooks and the data connections. A shared default that rarely changes.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">✅</div>
+            <div>
+              <strong><code>settings.local.json</code> — the allow-list</strong>
+              <p>An <span class="term" data-definition="An allow-list is the opposite of a deny-list: a list of things explicitly permitted in advance, so you're not asked to approve each one every time.">allow-list</span> of ~322 specific commands I've pre-approved, so I'm not clicking "allow" all day.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Bash(rm -rf*)</code>
+            <span class="badge-desc">Never bulk-delete files</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(git push --force*)</code>
+            <span class="badge-desc">Never rewrite shared history</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(sudo*)</code>
+            <span class="badge-desc">Never run as administrator</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔎</div>
+          <div class="callout-content">
+            <strong class="callout-title">Why split them?</strong>
+            <p>Separating <em>deny</em> (global, rarely changes) from <em>allow</em> (local, grows over time) keeps the dangerous list short and auditable.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Connections (MCP), the breadth -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Connections — Claude plugs into my real tools</h2>
+        <p>On its own, Claude can only talk. <span class="term" data-definition="MCP (Model Context Protocol) is a shared standard that lets Claude plug into outside tools — databases, Slack, email, your wiki. Think of it as a universal socket: build one adapter and Claude can reach that tool.">MCP</span> is the universal socket that lets it <em>act</em> in my actual tools — query the warehouse, post to Slack, read my calendar. By the end of a day, almost everything I touch is wired in.</p>
+
+        <p><strong>The data stack</strong> — for analysis:</p>
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🗄️</div>
+            <div>
+              <strong><code>Redshift</code></strong>
+              <p><span class="term" data-definition="A data warehouse is a large central database built for analysis — it pools data from many sources so you can query all of it together.">The data warehouse</span> where the analytics data lives (plus a second, higher-privilege connection for admin tasks).</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🧱</div>
+            <div>
+              <strong><code>dbt</code></strong>
+              <p><span class="term" data-definition="dbt (data build tool) is software that turns raw warehouse tables into clean, tested datasets by running SQL transformations in a defined order.">dbt</span> — how the raw data gets transformed into clean, tested datasets.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📊</div>
+            <div>
+              <strong><code>Looker</code></strong>
+              <p><span class="term" data-definition="Looker is a business-intelligence (BI) tool — it turns warehouse data into dashboards and charts people across the company can explore.">Looker</span>, the BI tool, for dashboards and metrics.</p>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-8)"><strong>Everyday apps</strong> — the rest of my work, same universal socket:</p>
+        <div class="icon-rows stagger-children animate-in">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/slack.svg" alt="Slack" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Slack</strong>
+              <p>Read channels, post updates, and keep the project canvas current.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/gmail.svg" alt="Gmail" style="width:24px; height:24px;"></div>
+            <div>
+              <strong>Gmail</strong>
+              <p>Read, search, and auto-label my inbox.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/googlecalendar.svg" alt="Google Calendar" style="width:24px; height:24px;"></div>
+            <div>
+              <strong>Google Calendar</strong>
+              <p>See what's on my day and what's coming.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/googledrive.svg" alt="Google Drive" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Google Drive</strong>
+              <p>Pull docs and meeting notes.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/confluence.svg" alt="Confluence and Jira" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Confluence + Jira</strong>
+              <p>Our <span class="term" data-definition="A wiki is a shared, editable website of documentation. Confluence is the wiki tool; Jira is the linked ticket tracker for tasks and issues.">wiki and ticket tracker</span> — read docs, check mentions.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/gitlab.svg" alt="GitLab" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>GitLab</strong>
+              <p>Code, merge requests, and pipelines.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);">📓</div>
+            <div>
+              <strong>Hex</strong>
+              <p>Spin up analysis notebooks.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔌</div>
+          <div class="callout-content">
+            <strong class="callout-title">One standard, many tools</strong>
+            <p>The data-stack connections run locally; the everyday apps are Claude's built-in <span class="term" data-definition="A connector links Claude to an outside service like Slack or Gmail, with your permission, so it can read and act there on your behalf.">connectors</span>. Same idea either way — a standard socket, so adding a new tool doesn't mean re-teaching Claude how to talk to it.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6 — Under the hood (optional technical detail) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Under the hood — one connection, redacted</h2>
+        <p>Each connection is just a few lines of config. Here's the warehouse one — useful to recognize, but you never write it by hand often.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-property">"redshift"</span>: {</span>
+<span class="code-line">  <span class="code-property">"command"</span>: <span class="code-string">"uvx"</span>,</span>
+<span class="code-line">  <span class="code-property">"args"</span>: [<span class="code-string">"awslabs.redshift-mcp-server@latest"</span>],</span>
+<span class="code-line">  <span class="code-property">"env"</span>: {</span>
+<span class="code-line">    <span class="code-property">"AWS_PROFILE"</span>: <span class="code-string">"&lt;aws-account&gt;_DataRedshift"</span>,</span>
+<span class="code-line">    <span class="code-property">"AWS_REGION"</span>: <span class="code-string">"us-west-2"</span></span>
+<span class="code-line">  }</span>
+<span class="code-line">}</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Names a connection called <code>redshift</code>.</p>
+              <p class="tl"><span class="term" data-definition="uvx is a tiny command that downloads a Python tool and runs it in one step, then cleans up — so you don't have to install it permanently first.">uvx</span> downloads and runs a small helper program on the fly.</p>
+              <p class="tl">The <span class="term" data-definition="An environment variable (env var) is a named setting passed to a program from outside its code — a clean way to hand it values like which account to use, without writing them into the program itself.">settings</span> say <em>which</em> account and region — the actual secrets live outside this file, never in plain text.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">A note on what you're seeing</strong>
+            <p>Real configs hold live <span class="term" data-definition="A credential is a secret that proves who you are to a system — a password, token, or key. Leak one and someone else can act as you.">credential</span>s — connection strings, client secrets, tokens. <strong>Everything shown in this course is redacted</strong>, and that discipline is itself part of the setup (more in the last module).</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-2" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">The Skill Library</h1>
+      <p class="module-subtitle">Load-on-demand expertise — a team of on-call specialists who show up only when the job fits.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — What a skill is -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">I never page a specialist by name</h2>
+        <p>I never type <em>"use the SQL skill."</em> I describe what I want, and the right expertise loads itself. A
+          <span class="term" data-definition="A skill is a folder of saved instructions that teaches Claude how to do one specific job your way. You write the procedure once, and it reappears whenever a request matches — like a specialist who walks in already briefed.">skill</span>
+          is just a folder containing a
+          <span class="term" data-definition="SKILL.md is the main instruction file inside a skill folder. It holds the full step-by-step know-how Claude follows once the skill loads — the specialist's playbook.">SKILL.md</span>
+          file and a one-line
+          <span class="term" data-definition="The description is the skill's trigger sentence. It is the only part Claude keeps in mind at all times; matching it is what pulls the full instructions into the conversation.">description</span>
+          that decides when it fires.</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">company-data-stack/</span>
+            <span class="ft-desc">One skill = one folder</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">SKILL.md</span>
+                <span class="ft-desc">The full instructions + the trigger description at the top</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">The business card on the desk</strong>
+            <p>At startup Claude reads only the descriptions — the specialist's business card is always on the desk. The full
+              <code>SKILL.md</code> walks in only when the job fits, keeping Claude's
+              <span class="term" data-definition="The context window is Claude's short-term working memory for a conversation — everything it can 'see' at once. It is finite, so loading only the descriptions (not every full skill) keeps that memory lean.">context window</span>
+              lean.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The library at a glance -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The library at a glance</h2>
+        <p>Sixteen skills, sorted into three crews by the kind of job they do. Each crew gets its own colour, carried through the rest of the course.</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🏢</div>
+            <h4 class="pattern-title">Company ops</h4>
+            <p class="pattern-desc">The domain crew. <code>company-data-stack</code> (the warehouse + BI), <code>canvas-tracker</code> (the Slack project tracker), <code>scheduled-triggers</code> and <code>internal-comms</code> — plus <code>company-slack</code>, <code>company-confluence</code>, <code>gitlab-cli</code>.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">📊</div>
+            <h4 class="pattern-title">Output &amp; analysis</h4>
+            <p class="pattern-desc"><code>data-analysis</code>, <code>data-viz</code>, <code>company-slides</code>, and <code>codebase-to-course</code> — the very skill that built this page — alongside <code>pdf</code> and <code>hex</code>.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🧰</div>
+            <h4 class="pattern-title">Meta</h4>
+            <p class="pattern-desc"><code>prompt-authoring</code>, <code>skill-creator</code> — the skill that makes skills — and <code>regression-guard</code>.</p>
+          </div>
+        </div>
+
+        <p class="caption">16 skills, grouped by job — not alphabetised.</p>
+      </section>
+
+      <!-- SCREEN 3 — HERO: group-chat animation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How matching works</h2>
+        <p>Watch a plain-English request route itself. The
+          <span class="term" data-definition="The router is the part of Claude that reads your request and decides which skills it matches — like a dispatcher who hears the problem and sends the right specialists, without you naming anyone.">router</span>
+          reads what you <em>meant</em>, then the matching specialists walk in. Press <strong>Next Message</strong> to step through it.</p>
+
+        <div class="chat-window" id="chat-skills">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="me" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-5)">M</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-5)">Me</span>
+                <p>Why did weekly signups drop last week?</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="dispatcher" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">⚙</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">Dispatcher</span>
+                <p>That's a diagnostic question that needs the warehouse — paging two specialists.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="data-analysis" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">📊</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">data-analysis</span>
+                <p>On it. Loading diagnostic mode: confirm the drop is real before explaining it.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="company-data-stack" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">🗄</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">company-data-stack</span>
+                <p>I'll pull the numbers from Redshift and check the dbt models feeding that metric.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="dispatcher" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">⚙</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">Dispatcher</span>
+                <p>Neither was named in the request — both matched on what it <em>meant</em>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" style="display:none">
+            <div class="chat-avatar" id="chat-skills-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">Next Message</button>
+            <button class="btn chat-all-btn">Play All</button>
+            <button class="btn chat-reset-btn">Replay</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+
+        <p>The skills weren't summoned by name — they matched the <em>intent</em>.</p>
+      </section>
+
+      <!-- SCREEN 4 — The description IS the trigger -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The description IS the trigger</h2>
+        <p>Open any <code>SKILL.md</code> and the top few lines tell the whole story. Here's the
+          <span class="term" data-definition="Frontmatter is the small block at the very top of a file, fenced by triple-dashes, that holds settings about the file rather than its content — here, the skill's name and its trigger description.">frontmatter</span>
+          of the <code>data-viz</code> skill.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line">---</span>
+<span class="code-line"><span class="code-property">name</span>: data-viz</span>
+<span class="code-line"><span class="code-property">description</span>: Use whenever making a chart, plot, or</span>
+<span class="code-line">  visualization in a notebook. Trigger on <span class="code-string">"plot this"</span>,</span>
+<span class="code-line">  <span class="code-string">"visualize"</span>, <span class="code-string">"show the distribution"</span>, <span class="code-string">"compare segments"</span>.</span>
+<span class="code-line">---</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Every skill starts with a name and a description.</p>
+              <p class="tl">The name is just the folder's label.</p>
+              <p class="tl">Only this description sits in Claude's memory until needed.</p>
+              <p class="tl">Those example phrases are the trip-wires — say something close and the full skill loads.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info animate-in">
+          <div class="callout-icon">ℹ️</div>
+          <div class="callout-content">
+            <strong class="callout-title">Writing a good description is its own craft</strong>
+            <p>Too vague and the skill fires constantly; too narrow and it never fires. There's even a
+              <code>prompt-authoring</code> skill for tuning exactly this — and yes, a
+              <span class="term" data-definition="A notebook is a document that mixes runnable code, its results (like charts), and notes in one place — popular for data analysis. Jupyter and Hex are common examples.">notebook</span>
+              is the data-analyst's working canvas.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Where the skills came from -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Where the skills came from</h2>
+        <p>None of this was built from zero. The library is three origins braided together.</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🛠️</div>
+            <h4 class="pattern-title">Built from scratch</h4>
+            <p class="pattern-desc">The company-specific skills encode internal know-how no download could carry — warehouse conventions, the canvas rules, the house doc style.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🍴</div>
+            <h4 class="pattern-title">Forked &amp; rebranded</h4>
+            <p class="pattern-desc"><code>codebase-to-course</code> and the <code>frontend-slides</code> engine behind <code>company-slides</code> come from open-source builder
+              <span class="term" data-definition="To fork is to copy someone else's project so you can change your own version freely, while the original stays untouched. It's the standard way to build on open-source work.">Zara Zhang</span>
+              (<code>github.com/zarazhangrui</code>). I
+              <span class="term" data-definition="Open source means the code is published for anyone to read, copy, and adapt — usually for free. It's why you can fork a stranger's skill and make it your own.">forked</span>
+              them and swapped in my own branding and conventions.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📦</div>
+            <h4 class="pattern-title">Straight from Anthropic</h4>
+            <p class="pattern-desc"><code>skill-creator</code> and <code>pdf</code> are Anthropic's own skills; the <code>ralph-loop</code>
+              <span class="term" data-definition="A plugin is an add-on that bolts extra abilities onto a tool without rebuilding it — like installing a browser extension. Here it bundles a skill you can install in one step.">plugin</span>
+              installs from the official <code>anthropics/claude-plugins-official</code>
+              <span class="term" data-definition="A marketplace is a curated catalogue you install add-ons from in one click — an app store for plugins and skills.">marketplace</span>.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Don't build from zero</strong>
+            <p>Fork a good skill from a
+              <span class="term" data-definition="A repo (repository) is the storage folder for a project's code and history, usually hosted on a site like GitHub where others can find and copy it.">repo</span>,
+              rebrand it, and bend it to your conventions — then use <code>skill-creator</code> to grow your own. It's one of the best-practice threads we pull together at the end.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-3" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">Use Cases by Domain</h1>
+      <p class="module-subtitle">How the work actually gets done — one tool, four very different jobs.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Four lanes -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A day is a relay race</h2>
+        <p>A normal day spans four jobs that have almost nothing in common: crunching numbers, drawing charts, writing for humans, and shipping code. The same tool handles all four — it just changes mode, like a runner crossing different terrain.</p>
+        <p>The thread tying these together: this is all work <em>I</em> drive — hands on the keyboard, steering each step. <strong>The work that runs without me is the next module.</strong> Each lane here is powered by a different <span class="term" data-definition="A skill is a self-contained bundle of instructions and know-how that Claude loads on demand for a specific kind of task — like pulling the right manual off a shelf instead of memorising everything at once.">skill</span> — the loadable playbooks from the last module.</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📊</div>
+            <div>
+              <strong>Data analysis</strong>
+              <p>"Why did this metric move?" Powered by <code>data-analysis</code> + <code>company-data-stack</code>.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📈</div>
+            <div>
+              <strong>Visualization</strong>
+              <p>Turning a table into a chart someone actually gets. Powered by <code>data-viz</code>.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">✍️</div>
+            <div>
+              <strong>Communication</strong>
+              <p>Status updates, docs, decks. Powered by <code>internal-comms</code>, <code>company-confluence</code>, <code>company-slides</code>, <code>company-slack</code>.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🗂️</div>
+            <div>
+              <strong>Productivity / admin <span style="font-weight:400; color: var(--color-text-muted); font-size: var(--text-xs);">— the odd one out</span></strong>
+              <p>The one lane I <em>don't</em> drive anymore: so repetitive I handed it to robots that run without me. The bridge into the next module — <code>daily-digest</code>, <code>canvas-tracker</code>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — Lane 1: Data analysis -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Lane 1 — Data analysis</h2>
+        <p>The <code>data-analysis</code> skill enforces the rigor a rushed analyst skips. It routes every question into one of five modes, each with its own checklist.</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🔍</div>
+            <h4 class="pattern-title">Diagnostic</h4>
+            <p class="pattern-desc">Why did a <span class="term" data-definition="A metric is a single number you track over time to measure how something is doing — like weekly signups or revenue.">metric</span> move?</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🧭</div>
+            <h4 class="pattern-title">Exploratory</h4>
+            <p class="pattern-desc">What is even in this new dataset?</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📋</div>
+            <h4 class="pattern-title">Descriptive</h4>
+            <p class="pattern-desc">Summarise what happened, cleanly.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">⚗️</div>
+            <h4 class="pattern-title">Experimental</h4>
+            <p class="pattern-desc">Did the <span class="term" data-definition="An A/B test splits people into two groups — one sees a change, one does not — so you can tell whether the change caused a difference, not just chance.">A/B test</span> work?</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">🔮</div>
+            <h4 class="pattern-title">Predictive</h4>
+            <p class="pattern-desc">What is likely to happen next?</p>
+          </div>
+        </div>
+
+        <p>A diagnostic almost always starts with a simple sanity-check query, written in the house style — <span class="term" data-definition="snake_case is a naming style that joins words with underscores and uses only lowercase, like signup_week. It keeps database names tidy and easy to read.">snake_case</span>, clear aliases, no clever subqueries.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-keyword">select</span></span>
+<span class="code-line">    signup_week,</span>
+<span class="code-line">    <span class="code-function">count</span>(<span class="code-keyword">distinct</span> user_id) <span class="code-keyword">as</span> signups</span>
+<span class="code-line"><span class="code-keyword">from</span> clean_signups</span>
+<span class="code-line"><span class="code-keyword">where</span> signup_week &gt;= <span class="code-function">date_trunc</span>(<span class="code-string">'week'</span>, current_date) - <span class="code-keyword">interval</span> <span class="code-string">'8 weeks'</span></span>
+<span class="code-line"><span class="code-keyword">group by</span> 1</span>
+<span class="code-line"><span class="code-keyword">order by</span> 1</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Count distinct users per week...</p>
+              <p class="tl">...for the last 8 weeks...</p>
+              <p class="tl">...so I can see if last week's drop is real or just noise.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">The first rule of diagnostics</strong>
+            <p>Confirm the drop is real <em>before</em> explaining it. Half of diagnostics is resisting the first tidy story your brain offers.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Lane 2: Visualization -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Lane 2 — Visualization</h2>
+        <p>A chart is only useful if a reader gets it in a glance. The <code>data-viz</code> skill bakes in the <span class="term" data-definition="The Cleveland–McGill hierarchy ranks how accurately people read different chart shapes. Lengths and positions are easiest to judge; angles and areas are hardest — so a bar chart beats a pie chart for comparing numbers.">Cleveland–McGill hierarchy</span>, the research on what the human eye reads accurately.</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📏</div>
+            <h4 class="pattern-title">Position beats angle beats area</h4>
+            <p class="pattern-desc">Bars over pies — the eye reads length far better than a slice.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🚫</div>
+            <h4 class="pattern-title">No dual Y-axes</h4>
+            <p class="pattern-desc">A <span class="term" data-definition="A dual Y-axis chart stacks two different scales on the left and right edges of one plot. It is banned here because it lets you imply a relationship between two lines that may not exist.">dual Y-axis</span> invents relationships that aren't there.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🎨</div>
+            <h4 class="pattern-title">Ramp, not rainbow</h4>
+            <p class="pattern-desc"><span class="term" data-definition="A sequential palette fades through one colour from light to dark to show low-to-high values, so the colour itself encodes order. A rainbow palette uses many unrelated hues, which the eye cannot rank — it implies categories where there is really a scale.">Sequential data gets a sequential ramp</span>, never a rainbow.</p>
+          </div>
+        </div>
+
+        <p>Two of these aren't decisions I re-make each time — they're saved defaults that fire automatically.</p>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">no gridlines</code>
+            <span class="badge-desc">Removed by default, in every charting library.</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">centered titles</code>
+            <span class="badge-desc">Titles sit centered, by default, without asking.</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Defaults live in memory</strong>
+            <p>These preferences live in Claude's <em>memory</em>, so every chart starts correct without me asking — we'll see the memory system in Module 5.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Lanes 3 & 4: Communication + admin -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Lanes 3 &amp; 4 — Communication + admin</h2>
+        <p>Writing for humans is its own register, and each surface has its own skill. The admin lane is so repetitive it mostly got handed to robots.</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📝</div>
+            <div>
+              <strong><code>internal-comms</code></strong>
+              <p>Status reports, leadership updates, and FAQs in the company's house format.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📚</div>
+            <div>
+              <strong><code>company-confluence</code></strong>
+              <p>Wiki docs that land in the right place in the right space.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-5)">🖥️</div>
+            <div>
+              <strong><code>company-slides</code></strong>
+              <p>16:9 branded decks, ready to present.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">💬</div>
+            <div>
+              <strong><code>company-slack</code></strong>
+              <p>Post, read, and search across channels.</p>
+            </div>
+          </div>
+        </div>
+
+        <p>And here's the seam between this module and the next: the admin lane is the one job I stopped <em>driving</em>. It was so repetitive I handed it to scheduled robots that run without me — and that hand-off, from work I drive to work that runs itself, is the whole of the next module.</p>
+      </section>
+
+      <!-- SCREEN 4.5 — Driving real tools from the terminal -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Driving real tools, not just chatting</h2>
+        <p>Claude doesn't only talk — it runs my actual tools straight from the <span class="term" data-definition="The command line (or CLI, command-line interface) is a text window where you operate a tool by typing commands instead of clicking buttons — fast, precise, and easy to automate.">command line</span>. Two it leans on most:</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🦊</div>
+            <div>
+              <strong>GitLab, via the <code>glab</code> CLI</strong>
+              <p><span class="term" data-definition="GitLab is a platform for storing code and managing how it ships: it hosts your repositories, runs automated tests, and handles code review. Think Google Docs for source code, with approvals and version history.">GitLab</span> is where my code lives and ships. <code>glab</code> is its command-line tool, so Claude can open merge requests, watch <span class="term" data-definition="A pipeline is the automated sequence of checks that runs on your code after you push it — building it and running tests — to confirm nothing broke before it merges.">pipelines</span>, and read review threads without me ever touching the web page.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📓</div>
+            <div>
+              <strong>Hex, via its CLI</strong>
+              <p><span class="term" data-definition="Hex is a collaborative data-science notebook: you mix SQL and Python in cells to explore data and build shareable dashboards — like a Google Doc for analysis, with live charts.">Hex</span> is where my analysis notebooks live. Its CLI lets Claude spin up a project, drop in SQL and Python cells, and run a query — turning a loose question into a working, shareable notebook.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">⌨️</div>
+          <div class="callout-content">
+            <strong class="callout-title">A CLI is how an agent gets hands</strong>
+            <p>A chat reply is just words. A command-line tool lets Claude <em>act</em> — open the MR, run the query, ship the change. The next screen shows the <code>glab</code> one in motion.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Shipping code: the MR relay (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Lane 5 — Shipping code: the merge-request relay</h2>
+        <p>Shipping code is the richest workflow — a baton passed between me and three automated runners. I open a <span class="term" data-definition="A merge request (MR) is a formal proposal to fold your changes into the shared codebase. Teammates and automated checks review it before it goes in. GitHub calls the same thing a pull request.">merge request (MR)</span>, then bots take over the testing and reviewing.</p>
+
+        <div class="flow-animation animate-in" data-steps='[
+ {"highlight":"flow-actor-1","label":"I push a branch and open a merge request"},
+ {"highlight":"flow-actor-2","label":"GitLab fires up a CI pipeline to test it","packet":true,"from":"actor-1","to":"actor-2"},
+ {"highlight":"flow-actor-3","label":"ci-watch.sh polls that pipeline in the background","packet":true,"from":"actor-2","to":"actor-3"},
+ {"highlight":"flow-actor-4","label":"Bugbot leaves an automated code review","packet":true,"from":"actor-3","to":"actor-4"},
+ {"highlight":"flow-actor-3","label":"ci-watch reports back: green, or here are the failures","packet":true,"from":"actor-4","to":"actor-3"},
+ {"highlight":"flow-actor-5","label":"Threads resolved, pipeline green: merge into main","packet":true,"from":"actor-3","to":"actor-5"}
+]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">🧑‍💻</div>
+              <span>Me</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">⚙️</div>
+              <span>GitLab Pipeline</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">👀</div>
+              <span>ci-watch</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">🐛</div>
+              <span>Bugbot</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-5">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">🌳</div>
+              <span>Main branch</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">Click "Next Step" to begin</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">Next Step</button>
+            <button class="btn flow-reset-btn">Restart</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <p>Meet the runners: a <span class="term" data-definition="A branch is your own private copy of the codebase where you make changes without disturbing the shared version, until you are ready to propose merging them back.">branch</span> opens the MR; a <span class="term" data-definition="A CI/CD pipeline is an automated assembly line that builds and tests your code every time you change it, so problems are caught before the code ships. CI stands for continuous integration.">CI/CD pipeline</span> tests it; <code>ci-watch.sh</code> babysits the pipeline; <span class="term" data-definition="Bugbot is an automated reviewer that reads your proposed changes and leaves comments flagging likely bugs — a tireless first-pass code reviewer.">Bugbot</span> leaves a review; and finally I <span class="term" data-definition="To merge is to fold your reviewed changes into the shared main codebase, making them official.">merge</span> into the protected main copy.</p>
+
+        <p>Rather than refreshing a web page for ten minutes, <code>ci-watch.sh</code> collapses the whole noisy pipeline into a single exit code.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment"># ci-watch exit codes</span></span>
+<span class="code-line"><span class="code-number">0</span>   green — pipeline passed, no open threads</span>
+<span class="code-line"><span class="code-number">1</span>   failed — prints the last 120 lines of the failing job</span>
+<span class="code-line"><span class="code-number">2</span>   timeout — 40-minute cap hit</span>
+<span class="code-line"><span class="code-number">4</span>   green, but review threads still open</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Instead of refreshing a web page, I get one number.</p>
+              <p class="tl"><code>1</code> drops me straight onto the failing log.</p>
+              <p class="tl"><code>4</code> means tests pass but a human or <span class="term" data-definition="Green is the all-clear signal in continuous integration — every automated check passed. A red pipeline means at least one check failed.">green</span> still isn't enough: a <span class="term" data-definition="A review thread is a comment-and-reply conversation attached to a specific line of a merge request. It stays open until resolved, blocking the merge.">review thread</span> from Bugbot wants changes — not done yet.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">A script can encode "done"</strong>
+            <p>The exit codes encode a <em>definition of done</em>: <span class="term" data-definition="Green CI means every automated test passed. It is necessary to ship — but on its own not sufficient, because open review threads still block the merge.">green</span> is necessary but not sufficient. Open threads still block the merge.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-4" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">The Automation Layer</h1>
+      <p class="module-subtitle">The always-on system — the work that happens when I am not at the keyboard.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Three mechanisms -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Three kinds of automation</h2>
+        <p>Where the last module was hands-on work I <em>drive</em>, this layer is the mirror image: work that runs <em>without</em> me — while I am asleep or in meetings. A lot of my <span class="term" data-definition="Claude Code is Anthropic's command-line tool — you type instructions to an AI agent in your terminal and it edits files, runs commands, and does real work on your machine.">Claude Code</span> day happens this way. Think of it like a smart home: three kinds of automation, each tripped by a different trigger, each able to touch different things. Knowing which is which is the whole skill — they differ in <em>what they can touch</em>, and most people only know one of the three.</p>
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">&#128161;</div>
+            <h4 class="pattern-title">Hooks</h4>
+            <p class="pattern-desc">Motion-sensor lights. Fire on an <strong>event</strong> — a session ends, a file is saved. Local and instant.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">&#9200;</div>
+            <h4 class="pattern-title">Local cron</h4>
+            <p class="pattern-desc">A sprinkler timer. Fires on a <strong>clock</strong>. Local and <span class="term" data-definition="Headless means running with no interactive screen or logged-in session — a program does its job in the background with nobody watching, so it cannot use anything that needs you to be signed in.">headless</span> — no login session, so no connected apps.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">&#9729;&#65039;</div>
+            <h4 class="pattern-title">Cloud triggers</h4>
+            <p class="pattern-desc">A house-sitter. Fires on a clock <strong>in the cloud</strong>, and <em>can</em> answer the door — it reaches connected apps like Slack, Gmail, and Calendar.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — Hooks -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Hooks — event-driven, local</h2>
+        <p>A <span class="term" data-definition="A hook is a small script that the tool runs automatically whenever a specific thing happens — like a doorbell wired to a chime. You decide the event; it decides what runs.">hook</span> is <span class="term" data-definition="Event-driven means the action runs in response to something happening (an event), not on a fixed schedule. The trigger is 'when X occurs', not 'at 9am'.">event-driven</span>: it watches for one specific moment and runs a script the instant it arrives. Here are the three wired into my setup right now.</p>
+        <div class="badge-list">
+          <div class="badge-item">
+            <code class="badge-code">Stop</code>
+            <span class="badge-desc">When a session ends, run <code>log_usage.sh</code> — logs tokens and cost to a ledger.</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">slack_update_canvas</code>
+            <span class="badge-desc">When the project canvas changes, run <code>canvas_backup_sync.sh</code> — mirrors it to a local file.</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">statusLine</code>
+            <span class="badge-desc">Runs <code>statusline-command.sh</code> — the model / context% / git line in my terminal.</span>
+          </div>
+        </div>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-property">"Stop"</span>: [{ <span class="code-property">"hooks"</span>: [{</span>
+<span class="code-line">  <span class="code-property">"type"</span>: <span class="code-string">"command"</span>,</span>
+<span class="code-line">  <span class="code-property">"command"</span>: <span class="code-string">"bash ~/.claude/log_usage.sh"</span>,</span>
+<span class="code-line">  <span class="code-property">"timeout"</span>: <span class="code-number">10</span></span>
+<span class="code-line">}]}]</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">When a session ends (the <code>Stop</code> event), do the following...</p>
+              <p class="tl">...run a shell command...</p>
+              <p class="tl">...specifically this script, <code>log_usage.sh</code>...</p>
+              <p class="tl">...and give it 10 seconds to finish.</p>
+              <p class="tl">It reads how many tokens I burned and appends the cost to a spreadsheet.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Local cron -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Local cron — clock-driven, local</h2>
+        <p>A <span class="term" data-definition="Cron is the classic timer built into Mac and Linux — you give it a schedule and a command, and it runs that command on the dot, forever, without you doing anything.">cron</span> job is a timed task on my own machine: at a fixed clock time, run this. My one active job keeps my code <span class="term" data-definition="A branch is a parallel copy of the project where you make changes without touching the main version — like editing a draft so the published page stays safe until you are ready.">branches</span> from drifting.</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-number">0</span> <span class="code-number">6,8,10,12,14,16</span> * * <span class="code-number">1-5</span>   ~/.claude/auto_rebase.sh</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">At minute 0 of 6am, 8, 10, noon, 2pm, and 4pm...</p>
+              <p class="tl">...Monday through Friday...</p>
+              <p class="tl">...run <code>auto_rebase.sh</code>: pull the main branch into my working branches so I never drift far behind.</p>
+            </div>
+          </div>
+        </div>
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#128161;</div>
+          <div class="callout-content">
+            <strong class="callout-title">It merges; it never rebases</strong>
+            <p>Despite the name, the script <span class="term" data-definition="Merging combines two lines of work by adding a new commit that joins them, keeping both histories intact. Rebasing rewrites your work to look like it was always built on top of the latest main — cleaner, but it can manufacture confusing conflicts.">merges rather than rebases</span>. Merging avoids the false conflicts that history-rewriting creates. A hard-won rule — saved to memory so I never relearn it.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Cloud triggers / daily rhythm -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Cloud triggers — the daily rhythm</h2>
+        <p>These run as <span class="term" data-definition="CCR (a cloud scheduled trigger) is a Claude agent that runs in the cloud on a schedule. Because it runs signed in, it can reach connected apps like Slack and Gmail — unlike a local cron job.">cloud scheduled triggers (CCR)</span>: clock-driven like cron, but in the cloud and signed in, so they can reach my <span class="term" data-definition="A connector (or connected app) links Claude to an outside service like Slack or Gmail, with your permission, so it can read and post on your behalf.">connected apps</span>. Four of them shape my whole day.</p>
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong><code>daily-digest</code> &middot; morning</strong>
+              <p>Stitches my project canvas, unread Slack, calendar, Gmail, and Gemini meeting notes into one briefing — then <span class="term" data-definition="A DM (direct message) is a private one-to-one message in Slack — just between you and the sender, not a public channel.">DMs</span> it to me before I've opened a single tab.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong><code>daily-progress-check</code> (EOD) &middot; evening</strong>
+              <p>Reconstructs what I actually shipped — pulling commits and merge requests from my GitLab notification emails, since my technical work never lands in Slack — then proposes tracker updates.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong><code>canvas-updater</code> &middot; night</strong>
+              <p>Applies the approved updates to the project canvas.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong><code>gmail-auto-label</code> &middot; every 2 hours</strong>
+              <p>A silent inbox janitor: labels and files mail by sender, archives the noise.</p>
+              <p style="font-family: var(--font-display); font-style: italic; color: var(--color-text-secondary); font-size: var(--text-sm); margin-top: var(--space-1);">(Yes — Gmail's own filters never quite work for me, somehow. So I let Claude do it. Don't judge me 🫣)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4.5 — What the agents read -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What they read to know my day</h2>
+        <p>My day is scattered across half a dozen tools. The agents gather it so I don't have to — and each source fills a gap the others can't.</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📧</div>
+            <div>
+              <strong>GitLab notification emails</strong>
+              <p>My technical progress — commits, <span class="term" data-definition="A merge request (MR) is a proposal to fold one branch of code into the main codebase, where it gets reviewed and tested before being accepted. GitHub calls the same thing a pull request.">merge requests</span>, reviews — lives in <span class="term" data-definition="GitLab is a platform for storing code and managing how it ships: it hosts your repositories, runs automated tests, and handles code review. Think Google Docs for source code, with approvals and version history.">GitLab</span>, not Slack. Reading its email notifications is how Claude knows what I shipped.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">💬</div>
+            <div>
+              <strong>Slack messages</strong>
+              <p>Scans my channels and threads for decisions, discussions, and anything aimed at me — so a buried "hey, can you…" doesn't slip past.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📝</div>
+            <div>
+              <strong>Gemini meeting notes</strong>
+              <p>Reads the auto-generated <span class="term" data-definition="Gemini is Google's AI assistant. In Google Meet it can sit in on a call and write up notes and action items automatically — so there's a text record of what was said without anyone taking minutes.">Gemini</span> notes from my calls, so meeting outcomes reach the brief without me typing a recap.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📅</div>
+            <div>
+              <strong>Calendar, Jira &amp; Confluence</strong>
+              <p>What happened, what's coming next, and any tickets or docs that mention me.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔗</div>
+          <div class="callout-content">
+            <strong class="callout-title">Grounded, not guessed</strong>
+            <p>Every line in a brief must trace back to a real artifact the agent read that run — a specific GitLab email, Slack thread, or meeting note. No synthesis, no inventing progress that didn't happen.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4.7 — The tracker canvas structure -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The tracker: one canvas, project radar</h2>
+        <p>All of this points at a single <span class="term" data-definition="A Slack canvas is a living document that lives inside Slack — like a Google Doc pinned to a channel, with headings, checklists, and links that anyone on the team can open.">Slack canvas</span>. Its structure is what makes progress legible at a glance: projects bucketed by priority, each one self-describing.</p>
+
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; max-width: 600px; margin: var(--space-8) auto;">
+          <div style="padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-light); font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg);">📝 Project Tracker — Ting-Wei</div>
+          <div style="padding: var(--space-4) var(--space-5);">
+            <div style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-error); font-weight: 700;">🔴 P1 — Do First</div>
+            <div style="border: 1px solid var(--color-border); border-left: 3px solid var(--color-accent); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); margin: var(--space-3) 0;">
+              <strong>Activation funnel deep-dive</strong>
+              <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-2); line-height: 1.9;">
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">Scope</span> Growth</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">Channel</span> <span style="color: var(--color-teach);">#growth-analytics</span></div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">Status</span> 🟡 In progress</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">ETA</span> End of June</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">Next</span> Review cohort definitions with Growth, then rebuild the model</div>
+                <div style="margin-top: var(--space-1);"><span style="color: var(--color-text-muted);">Log</span></div>
+                <div style="padding-left: var(--space-4);">• 06-11 — Shared v1 numbers async; flagged a tracking gap</div>
+                <div style="padding-left: var(--space-4);">• 06-09 — Kicked off; scoped the funnel stages</div>
+              </div>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 2.2; border-top: 1px dashed var(--color-border); padding-top: var(--space-2); margin-top: var(--space-2);">
+              <div>🟠 P2 — High Priority <span style="color: var(--color-text-muted);">· 2</span></div>
+              <div>🟡 P3 — Medium Priority <span style="color: var(--color-text-muted);">· 3</span></div>
+              <div>🟢 P4 — Lower Priority <span style="color: var(--color-text-muted);">· 4</span></div>
+              <div>✅ Completed <span style="color: var(--color-text-muted);">· 20+</span></div>
+              <div>💬 Monitoring channels <span style="color: var(--color-text-muted);">· 12</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="caption">A real entry, anonymized — the shape is exactly what I use.</p>
+
+        <p>Every project carries the same four fields, and each one answers a question I'd otherwise have to chase down:</p>
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Status</code>
+            <span class="badge-desc">Where does it stand right now? — 🟡 in progress, 🔴 blocked, ⏸️ deprioritized</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">ETA</code>
+            <span class="badge-desc">When will it land? — the date I'm steering toward</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Next</code>
+            <span class="badge-desc">What's the very next action? — so I never reopen a project cold</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Log</code>
+            <span class="badge-desc">What's happened, with dates? — a timestamped trail I can reconstruct from</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🛰️</div>
+          <div class="callout-content">
+            <strong class="callout-title">Checking progress = opening one doc</strong>
+            <p>Priority order at the top, status and next-action on every card, a dated log underneath. The morning digest reads the top buckets; the EOD agent appends to the <code>Log</code>. I never edit it by hand — I just say <em>"add update to [project]: …"</em> or <em>"set [project] ETA to …"</em> and the <code>canvas-tracker</code> skill rewrites it.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — HERO: data-flow animation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Trace the loop: EOD &rarr; canvas</h2>
+        <p>Watch one full cycle. This is a human-in-the-loop that defaults to <em>yes</em> — silence ships the proposal, so the tracker stays current even on my busiest days.</p>
+        <div class="flow-animation" data-steps='[
+ {"highlight":"flow-eod-1","label":"Evening: the EOD agent drafts what I shipped today"},
+ {"highlight":"flow-eod-2","label":"It sends that draft to my Slack DM","packet":true,"from":"eod-1","to":"eod-2"},
+ {"highlight":"flow-eod-3","label":"I reply with tweaks — or say nothing","packet":true,"from":"eod-2","to":"eod-3"},
+ {"highlight":"flow-eod-4","label":"At night, canvas-updater reads that thread","packet":true,"from":"eod-3","to":"eod-4"},
+ {"highlight":"flow-eod-5","label":"It rewrites the project tracker — default-approve if I stayed quiet","packet":true,"from":"eod-4","to":"eod-5"}
+]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-eod-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">&#127769;</div>
+              <span>EOD agent</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">&#128172;</div>
+              <span>My DM</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">&#129489;</div>
+              <span>Me</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">&#9999;&#65039;</div>
+              <span>canvas-updater</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-5">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">&#128203;</div>
+              <span>Tracker canvas</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet-eod"></div>
+
+          <div class="flow-step-label" id="flow-label-eod">Click "Next Step" to begin</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">Next Step</button>
+            <button class="btn flow-reset-btn">Restart</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6 — The payoff: before & after -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What the rhythm actually solves</h2>
+        <p>None of this is automation for its own sake. The daily rhythm exists to kill specific, daily pain.</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-error)">
+            <div class="pattern-icon" style="background: var(--color-error)">😵‍💫</div>
+            <h4 class="pattern-title">Before</h4>
+            <ul class="pattern-desc" style="margin: 0; padding-left: 1.1em">
+              <li>Overnight changes scattered across Slack, email, calendar, and Jira — no single picture each morning.</li>
+              <li>My shipped work lived in GitLab; by evening I'd half-forget what I'd actually done.</li>
+              <li>The project tracker drifted stale — I kept meaning to update it.</li>
+              <li>Team and manager visibility depended on me remembering to post.</li>
+            </ul>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-success)">
+            <div class="pattern-icon" style="background: var(--color-success)">😌</div>
+            <h4 class="pattern-title">After</h4>
+            <ul class="pattern-desc" style="margin: 0; padding-left: 1.1em">
+              <li>One grounded morning brief, stitched from every source, waiting in my DM.</li>
+              <li>EOD captures the day's commits and merge requests straight from GitLab emails.</li>
+              <li>The tracker updates itself nightly — silence just means "ship it."</li>
+              <li>Status is automatic; nothing slips through the cracks.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">⏳</div>
+          <div class="callout-content">
+            <strong class="callout-title">The real win is attention, not minutes</strong>
+            <p>I start the day already oriented and end it without writing a status update. The rhythm carries the context so I can spend my focus on the actual work.</p>
+          </div>
+        </div>
+
+        <p class="caption">Next up: how Claude <em>remembers</em> corrections like "merge, never rebase" — so I only have to say them once.</p>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-5" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">Memory &amp; Self-Improvement</h1>
+      <p class="module-subtitle">How a one-time correction becomes a permanent habit — the feedback loop that turns Claude into a teammate.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — The memory folder -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A colleague who actually remembers</h2>
+        <p>Tell a good hire once &mdash; <em>"we always merge, never rebase"</em> &mdash; and you never repeat it. <span class="term" data-definition="Memory here means notes that persist across sessions. Most chat assistants forget everything when you close the window; this setup writes durable facts to small files so the next conversation starts already knowing them.">Memory</span> is how Claude becomes that hire instead of the one you re-train every Monday.</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">memory/</span>
+            <span class="ft-desc">~20 single-fact files — one fact each</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">MEMORY.md</span>
+                <span class="ft-desc">The index: one line per memory, loaded every session</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">feedback-viz-no-gridlines.md</span>
+                <span class="ft-desc">How I like to work — corrections &amp; confirmed approaches</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">project-pro-plan-cutout.md</span>
+                <span class="ft-desc">Ongoing context the code can&apos;t tell you</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">reference-confluence-map.md</span>
+                <span class="ft-desc">Pointers to IDs, docs, dashboards</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="caption">~20 single-fact files. One fact per file &mdash; easy to add, easy to retire.</p>
+      </section>
+
+      <!-- SCREEN 2 — How a correction becomes permanent (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How a correction becomes permanent</h2>
+        <p>The first time I corrected Claude, it forgot by the next session. Now it doesn&apos;t &mdash; because the correction gets written to a small file like this one.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+<pre><code><span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line"><span class="code-property">name</span>: feedback-viz-no-gridlines</span>
+<span class="code-line"><span class="code-property">description</span>: No gridlines + centered titles by default</span>
+<span class="code-line"><span class="code-property">metadata</span>:</span>
+<span class="code-line">  <span class="code-property">type</span>: feedback</span>
+<span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line">No gridlines + centered titles by default; applies</span>
+<span class="code-line">to every plotting library. Why: cleaner, less ink.</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">A <span class="term" data-definition="The block at the very top of a file, fenced by --- lines, that holds machine-readable settings (here: name, description, type). The text below it is the human-readable content.">frontmatter</span> name &mdash; a short <span class="term" data-definition="A slug is a short, lowercase, hyphenated label used as an identifier — like the tail end of a web address. Here it lets me point to one specific memory by name.">slug</span> so I can link to this exact memory.</p>
+              <p class="tl">A description &mdash; the one line Claude scans to decide if this memory is relevant <em>right now</em>.</p>
+              <p class="tl">The fact itself, plus the <em>why</em>, so it&apos;s applied with judgment &mdash; not blindly.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#128161;</div>
+          <div class="callout-content">
+            <strong class="callout-title">Said once, applied forever</strong>
+            <p>I said "drop the gridlines" <em>once</em>. Now every chart starts that way &mdash; across Matplotlib, Plotly, anything.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — The compounding loop -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The loop that tightens over time</h2>
+        <p>Each correction makes the next session a little sharper. It&apos;s a loop &mdash; the setup gets better the more I use it.</p>
+
+        <div class="flow-steps animate-in">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p>I correct Claude in conversation</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p>It writes a one-line memory file</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p>Next session, the <span class="term" data-definition="An index is a quick-reference list — like a table of contents. MEMORY.md lists every memory in one line each, so Claude can scan it fast and only open the files that matter.">index</span> loads and the description matches my task</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p>The behavior changes &mdash; no reminder needed</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">&#129504;</div>
+          <div class="callout-content">
+            <strong class="callout-title">Three layers reinforce each other</strong>
+            <p><code>CLAUDE.md</code> says <em>who I am</em>, <strong>skills</strong> say <em>how to do a procedure</em>, and <code>memory/</code> holds <em>corrections to both</em>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Where should a fact live? -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Where should a fact live?</h2>
+        <p>Not everything belongs in memory. Each kind of knowledge has a home &mdash; and putting it in the right one is half the craft.</p>
+
+        <div class="pattern-cards animate-in">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">&#128100;</div>
+            <h4 class="pattern-title"><code>CLAUDE.md</code></h4>
+            <p class="pattern-desc">Stable identity &amp; global preferences &mdash; "be concise", "snake_case SQL". Things that are always true.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">&#128296;</div>
+            <h4 class="pattern-title">A skill</h4>
+            <p class="pattern-desc">A <em>procedure</em> you repeat &mdash; "how to QA a <span class="term" data-definition="dbt (data build tool) is software that builds and tests data tables from SQL. A 'dbt model' is one such table definition.">dbt</span> model", "how to format a leadership update".</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">&#128221;</div>
+            <h4 class="pattern-title"><code>memory/</code></h4>
+            <p class="pattern-desc">A <em>specific correction or fact</em> that surprised you once and shouldn&apos;t again.</p>
+          </div>
+        </div>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">&#128203;</div>
+            <div>
+              <strong><code>known_issues.md</code> &mdash; a running fixes log</strong>
+              <p>~16 entries of "this broke, here&apos;s why, here&apos;s the fix."</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">&#128737;&#65039;</div>
+            <div>
+              <strong><code>regression-guard</code> &mdash; a safety skill</strong>
+              <p>Enforces <span class="term" data-definition="A baseline is a snapshot of how something behaves before you change it — your 'before' photo, so you can prove the 'after' didn't break anything.">baseline</span> &rarr; change &rarr; re-verify, so a new feature doesn&apos;t silently break the old path (a <span class="term" data-definition="A regression is when a change accidentally breaks something that used to work — a step backward hidden inside a step forward.">regression</span>).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Real standing orders -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Real standing orders</h2>
+        <p>These are the actual saved learnings &mdash; the system working. Each one was a moment of friction that became a permanent habit.</p>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">&#128260;</div>
+            <div>
+              <strong>Merge, never <span class="term" data-definition="Rebase rewrites a branch's history so it looks like it was built on top of the latest changes. Tidy, but it can manufacture false conflicts — so this setup avoids it.">rebase</span> + <span class="term" data-definition="Force-push overwrites the shared history on the server with your local version. Powerful and dangerous — it can erase a teammate's work, so it's banned here.">force-push</span></strong>
+              <p>Avoids false conflicts and rewritten history.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">&#128202;</div>
+            <div>
+              <strong>No gridlines, centered titles</strong>
+              <p>Every chart, every plotting library.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">&#9989;</div>
+            <div>
+              <strong>Always self-assign my merge requests</strong>
+              <p>And resolve any conflicts before reporting the work done.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">&#129521;</div>
+            <div>
+              <strong>The project <span class="term" data-definition="A canvas is a shared, editable document pinned inside a Slack channel — used here as a live project tracker.">canvas</span> is full-replace only</strong>
+              <p>Section-level edits corrupt it.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">&#128268;</div>
+            <div>
+              <strong>Headless runs can&apos;t use <span class="term" data-definition="A connector links Claude to an outside service — Slack, Gmail, a calendar — so it can read and act there. Automated background runs lack these, so workflows are designed around the gap.">connectors</span></strong>
+              <p>Design around it &mdash; the Module 4 lesson, now a memory.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#10024;</div>
+          <div class="callout-content">
+            <strong class="callout-title">The texture of how I work</strong>
+            <p>None of these are in the code. They&apos;re <em>how I work</em> &mdash; and they survive across every session because they&apos;re written down.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-6" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h1 class="module-title">Best Practices &amp; Hard-Won Lessons</h1>
+      <p class="module-subtitle">Day-one field notes — the things I wish someone had told me before I started, written for the next person.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — CLAUDE.md is a directory, not a manual -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading"><code>CLAUDE.md</code> is a directory, not a manual</h2>
+        <p>If you copy one thing from my setup, copy the habits — not the files. And the first habit is this: your <code>CLAUDE.md</code> is a table of contents, not a textbook.</p>
+        <p>Identity and preferences sit up top, stable and rarely touched. Below them lives an <em>index</em> — one line per <span class="term" data-definition="A skill is a self-contained folder of instructions and reference files that Claude loads only when a task needs it — like pulling one binder off a shelf instead of reading the whole library every time.">skill</span> — that points outward to where the real detail lives.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment">## Who I am</span>          (1-2 lines)</span>
+<span class="code-line"><span class="code-comment">## Communication</span>     (how to talk to me)</span>
+<span class="code-line"><span class="code-comment">## Coding</span>            (my conventions)</span>
+<span class="code-line"><span class="code-comment">## Skills</span>            (index — one line each, points outward)</span>
+<span class="code-line"><span class="code-comment">## Reference files</span>   (pointers, not content)</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Identity and preferences up top — stable, rarely changes.</p>
+              <p class="tl">How I want Claude to talk, and the conventions I code by.</p>
+              <p class="tl">Then an <em>index</em> of skills: one line each, no detail.</p>
+              <p class="tl">The detail lives in the skill folders and memory — <code>CLAUDE.md</code> just routes to it.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Mine is 48 lines</strong>
+            <p>Every line is read before each session — that's attention spent. A bloated <code>CLAUDE.md</code> makes Claude <em>worse</em>, not better. Keep it a table of contents.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The transferable habits -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The habits that transfer to any setup</h2>
+        <p>The setup works because of a few principles, not because of any one clever script. These four travel to <em>any</em> Claude Code setup, on any team.</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🎯</div>
+            <h4 class="pattern-title">Load on demand</h4>
+            <p class="pattern-desc">Put procedures in <span class="term" data-definition="A skill is a self-contained folder of instructions Claude loads only when a task calls for it, instead of carrying every procedure in memory all the time.">skills</span>, not in <code>CLAUDE.md</code>. <span class="term" data-definition="The context budget is the limited amount of text Claude can hold in mind at once — its working memory for a session. Everything you load competes for that space, so you spend it only when relevant.">Context is a budget</span> — spend it only when relevant.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🍴</div>
+            <h4 class="pattern-title">Fork, don't build from zero</h4>
+            <p class="pattern-desc">Start from a good open-source skill (e.g. Zara Zhang's), rebrand it, then grow your own with <span class="term" data-definition="skill-creator is a meta-skill: a skill whose job is to help you build, edit, and test other skills — the workshop where new skills get made.">skill-creator</span>.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🧠</div>
+            <h4 class="pattern-title">Write down corrections</h4>
+            <p class="pattern-desc">One-line memory files turn "I had to say it twice" into "I never say it again."</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">🤖</div>
+            <h4 class="pattern-title">Automate the boring, keep humans in the loop</h4>
+            <p class="pattern-desc">Default-approve flows (like my end-of-day → canvas loop) keep things moving without going rogue.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2.5 — Plan before you build -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Plan first, then build</h2>
+        <p>For anything bigger than a quick edit, I make Claude <em>plan before it touches a file</em>. In <span class="term" data-definition="Plan mode is a Claude Code setting where it researches and proposes an approach but is blocked from editing files until you approve. It's a read-only thinking phase before any code is written.">plan mode</span> it explores the problem, proposes an approach, and waits for my approval — so I can redirect it while changes are still free.</p>
+        <p>The payoff is leverage: catching a wrong assumption in a one-paragraph plan costs seconds; catching it after Claude has rewritten ten files costs the afternoon.</p>
+
+        <div class="flow-steps animate-in">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p><strong>Explore</strong><br>Claude reads the relevant files and patterns</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p><strong>Plan</strong><br>It proposes an approach — no edits yet</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p><strong>Approve</strong><br>I redirect or green-light it</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p><strong>Build</strong><br>Only now does it write code</p>
+          </div>
+        </div>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">use it</code>
+            <span class="badge-desc">Multi-step work, anything touching several files, fuzzy requirements, or changes that are hard to undo</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">skip it</code>
+            <span class="badge-desc">Typo fixes, a one-line change, a rename — just let Claude do it</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🪄</div>
+          <div class="callout-content">
+            <strong class="callout-title">This course was built that way</strong>
+            <p>All six modules were scoped in plan mode and I approved the outline <em>before a single line of HTML was written</em>. Cheap to reshape on paper; expensive to reshape in code.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Security & redaction discipline -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Redaction is the price of sharing</h2>
+        <p>A few commands are just never worth the risk, so they're denied globally — Claude can't run them no matter what it's asked. These guardrails live in <code>settings</code> and apply to every session.</p>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Bash(rm -rf*)</code>
+            <span class="badge-desc">Denied globally — never recursively force-delete files</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(git push --force*)</code>
+            <span class="badge-desc">Denied globally — never overwrite shared history with a force-push</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(sudo*)</code>
+            <span class="badge-desc">Denied globally — never run commands as the all-powerful admin user</span>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">Treat anything you share like a screenshot that lives forever</strong>
+            <p>A <em>shareable</em> setup must never leak live <span class="term" data-definition="A secret (or credential) is any private value that proves who you are or unlocks access — a password, key, or token. Leak one and anyone can act as you.">secrets</span> — <span class="term" data-definition="A connection string is a single line of text holding everything needed to log into a database: address, username, and password rolled into one. Leak it and someone can read or change your data.">connection strings</span>, account numbers, client secrets, <span class="term" data-definition="A token is a long random string that acts like a temporary password an app uses to access a service on your behalf. Anyone holding it can impersonate you until it expires.">tokens</span>. This very course was redaction-audited before it left my machine.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Keep your failures -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Keep your failures — they're the reusable part</h2>
+        <p>The most reusable part of a setup isn't the list of what worked. It's the list of what <em>didn't</em>.</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📵</div>
+            <div>
+              <strong>Two cron scripts retired</strong>
+              <p>They tried to send a message from a <span class="term" data-definition="Cron is a scheduler that runs a task automatically at set times — like a recurring alarm clock for your computer that fires a script while you're away.">cron</span> run with no one logged in, which can't connect to those tools. The wall taught the rule.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">💾</div>
+            <div>
+              <strong>Trigger prompts got wiped by a UI bug</strong>
+              <p>Recovered from a backup file plus the API. Now every <span class="term" data-definition="A cloud trigger is an automation that runs on a remote server on a schedule or event — not on your laptop — so it fires even when your machine is off.">cloud-trigger</span> prompt is backed up.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🔀</div>
+            <div>
+              <strong>Rebase → merge</strong>
+              <p><span class="term" data-definition="Rebase and merge are two ways to combine code branches. Rebase replays your commits on top of the latest code (and can invent conflicts); merge ties the branches together with one tidy join. Switching to merge ended the conflicts.">Auto-rebasing</span> replayed commits and invented conflicts; switching to merge ended them.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">📓</div>
+          <div class="callout-content">
+            <strong class="callout-title">A failures log is cheap insurance</strong>
+            <p>A <span class="term" data-definition="known_issues.md is a plain-text log of problems already hit and how they were fixed — a running diary so future-you (and future-Claude) reads it before repeating the same mistake.">known_issues.md</span> file is read by future-you — and future-Claude — before either repeats a mistake.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — The whole system, one picture (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The whole system, in one picture</h2>
+        <p>Four layers, top to bottom. Each one makes the layers below it smarter over time.</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-5)">📇</div>
+            <div>
+              <strong>Config &mdash; <code>CLAUDE.md</code> + <code>settings</code></strong>
+              <p>Who I am, and what's allowed. Lean by design.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📚</div>
+            <div>
+              <strong>Skills</strong>
+              <p>On-demand expertise — forked from others, then homegrown.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">⚙️</div>
+            <div>
+              <strong>Automation</strong>
+              <p><span class="term" data-definition="A hook is a small command that fires automatically at a set moment — before or after Claude does something — so a rule runs every time without you remembering to invoke it.">Hooks</span>, cron, and cloud triggers running the recurring work.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🧠</div>
+            <div>
+              <strong>Memory</strong>
+              <p>Corrections that make all three layers smarter over time.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🌱</div>
+          <div class="callout-content">
+            <strong class="callout-title">Start small</strong>
+            <p>A lean <code>CLAUDE.md</code>, one skill, one hook. Add a skill each time you repeat yourself, automate what's boring, and let memory catch the corrections. The system compounds — that's the whole point.</p>
+          </div>
+        </div>
+
+        <p class="caption">Built by Ting-Wei — with the very setup it describes.</p>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-7" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">07</span>
+      <h1 class="module-title">Resources &amp; Credits</h1>
+      <p class="module-subtitle">The open sources behind this setup — and where to get them yourself.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN — Links / start here -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Start here</h2>
+        <p>Want to build your own version? These are the open doors — everything I started from is public.</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-accent)">📘</div>
+            <div>
+              <strong><a href="https://code.claude.com/docs" target="_blank" rel="noopener" style="color: var(--color-accent);">Claude Code — docs</a></strong>
+              <p>The tool everything here runs on. Start with the overview, then skills and hooks.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📦</div>
+            <div>
+              <strong><a href="https://github.com/anthropics/skills" target="_blank" rel="noopener" style="color: var(--color-accent);">Anthropic Agent Skills</a></strong>
+              <p>Anthropic's public skills — where <code>pdf</code>, <code>skill-creator</code>, <code>mcp-builder</code>, and the document skills live.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🔌</div>
+            <div>
+              <strong><a href="https://github.com/anthropics/claude-plugins-official" target="_blank" rel="noopener" style="color: var(--color-accent);">Claude Code plugins marketplace</a></strong>
+              <p>Anthropic's curated plugin directory — where I installed <code>ralph-loop</code>.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🦊</div>
+            <div>
+              <strong><a href="https://github.com/zarazhangrui" target="_blank" rel="noopener" style="color: var(--color-accent);">Zara Zhang's skills</a></strong>
+              <p><code>codebase-to-course</code>, <code>frontend-slides</code>, and <code>beautiful-html-templates</code> — the ones I forked and rebranded.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">👋</div>
+          <div class="callout-content">
+            <strong class="callout-title">Now go build your own</strong>
+            <p>Install one skill, fork another, write your first one the next time you repeat yourself. That's the whole recipe — the rest just compounds.</p>
+          </div>
+        </div>
+
+        <p class="caption">Built with <code>codebase-to-course</code> — forked from Zara Zhang, rebranded, and pointed at my own setup. &mdash; Ting-Wei</p>
+      </section>
+
+    </div>
+  </div>
+</section>
+  </main>
+
+</body>
+</html>

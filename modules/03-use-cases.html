@@ -1,0 +1,310 @@
+<section class="module" id="module-3" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">Use Cases by Domain</h1>
+      <p class="module-subtitle">How the work actually gets done — one tool, four very different jobs.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Four lanes -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A day is a relay race</h2>
+        <p>A normal day spans four jobs that have almost nothing in common: crunching numbers, drawing charts, writing for humans, and shipping code. The same tool handles all four — it just changes mode, like a runner crossing different terrain.</p>
+        <p>The thread tying these together: this is all work <em>I</em> drive — hands on the keyboard, steering each step. <strong>The work that runs without me is the next module.</strong> Each lane here is powered by a different <span class="term" data-definition="A skill is a self-contained bundle of instructions and know-how that Claude loads on demand for a specific kind of task — like pulling the right manual off a shelf instead of memorising everything at once.">skill</span> — the loadable playbooks from the last module.</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📊</div>
+            <div>
+              <strong>Data analysis</strong>
+              <p>"Why did this metric move?" Powered by <code>data-analysis</code> + <code>company-data-stack</code>.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📈</div>
+            <div>
+              <strong>Visualization</strong>
+              <p>Turning a table into a chart someone actually gets. Powered by <code>data-viz</code>.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">✍️</div>
+            <div>
+              <strong>Communication</strong>
+              <p>Status updates, docs, decks. Powered by <code>internal-comms</code>, <code>company-confluence</code>, <code>company-slides</code>, <code>company-slack</code>.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🗂️</div>
+            <div>
+              <strong>Productivity / admin <span style="font-weight:400; color: var(--color-text-muted); font-size: var(--text-xs);">— the odd one out</span></strong>
+              <p>The one lane I <em>don't</em> drive anymore: so repetitive I handed it to robots that run without me. The bridge into the next module — <code>daily-digest</code>, <code>canvas-tracker</code>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — Lane 1: Data analysis -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Lane 1 — Data analysis</h2>
+        <p>The <code>data-analysis</code> skill enforces the rigor a rushed analyst skips. It routes every question into one of five modes, each with its own checklist.</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🔍</div>
+            <h4 class="pattern-title">Diagnostic</h4>
+            <p class="pattern-desc">Why did a <span class="term" data-definition="A metric is a single number you track over time to measure how something is doing — like weekly signups or revenue.">metric</span> move?</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🧭</div>
+            <h4 class="pattern-title">Exploratory</h4>
+            <p class="pattern-desc">What is even in this new dataset?</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📋</div>
+            <h4 class="pattern-title">Descriptive</h4>
+            <p class="pattern-desc">Summarise what happened, cleanly.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">⚗️</div>
+            <h4 class="pattern-title">Experimental</h4>
+            <p class="pattern-desc">Did the <span class="term" data-definition="An A/B test splits people into two groups — one sees a change, one does not — so you can tell whether the change caused a difference, not just chance.">A/B test</span> work?</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">🔮</div>
+            <h4 class="pattern-title">Predictive</h4>
+            <p class="pattern-desc">What is likely to happen next?</p>
+          </div>
+        </div>
+
+        <p>A diagnostic almost always starts with a simple sanity-check query, written in the house style — <span class="term" data-definition="snake_case is a naming style that joins words with underscores and uses only lowercase, like signup_week. It keeps database names tidy and easy to read.">snake_case</span>, clear aliases, no clever subqueries.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-keyword">select</span></span>
+<span class="code-line">    signup_week,</span>
+<span class="code-line">    <span class="code-function">count</span>(<span class="code-keyword">distinct</span> user_id) <span class="code-keyword">as</span> signups</span>
+<span class="code-line"><span class="code-keyword">from</span> clean_signups</span>
+<span class="code-line"><span class="code-keyword">where</span> signup_week &gt;= <span class="code-function">date_trunc</span>(<span class="code-string">'week'</span>, current_date) - <span class="code-keyword">interval</span> <span class="code-string">'8 weeks'</span></span>
+<span class="code-line"><span class="code-keyword">group by</span> 1</span>
+<span class="code-line"><span class="code-keyword">order by</span> 1</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Count distinct users per week...</p>
+              <p class="tl">...for the last 8 weeks...</p>
+              <p class="tl">...so I can see if last week's drop is real or just noise.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">The first rule of diagnostics</strong>
+            <p>Confirm the drop is real <em>before</em> explaining it. Half of diagnostics is resisting the first tidy story your brain offers.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Lane 2: Visualization -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Lane 2 — Visualization</h2>
+        <p>A chart is only useful if a reader gets it in a glance. The <code>data-viz</code> skill bakes in the <span class="term" data-definition="The Cleveland–McGill hierarchy ranks how accurately people read different chart shapes. Lengths and positions are easiest to judge; angles and areas are hardest — so a bar chart beats a pie chart for comparing numbers.">Cleveland–McGill hierarchy</span>, the research on what the human eye reads accurately.</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📏</div>
+            <h4 class="pattern-title">Position beats angle beats area</h4>
+            <p class="pattern-desc">Bars over pies — the eye reads length far better than a slice.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🚫</div>
+            <h4 class="pattern-title">No dual Y-axes</h4>
+            <p class="pattern-desc">A <span class="term" data-definition="A dual Y-axis chart stacks two different scales on the left and right edges of one plot. It is banned here because it lets you imply a relationship between two lines that may not exist.">dual Y-axis</span> invents relationships that aren't there.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🎨</div>
+            <h4 class="pattern-title">Ramp, not rainbow</h4>
+            <p class="pattern-desc"><span class="term" data-definition="A sequential palette fades through one colour from light to dark to show low-to-high values, so the colour itself encodes order. A rainbow palette uses many unrelated hues, which the eye cannot rank — it implies categories where there is really a scale.">Sequential data gets a sequential ramp</span>, never a rainbow.</p>
+          </div>
+        </div>
+
+        <p>Two of these aren't decisions I re-make each time — they're saved defaults that fire automatically.</p>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">no gridlines</code>
+            <span class="badge-desc">Removed by default, in every charting library.</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">centered titles</code>
+            <span class="badge-desc">Titles sit centered, by default, without asking.</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Defaults live in memory</strong>
+            <p>These preferences live in Claude's <em>memory</em>, so every chart starts correct without me asking — we'll see the memory system in Module 5.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Lanes 3 & 4: Communication + admin -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Lanes 3 &amp; 4 — Communication + admin</h2>
+        <p>Writing for humans is its own register, and each surface has its own skill. The admin lane is so repetitive it mostly got handed to robots.</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📝</div>
+            <div>
+              <strong><code>internal-comms</code></strong>
+              <p>Status reports, leadership updates, and FAQs in the company's house format.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📚</div>
+            <div>
+              <strong><code>company-confluence</code></strong>
+              <p>Wiki docs that land in the right place in the right space.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-5)">🖥️</div>
+            <div>
+              <strong><code>company-slides</code></strong>
+              <p>16:9 branded decks, ready to present.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">💬</div>
+            <div>
+              <strong><code>company-slack</code></strong>
+              <p>Post, read, and search across channels.</p>
+            </div>
+          </div>
+        </div>
+
+        <p>And here's the seam between this module and the next: the admin lane is the one job I stopped <em>driving</em>. It was so repetitive I handed it to scheduled robots that run without me — and that hand-off, from work I drive to work that runs itself, is the whole of the next module.</p>
+      </section>
+
+      <!-- SCREEN 4.5 — Driving real tools from the terminal -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Driving real tools, not just chatting</h2>
+        <p>Claude doesn't only talk — it runs my actual tools straight from the <span class="term" data-definition="The command line (or CLI, command-line interface) is a text window where you operate a tool by typing commands instead of clicking buttons — fast, precise, and easy to automate.">command line</span>. Two it leans on most:</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🦊</div>
+            <div>
+              <strong>GitLab, via the <code>glab</code> CLI</strong>
+              <p><span class="term" data-definition="GitLab is a platform for storing code and managing how it ships: it hosts your repositories, runs automated tests, and handles code review. Think Google Docs for source code, with approvals and version history.">GitLab</span> is where my code lives and ships. <code>glab</code> is its command-line tool, so Claude can open merge requests, watch <span class="term" data-definition="A pipeline is the automated sequence of checks that runs on your code after you push it — building it and running tests — to confirm nothing broke before it merges.">pipelines</span>, and read review threads without me ever touching the web page.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📓</div>
+            <div>
+              <strong>Hex, via its CLI</strong>
+              <p><span class="term" data-definition="Hex is a collaborative data-science notebook: you mix SQL and Python in cells to explore data and build shareable dashboards — like a Google Doc for analysis, with live charts.">Hex</span> is where my analysis notebooks live. Its CLI lets Claude spin up a project, drop in SQL and Python cells, and run a query — turning a loose question into a working, shareable notebook.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">⌨️</div>
+          <div class="callout-content">
+            <strong class="callout-title">A CLI is how an agent gets hands</strong>
+            <p>A chat reply is just words. A command-line tool lets Claude <em>act</em> — open the MR, run the query, ship the change. The next screen shows the <code>glab</code> one in motion.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Shipping code: the MR relay (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Lane 5 — Shipping code: the merge-request relay</h2>
+        <p>Shipping code is the richest workflow — a baton passed between me and three automated runners. I open a <span class="term" data-definition="A merge request (MR) is a formal proposal to fold your changes into the shared codebase. Teammates and automated checks review it before it goes in. GitHub calls the same thing a pull request.">merge request (MR)</span>, then bots take over the testing and reviewing.</p>
+
+        <div class="flow-animation animate-in" data-steps='[
+ {"highlight":"flow-actor-1","label":"I push a branch and open a merge request"},
+ {"highlight":"flow-actor-2","label":"GitLab fires up a CI pipeline to test it","packet":true,"from":"actor-1","to":"actor-2"},
+ {"highlight":"flow-actor-3","label":"ci-watch.sh polls that pipeline in the background","packet":true,"from":"actor-2","to":"actor-3"},
+ {"highlight":"flow-actor-4","label":"Bugbot leaves an automated code review","packet":true,"from":"actor-3","to":"actor-4"},
+ {"highlight":"flow-actor-3","label":"ci-watch reports back: green, or here are the failures","packet":true,"from":"actor-4","to":"actor-3"},
+ {"highlight":"flow-actor-5","label":"Threads resolved, pipeline green: merge into main","packet":true,"from":"actor-3","to":"actor-5"}
+]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">🧑‍💻</div>
+              <span>Me</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">⚙️</div>
+              <span>GitLab Pipeline</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">👀</div>
+              <span>ci-watch</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">🐛</div>
+              <span>Bugbot</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-5">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">🌳</div>
+              <span>Main branch</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">Click "Next Step" to begin</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">Next Step</button>
+            <button class="btn flow-reset-btn">Restart</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <p>Meet the runners: a <span class="term" data-definition="A branch is your own private copy of the codebase where you make changes without disturbing the shared version, until you are ready to propose merging them back.">branch</span> opens the MR; a <span class="term" data-definition="A CI/CD pipeline is an automated assembly line that builds and tests your code every time you change it, so problems are caught before the code ships. CI stands for continuous integration.">CI/CD pipeline</span> tests it; <code>ci-watch.sh</code> babysits the pipeline; <span class="term" data-definition="Bugbot is an automated reviewer that reads your proposed changes and leaves comments flagging likely bugs — a tireless first-pass code reviewer.">Bugbot</span> leaves a review; and finally I <span class="term" data-definition="To merge is to fold your reviewed changes into the shared main codebase, making them official.">merge</span> into the protected main copy.</p>
+
+        <p>Rather than refreshing a web page for ten minutes, <code>ci-watch.sh</code> collapses the whole noisy pipeline into a single exit code.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment"># ci-watch exit codes</span></span>
+<span class="code-line"><span class="code-number">0</span>   green — pipeline passed, no open threads</span>
+<span class="code-line"><span class="code-number">1</span>   failed — prints the last 120 lines of the failing job</span>
+<span class="code-line"><span class="code-number">2</span>   timeout — 40-minute cap hit</span>
+<span class="code-line"><span class="code-number">4</span>   green, but review threads still open</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Instead of refreshing a web page, I get one number.</p>
+              <p class="tl"><code>1</code> drops me straight onto the failing log.</p>
+              <p class="tl"><code>4</code> means tests pass but a human or <span class="term" data-definition="Green is the all-clear signal in continuous integration — every automated check passed. A red pipeline means at least one check failed.">green</span> still isn't enough: a <span class="term" data-definition="A review thread is a comment-and-reply conversation attached to a specific line of a merge request. It stays open until resolved, blocking the merge.">review thread</span> from Bugbot wants changes — not done yet.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">A script can encode "done"</strong>
+            <p>The exit codes encode a <em>definition of done</em>: <span class="term" data-definition="Green CI means every automated test passed. It is necessary to ship — but on its own not sufficient, because open review threads still block the merge.">green</span> is necessary but not sufficient. Open threads still block the merge.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

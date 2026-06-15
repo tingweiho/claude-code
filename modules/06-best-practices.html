@@ -1,0 +1,239 @@
+<section class="module" id="module-6" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h1 class="module-title">Best Practices &amp; Hard-Won Lessons</h1>
+      <p class="module-subtitle">Day-one field notes — the things I wish someone had told me before I started, written for the next person.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — CLAUDE.md is a directory, not a manual -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading"><code>CLAUDE.md</code> is a directory, not a manual</h2>
+        <p>If you copy one thing from my setup, copy the habits — not the files. And the first habit is this: your <code>CLAUDE.md</code> is a table of contents, not a textbook.</p>
+        <p>Identity and preferences sit up top, stable and rarely touched. Below them lives an <em>index</em> — one line per <span class="term" data-definition="A skill is a self-contained folder of instructions and reference files that Claude loads only when a task needs it — like pulling one binder off a shelf instead of reading the whole library every time.">skill</span> — that points outward to where the real detail lives.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment">## Who I am</span>          (1-2 lines)</span>
+<span class="code-line"><span class="code-comment">## Communication</span>     (how to talk to me)</span>
+<span class="code-line"><span class="code-comment">## Coding</span>            (my conventions)</span>
+<span class="code-line"><span class="code-comment">## Skills</span>            (index — one line each, points outward)</span>
+<span class="code-line"><span class="code-comment">## Reference files</span>   (pointers, not content)</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Identity and preferences up top — stable, rarely changes.</p>
+              <p class="tl">How I want Claude to talk, and the conventions I code by.</p>
+              <p class="tl">Then an <em>index</em> of skills: one line each, no detail.</p>
+              <p class="tl">The detail lives in the skill folders and memory — <code>CLAUDE.md</code> just routes to it.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Mine is 48 lines</strong>
+            <p>Every line is read before each session — that's attention spent. A bloated <code>CLAUDE.md</code> makes Claude <em>worse</em>, not better. Keep it a table of contents.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The transferable habits -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The habits that transfer to any setup</h2>
+        <p>The setup works because of a few principles, not because of any one clever script. These four travel to <em>any</em> Claude Code setup, on any team.</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🎯</div>
+            <h4 class="pattern-title">Load on demand</h4>
+            <p class="pattern-desc">Put procedures in <span class="term" data-definition="A skill is a self-contained folder of instructions Claude loads only when a task calls for it, instead of carrying every procedure in memory all the time.">skills</span>, not in <code>CLAUDE.md</code>. <span class="term" data-definition="The context budget is the limited amount of text Claude can hold in mind at once — its working memory for a session. Everything you load competes for that space, so you spend it only when relevant.">Context is a budget</span> — spend it only when relevant.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🍴</div>
+            <h4 class="pattern-title">Fork, don't build from zero</h4>
+            <p class="pattern-desc">Start from a good open-source skill (e.g. Zara Zhang's), rebrand it, then grow your own with <span class="term" data-definition="skill-creator is a meta-skill: a skill whose job is to help you build, edit, and test other skills — the workshop where new skills get made.">skill-creator</span>.</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🧠</div>
+            <h4 class="pattern-title">Write down corrections</h4>
+            <p class="pattern-desc">One-line memory files turn "I had to say it twice" into "I never say it again."</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">🤖</div>
+            <h4 class="pattern-title">Automate the boring, keep humans in the loop</h4>
+            <p class="pattern-desc">Default-approve flows (like my end-of-day → canvas loop) keep things moving without going rogue.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2.5 — Plan before you build -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Plan first, then build</h2>
+        <p>For anything bigger than a quick edit, I make Claude <em>plan before it touches a file</em>. In <span class="term" data-definition="Plan mode is a Claude Code setting where it researches and proposes an approach but is blocked from editing files until you approve. It's a read-only thinking phase before any code is written.">plan mode</span> it explores the problem, proposes an approach, and waits for my approval — so I can redirect it while changes are still free.</p>
+        <p>The payoff is leverage: catching a wrong assumption in a one-paragraph plan costs seconds; catching it after Claude has rewritten ten files costs the afternoon.</p>
+
+        <div class="flow-steps animate-in">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p><strong>Explore</strong><br>Claude reads the relevant files and patterns</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p><strong>Plan</strong><br>It proposes an approach — no edits yet</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p><strong>Approve</strong><br>I redirect or green-light it</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p><strong>Build</strong><br>Only now does it write code</p>
+          </div>
+        </div>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">use it</code>
+            <span class="badge-desc">Multi-step work, anything touching several files, fuzzy requirements, or changes that are hard to undo</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">skip it</code>
+            <span class="badge-desc">Typo fixes, a one-line change, a rename — just let Claude do it</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🪄</div>
+          <div class="callout-content">
+            <strong class="callout-title">This course was built that way</strong>
+            <p>All six modules were scoped in plan mode and I approved the outline <em>before a single line of HTML was written</em>. Cheap to reshape on paper; expensive to reshape in code.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Security & redaction discipline -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Redaction is the price of sharing</h2>
+        <p>A few commands are just never worth the risk, so they're denied globally — Claude can't run them no matter what it's asked. These guardrails live in <code>settings</code> and apply to every session.</p>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Bash(rm -rf*)</code>
+            <span class="badge-desc">Denied globally — never recursively force-delete files</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(git push --force*)</code>
+            <span class="badge-desc">Denied globally — never overwrite shared history with a force-push</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(sudo*)</code>
+            <span class="badge-desc">Denied globally — never run commands as the all-powerful admin user</span>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">Treat anything you share like a screenshot that lives forever</strong>
+            <p>A <em>shareable</em> setup must never leak live <span class="term" data-definition="A secret (or credential) is any private value that proves who you are or unlocks access — a password, key, or token. Leak one and anyone can act as you.">secrets</span> — <span class="term" data-definition="A connection string is a single line of text holding everything needed to log into a database: address, username, and password rolled into one. Leak it and someone can read or change your data.">connection strings</span>, account numbers, client secrets, <span class="term" data-definition="A token is a long random string that acts like a temporary password an app uses to access a service on your behalf. Anyone holding it can impersonate you until it expires.">tokens</span>. This very course was redaction-audited before it left my machine.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Keep your failures -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Keep your failures — they're the reusable part</h2>
+        <p>The most reusable part of a setup isn't the list of what worked. It's the list of what <em>didn't</em>.</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📵</div>
+            <div>
+              <strong>Two cron scripts retired</strong>
+              <p>They tried to send a message from a <span class="term" data-definition="Cron is a scheduler that runs a task automatically at set times — like a recurring alarm clock for your computer that fires a script while you're away.">cron</span> run with no one logged in, which can't connect to those tools. The wall taught the rule.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">💾</div>
+            <div>
+              <strong>Trigger prompts got wiped by a UI bug</strong>
+              <p>Recovered from a backup file plus the API. Now every <span class="term" data-definition="A cloud trigger is an automation that runs on a remote server on a schedule or event — not on your laptop — so it fires even when your machine is off.">cloud-trigger</span> prompt is backed up.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🔀</div>
+            <div>
+              <strong>Rebase → merge</strong>
+              <p><span class="term" data-definition="Rebase and merge are two ways to combine code branches. Rebase replays your commits on top of the latest code (and can invent conflicts); merge ties the branches together with one tidy join. Switching to merge ended the conflicts.">Auto-rebasing</span> replayed commits and invented conflicts; switching to merge ended them.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">📓</div>
+          <div class="callout-content">
+            <strong class="callout-title">A failures log is cheap insurance</strong>
+            <p>A <span class="term" data-definition="known_issues.md is a plain-text log of problems already hit and how they were fixed — a running diary so future-you (and future-Claude) reads it before repeating the same mistake.">known_issues.md</span> file is read by future-you — and future-Claude — before either repeats a mistake.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — The whole system, one picture (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The whole system, in one picture</h2>
+        <p>Four layers, top to bottom. Each one makes the layers below it smarter over time.</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-5)">📇</div>
+            <div>
+              <strong>Config &mdash; <code>CLAUDE.md</code> + <code>settings</code></strong>
+              <p>Who I am, and what's allowed. Lean by design.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📚</div>
+            <div>
+              <strong>Skills</strong>
+              <p>On-demand expertise — forked from others, then homegrown.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">⚙️</div>
+            <div>
+              <strong>Automation</strong>
+              <p><span class="term" data-definition="A hook is a small command that fires automatically at a set moment — before or after Claude does something — so a rule runs every time without you remembering to invoke it.">Hooks</span>, cron, and cloud triggers running the recurring work.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🧠</div>
+            <div>
+              <strong>Memory</strong>
+              <p>Corrections that make all three layers smarter over time.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🌱</div>
+          <div class="callout-content">
+            <strong class="callout-title">Start small</strong>
+            <p>A lean <code>CLAUDE.md</code>, one skill, one hook. Add a skill each time you repeat yourself, automate what's boring, and let memory catch the corrections. The system compounds — that's the whole point.</p>
+          </div>
+        </div>
+
+        <p class="caption">Built by Ting-Wei — with the very setup it describes.</p>
+      </section>
+
+    </div>
+  </div>
+</section>

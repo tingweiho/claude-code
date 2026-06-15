@@ -1,0 +1,210 @@
+<section class="module" id="module-5" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">Memory &amp; Self-Improvement</h1>
+      <p class="module-subtitle">How a one-time correction becomes a permanent habit — the feedback loop that turns Claude into a teammate.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — The memory folder -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A colleague who actually remembers</h2>
+        <p>Tell a good hire once &mdash; <em>"we always merge, never rebase"</em> &mdash; and you never repeat it. <span class="term" data-definition="Memory here means notes that persist across sessions. Most chat assistants forget everything when you close the window; this setup writes durable facts to small files so the next conversation starts already knowing them.">Memory</span> is how Claude becomes that hire instead of the one you re-train every Monday.</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">memory/</span>
+            <span class="ft-desc">~20 single-fact files — one fact each</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">MEMORY.md</span>
+                <span class="ft-desc">The index: one line per memory, loaded every session</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">feedback-viz-no-gridlines.md</span>
+                <span class="ft-desc">How I like to work — corrections &amp; confirmed approaches</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">project-pro-plan-cutout.md</span>
+                <span class="ft-desc">Ongoing context the code can&apos;t tell you</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">reference-confluence-map.md</span>
+                <span class="ft-desc">Pointers to IDs, docs, dashboards</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="caption">~20 single-fact files. One fact per file &mdash; easy to add, easy to retire.</p>
+      </section>
+
+      <!-- SCREEN 2 — How a correction becomes permanent (HERO) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How a correction becomes permanent</h2>
+        <p>The first time I corrected Claude, it forgot by the next session. Now it doesn&apos;t &mdash; because the correction gets written to a small file like this one.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+<pre><code><span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line"><span class="code-property">name</span>: feedback-viz-no-gridlines</span>
+<span class="code-line"><span class="code-property">description</span>: No gridlines + centered titles by default</span>
+<span class="code-line"><span class="code-property">metadata</span>:</span>
+<span class="code-line">  <span class="code-property">type</span>: feedback</span>
+<span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line">No gridlines + centered titles by default; applies</span>
+<span class="code-line">to every plotting library. Why: cleaner, less ink.</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">A <span class="term" data-definition="The block at the very top of a file, fenced by --- lines, that holds machine-readable settings (here: name, description, type). The text below it is the human-readable content.">frontmatter</span> name &mdash; a short <span class="term" data-definition="A slug is a short, lowercase, hyphenated label used as an identifier — like the tail end of a web address. Here it lets me point to one specific memory by name.">slug</span> so I can link to this exact memory.</p>
+              <p class="tl">A description &mdash; the one line Claude scans to decide if this memory is relevant <em>right now</em>.</p>
+              <p class="tl">The fact itself, plus the <em>why</em>, so it&apos;s applied with judgment &mdash; not blindly.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#128161;</div>
+          <div class="callout-content">
+            <strong class="callout-title">Said once, applied forever</strong>
+            <p>I said "drop the gridlines" <em>once</em>. Now every chart starts that way &mdash; across Matplotlib, Plotly, anything.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — The compounding loop -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The loop that tightens over time</h2>
+        <p>Each correction makes the next session a little sharper. It&apos;s a loop &mdash; the setup gets better the more I use it.</p>
+
+        <div class="flow-steps animate-in">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p>I correct Claude in conversation</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p>It writes a one-line memory file</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p>Next session, the <span class="term" data-definition="An index is a quick-reference list — like a table of contents. MEMORY.md lists every memory in one line each, so Claude can scan it fast and only open the files that matter.">index</span> loads and the description matches my task</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p>The behavior changes &mdash; no reminder needed</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">&#129504;</div>
+          <div class="callout-content">
+            <strong class="callout-title">Three layers reinforce each other</strong>
+            <p><code>CLAUDE.md</code> says <em>who I am</em>, <strong>skills</strong> say <em>how to do a procedure</em>, and <code>memory/</code> holds <em>corrections to both</em>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Where should a fact live? -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Where should a fact live?</h2>
+        <p>Not everything belongs in memory. Each kind of knowledge has a home &mdash; and putting it in the right one is half the craft.</p>
+
+        <div class="pattern-cards animate-in">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">&#128100;</div>
+            <h4 class="pattern-title"><code>CLAUDE.md</code></h4>
+            <p class="pattern-desc">Stable identity &amp; global preferences &mdash; "be concise", "snake_case SQL". Things that are always true.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">&#128296;</div>
+            <h4 class="pattern-title">A skill</h4>
+            <p class="pattern-desc">A <em>procedure</em> you repeat &mdash; "how to QA a <span class="term" data-definition="dbt (data build tool) is software that builds and tests data tables from SQL. A 'dbt model' is one such table definition.">dbt</span> model", "how to format a leadership update".</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">&#128221;</div>
+            <h4 class="pattern-title"><code>memory/</code></h4>
+            <p class="pattern-desc">A <em>specific correction or fact</em> that surprised you once and shouldn&apos;t again.</p>
+          </div>
+        </div>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">&#128203;</div>
+            <div>
+              <strong><code>known_issues.md</code> &mdash; a running fixes log</strong>
+              <p>~16 entries of "this broke, here&apos;s why, here&apos;s the fix."</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">&#128737;&#65039;</div>
+            <div>
+              <strong><code>regression-guard</code> &mdash; a safety skill</strong>
+              <p>Enforces <span class="term" data-definition="A baseline is a snapshot of how something behaves before you change it — your 'before' photo, so you can prove the 'after' didn't break anything.">baseline</span> &rarr; change &rarr; re-verify, so a new feature doesn&apos;t silently break the old path (a <span class="term" data-definition="A regression is when a change accidentally breaks something that used to work — a step backward hidden inside a step forward.">regression</span>).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Real standing orders -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Real standing orders</h2>
+        <p>These are the actual saved learnings &mdash; the system working. Each one was a moment of friction that became a permanent habit.</p>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">&#128260;</div>
+            <div>
+              <strong>Merge, never <span class="term" data-definition="Rebase rewrites a branch's history so it looks like it was built on top of the latest changes. Tidy, but it can manufacture false conflicts — so this setup avoids it.">rebase</span> + <span class="term" data-definition="Force-push overwrites the shared history on the server with your local version. Powerful and dangerous — it can erase a teammate's work, so it's banned here.">force-push</span></strong>
+              <p>Avoids false conflicts and rewritten history.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">&#128202;</div>
+            <div>
+              <strong>No gridlines, centered titles</strong>
+              <p>Every chart, every plotting library.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">&#9989;</div>
+            <div>
+              <strong>Always self-assign my merge requests</strong>
+              <p>And resolve any conflicts before reporting the work done.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">&#129521;</div>
+            <div>
+              <strong>The project <span class="term" data-definition="A canvas is a shared, editable document pinned inside a Slack channel — used here as a live project tracker.">canvas</span> is full-replace only</strong>
+              <p>Section-level edits corrupt it.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">&#128268;</div>
+            <div>
+              <strong>Headless runs can&apos;t use <span class="term" data-definition="A connector links Claude to an outside service — Slack, Gmail, a calendar — so it can read and act there. Automated background runs lack these, so workflows are designed around the gap.">connectors</span></strong>
+              <p>Design around it &mdash; the Module 4 lesson, now a memory.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#10024;</div>
+          <div class="callout-content">
+            <strong class="callout-title">The texture of how I work</strong>
+            <p>None of these are in the code. They&apos;re <em>how I work</em> &mdash; and they survive across every session because they&apos;re written down.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

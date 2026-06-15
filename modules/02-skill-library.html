@@ -1,0 +1,222 @@
+<section class="module" id="module-2" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">The Skill Library</h1>
+      <p class="module-subtitle">Load-on-demand expertise — a team of on-call specialists who show up only when the job fits.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — What a skill is -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">I never page a specialist by name</h2>
+        <p>I never type <em>"use the SQL skill."</em> I describe what I want, and the right expertise loads itself. A
+          <span class="term" data-definition="A skill is a folder of saved instructions that teaches Claude how to do one specific job your way. You write the procedure once, and it reappears whenever a request matches — like a specialist who walks in already briefed.">skill</span>
+          is just a folder containing a
+          <span class="term" data-definition="SKILL.md is the main instruction file inside a skill folder. It holds the full step-by-step know-how Claude follows once the skill loads — the specialist's playbook.">SKILL.md</span>
+          file and a one-line
+          <span class="term" data-definition="The description is the skill's trigger sentence. It is the only part Claude keeps in mind at all times; matching it is what pulls the full instructions into the conversation.">description</span>
+          that decides when it fires.</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">company-data-stack/</span>
+            <span class="ft-desc">One skill = one folder</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">SKILL.md</span>
+                <span class="ft-desc">The full instructions + the trigger description at the top</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">The business card on the desk</strong>
+            <p>At startup Claude reads only the descriptions — the specialist's business card is always on the desk. The full
+              <code>SKILL.md</code> walks in only when the job fits, keeping Claude's
+              <span class="term" data-definition="The context window is Claude's short-term working memory for a conversation — everything it can 'see' at once. It is finite, so loading only the descriptions (not every full skill) keeps that memory lean.">context window</span>
+              lean.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The library at a glance -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The library at a glance</h2>
+        <p>Sixteen skills, sorted into three crews by the kind of job they do. Each crew gets its own colour, carried through the rest of the course.</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🏢</div>
+            <h4 class="pattern-title">Company ops</h4>
+            <p class="pattern-desc">The domain crew. <code>company-data-stack</code> (the warehouse + BI), <code>canvas-tracker</code> (the Slack project tracker), <code>scheduled-triggers</code> and <code>internal-comms</code> — plus <code>company-slack</code>, <code>company-confluence</code>, <code>gitlab-cli</code>.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">📊</div>
+            <h4 class="pattern-title">Output &amp; analysis</h4>
+            <p class="pattern-desc"><code>data-analysis</code>, <code>data-viz</code>, <code>company-slides</code>, and <code>codebase-to-course</code> — the very skill that built this page — alongside <code>pdf</code> and <code>hex</code>.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🧰</div>
+            <h4 class="pattern-title">Meta</h4>
+            <p class="pattern-desc"><code>prompt-authoring</code>, <code>skill-creator</code> — the skill that makes skills — and <code>regression-guard</code>.</p>
+          </div>
+        </div>
+
+        <p class="caption">16 skills, grouped by job — not alphabetised.</p>
+      </section>
+
+      <!-- SCREEN 3 — HERO: group-chat animation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How matching works</h2>
+        <p>Watch a plain-English request route itself. The
+          <span class="term" data-definition="The router is the part of Claude that reads your request and decides which skills it matches — like a dispatcher who hears the problem and sends the right specialists, without you naming anyone.">router</span>
+          reads what you <em>meant</em>, then the matching specialists walk in. Press <strong>Next Message</strong> to step through it.</p>
+
+        <div class="chat-window" id="chat-skills">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="me" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-5)">M</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-5)">Me</span>
+                <p>Why did weekly signups drop last week?</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="dispatcher" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">⚙</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">Dispatcher</span>
+                <p>That's a diagnostic question that needs the warehouse — paging two specialists.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="data-analysis" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">📊</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">data-analysis</span>
+                <p>On it. Loading diagnostic mode: confirm the drop is real before explaining it.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="company-data-stack" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">🗄</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">company-data-stack</span>
+                <p>I'll pull the numbers from Redshift and check the dbt models feeding that metric.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="dispatcher" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">⚙</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">Dispatcher</span>
+                <p>Neither was named in the request — both matched on what it <em>meant</em>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" style="display:none">
+            <div class="chat-avatar" id="chat-skills-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">Next Message</button>
+            <button class="btn chat-all-btn">Play All</button>
+            <button class="btn chat-reset-btn">Replay</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+
+        <p>The skills weren't summoned by name — they matched the <em>intent</em>.</p>
+      </section>
+
+      <!-- SCREEN 4 — The description IS the trigger -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The description IS the trigger</h2>
+        <p>Open any <code>SKILL.md</code> and the top few lines tell the whole story. Here's the
+          <span class="term" data-definition="Frontmatter is the small block at the very top of a file, fenced by triple-dashes, that holds settings about the file rather than its content — here, the skill's name and its trigger description.">frontmatter</span>
+          of the <code>data-viz</code> skill.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line">---</span>
+<span class="code-line"><span class="code-property">name</span>: data-viz</span>
+<span class="code-line"><span class="code-property">description</span>: Use whenever making a chart, plot, or</span>
+<span class="code-line">  visualization in a notebook. Trigger on <span class="code-string">"plot this"</span>,</span>
+<span class="code-line">  <span class="code-string">"visualize"</span>, <span class="code-string">"show the distribution"</span>, <span class="code-string">"compare segments"</span>.</span>
+<span class="code-line">---</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Every skill starts with a name and a description.</p>
+              <p class="tl">The name is just the folder's label.</p>
+              <p class="tl">Only this description sits in Claude's memory until needed.</p>
+              <p class="tl">Those example phrases are the trip-wires — say something close and the full skill loads.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info animate-in">
+          <div class="callout-icon">ℹ️</div>
+          <div class="callout-content">
+            <strong class="callout-title">Writing a good description is its own craft</strong>
+            <p>Too vague and the skill fires constantly; too narrow and it never fires. There's even a
+              <code>prompt-authoring</code> skill for tuning exactly this — and yes, a
+              <span class="term" data-definition="A notebook is a document that mixes runnable code, its results (like charts), and notes in one place — popular for data analysis. Jupyter and Hex are common examples.">notebook</span>
+              is the data-analyst's working canvas.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Where the skills came from -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Where the skills came from</h2>
+        <p>None of this was built from zero. The library is three origins braided together.</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🛠️</div>
+            <h4 class="pattern-title">Built from scratch</h4>
+            <p class="pattern-desc">The company-specific skills encode internal know-how no download could carry — warehouse conventions, the canvas rules, the house doc style.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🍴</div>
+            <h4 class="pattern-title">Forked &amp; rebranded</h4>
+            <p class="pattern-desc"><code>codebase-to-course</code> and the <code>frontend-slides</code> engine behind <code>company-slides</code> come from open-source builder
+              <span class="term" data-definition="To fork is to copy someone else's project so you can change your own version freely, while the original stays untouched. It's the standard way to build on open-source work.">Zara Zhang</span>
+              (<code>github.com/zarazhangrui</code>). I
+              <span class="term" data-definition="Open source means the code is published for anyone to read, copy, and adapt — usually for free. It's why you can fork a stranger's skill and make it your own.">forked</span>
+              them and swapped in my own branding and conventions.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📦</div>
+            <h4 class="pattern-title">Straight from Anthropic</h4>
+            <p class="pattern-desc"><code>skill-creator</code> and <code>pdf</code> are Anthropic's own skills; the <code>ralph-loop</code>
+              <span class="term" data-definition="A plugin is an add-on that bolts extra abilities onto a tool without rebuilding it — like installing a browser extension. Here it bundles a skill you can install in one step.">plugin</span>
+              installs from the official <code>anthropics/claude-plugins-official</code>
+              <span class="term" data-definition="A marketplace is a curated catalogue you install add-ons from in one click — an app store for plugins and skills.">marketplace</span>.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent animate-in">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Don't build from zero</strong>
+            <p>Fork a good skill from a
+              <span class="term" data-definition="A repo (repository) is the storage folder for a project's code and history, usually hosted on a site like GitHub where others can find and copy it.">repo</span>,
+              rebrand it, and bend it to your conventions — then use <code>skill-creator</code> to grow your own. It's one of the best-practice threads we pull together at the end.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

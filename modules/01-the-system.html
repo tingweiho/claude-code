@@ -1,0 +1,292 @@
+<section class="module" id="module-1" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">The System</h1>
+      <p class="module-subtitle"><code>~/.claude/</code> as an operating layer — the files Claude Code reads before I type a word.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Hook + the idea -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">It already knows how I work</h2>
+        <p>Every time I open Claude Code, it reads a handful of files before I type anything. Those files are why it already knows how I work.</p>
+        <p>This isn't a one-off prompt I paste in each morning. My <span class="term" data-definition="Config (short for configuration) is the set of saved settings that tells a program how to behave — like the preferences panel in an app, but stored as files you can edit and version.">config</span> is a standing <strong>operating layer</strong> — a setup I version, improve, and carry from session to session.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Aha!</strong>
+            <p>The config is read top-to-bottom at startup. So <strong>order and brevity matter</strong> — the leaner the file, the more reliably Claude actually follows it.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — The pegboard (hero: file tree) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The pegboard</h2>
+        <p>Think of a workshop pegboard: every tool has a painted outline on the wall, so you see at a glance what's there and what's missing. <code>~/.claude/</code> is that pegboard — a fixed place for every kind of instruction.</p>
+
+        <div class="file-tree animate-in">
+          <div class="ft-folder open">
+            <span class="ft-name">~/.claude/</span>
+            <span class="ft-desc">My whole operating layer — one folder I own</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">CLAUDE.md</span>
+                <span class="ft-desc">Who I am + how to talk to me + an index of my skills (48 lines)</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">skills/</span>
+                <span class="ft-desc">16 folders of on-demand expertise</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">settings.json</span>
+                <span class="ft-desc">Global guardrails, hooks, and data connections</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">settings.local.json</span>
+                <span class="ft-desc">The "yes, you may run this" allow-list</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">hooks/</span>
+                <span class="ft-desc">Small scripts that fire on events</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">reference.md</span>
+                <span class="ft-desc">IDs, file paths, schedules I look up often</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">known_issues.md</span>
+                <span class="ft-desc">A running fixes log</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">*.sh</span>
+                <span class="ft-desc">statusline-command.sh, log_usage.sh, ci-watch.sh, auto_rebase.sh</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">memory/</span>
+                <span class="ft-desc">Durable facts Claude has learned about me</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>A lean index file, a <span class="term" data-definition="A skill is a self-contained folder of instructions and reference material that Claude loads only when a task needs it — like a specialist you call in for one job rather than keeping in the room all day.">skill</span>s folder, two permission files, some <span class="term" data-definition="A hook is a small script that runs automatically when a specific event happens — for example, right before or after Claude finishes a task. The program fires it for you; you don't have to ask.">hook</span>s, and a memory folder. Treat it like a codebase, not a settings screen.</p>
+      </section>
+
+      <!-- SCREEN 3 — CLAUDE.md is a directory, not a manual -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading"><code>CLAUDE.md</code> is a directory, not a manual</h2>
+        <p>The file Claude reads first is short on purpose. It tells Claude how to behave, then points at where the real detail lives.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment">## Communication</span></span>
+<span class="code-line">- Concise and direct — no filler, no trailing summaries</span>
+<span class="code-line">- Lead with the answer or action, not the reasoning</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">## Skills (load on demand)</span></span>
+<span class="code-line">- company-data-stack — Redshift / dbt / Looker / LookML</span>
+<span class="code-line">- canvas-tracker — Slack project tracker canvas ops</span>
+<span class="code-line">- data-analysis — rigor for diagnostic / exploratory work</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">First it tells Claude <em>how</em> to talk to me — short, answer-first.</p>
+              <p class="tl">Then it lists my skills with one line each on when they fire.</p>
+              <p class="tl">It doesn't explain the skills — it just points to them. The detail lives inside each skill folder.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">📍</div>
+          <div class="callout-content">
+            <strong class="callout-title">My whole <code>CLAUDE.md</code> is 48 lines.</strong>
+            <p>It works as a table of contents that points outward, not a manual that holds everything. (We'll come back to why in the last module.)</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Two permission files, one job each -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Two permission files, one job each</h2>
+        <p>Permissions are split across two files so the dangerous list stays short and the convenient list can grow freely.</p>
+
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🛡️</div>
+            <div>
+              <strong><code>settings.json</code> — global guardrails</strong>
+              <p>A <span class="term" data-definition="A deny-list is a list of things that are always forbidden. Anything on it is blocked no matter what; everything else is allowed.">deny-list</span> of destructive commands, plus the hooks and the data connections. A shared default that rarely changes.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">✅</div>
+            <div>
+              <strong><code>settings.local.json</code> — the allow-list</strong>
+              <p>An <span class="term" data-definition="An allow-list is the opposite of a deny-list: a list of things explicitly permitted in advance, so you're not asked to approve each one every time.">allow-list</span> of ~322 specific commands I've pre-approved, so I'm not clicking "allow" all day.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Bash(rm -rf*)</code>
+            <span class="badge-desc">Never bulk-delete files</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(git push --force*)</code>
+            <span class="badge-desc">Never rewrite shared history</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Bash(sudo*)</code>
+            <span class="badge-desc">Never run as administrator</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔎</div>
+          <div class="callout-content">
+            <strong class="callout-title">Why split them?</strong>
+            <p>Separating <em>deny</em> (global, rarely changes) from <em>allow</em> (local, grows over time) keeps the dangerous list short and auditable.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — Connections (MCP), the breadth -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Connections — Claude plugs into my real tools</h2>
+        <p>On its own, Claude can only talk. <span class="term" data-definition="MCP (Model Context Protocol) is a shared standard that lets Claude plug into outside tools — databases, Slack, email, your wiki. Think of it as a universal socket: build one adapter and Claude can reach that tool.">MCP</span> is the universal socket that lets it <em>act</em> in my actual tools — query the warehouse, post to Slack, read my calendar. By the end of a day, almost everything I touch is wired in.</p>
+
+        <p><strong>The data stack</strong> — for analysis:</p>
+        <div class="icon-rows animate-in">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🗄️</div>
+            <div>
+              <strong><code>Redshift</code></strong>
+              <p><span class="term" data-definition="A data warehouse is a large central database built for analysis — it pools data from many sources so you can query all of it together.">The data warehouse</span> where the analytics data lives (plus a second, higher-privilege connection for admin tasks).</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🧱</div>
+            <div>
+              <strong><code>dbt</code></strong>
+              <p><span class="term" data-definition="dbt (data build tool) is software that turns raw warehouse tables into clean, tested datasets by running SQL transformations in a defined order.">dbt</span> — how the raw data gets transformed into clean, tested datasets.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📊</div>
+            <div>
+              <strong><code>Looker</code></strong>
+              <p><span class="term" data-definition="Looker is a business-intelligence (BI) tool — it turns warehouse data into dashboards and charts people across the company can explore.">Looker</span>, the BI tool, for dashboards and metrics.</p>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-8)"><strong>Everyday apps</strong> — the rest of my work, same universal socket:</p>
+        <div class="icon-rows stagger-children animate-in">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/slack.svg" alt="Slack" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Slack</strong>
+              <p>Read channels, post updates, and keep the project canvas current.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/gmail.svg" alt="Gmail" style="width:24px; height:24px;"></div>
+            <div>
+              <strong>Gmail</strong>
+              <p>Read, search, and auto-label my inbox.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/googlecalendar.svg" alt="Google Calendar" style="width:24px; height:24px;"></div>
+            <div>
+              <strong>Google Calendar</strong>
+              <p>See what's on my day and what's coming.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/googledrive.svg" alt="Google Drive" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Google Drive</strong>
+              <p>Pull docs and meeting notes.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/confluence.svg" alt="Confluence and Jira" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>Confluence + Jira</strong>
+              <p>Our <span class="term" data-definition="A wiki is a shared, editable website of documentation. Confluence is the wiki tool; Jira is the linked ticket tracker for tasks and issues.">wiki and ticket tracker</span> — read docs, check mentions.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);"><img src="assets/logos/gitlab.svg" alt="GitLab" style="width:26px; height:26px;"></div>
+            <div>
+              <strong>GitLab</strong>
+              <p>Code, merge requests, and pipelines.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-surface); border: 1px solid var(--color-border);">📓</div>
+            <div>
+              <strong>Hex</strong>
+              <p>Spin up analysis notebooks.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔌</div>
+          <div class="callout-content">
+            <strong class="callout-title">One standard, many tools</strong>
+            <p>The data-stack connections run locally; the everyday apps are Claude's built-in <span class="term" data-definition="A connector links Claude to an outside service like Slack or Gmail, with your permission, so it can read and act there on your behalf.">connectors</span>. Same idea either way — a standard socket, so adding a new tool doesn't mean re-teaching Claude how to talk to it.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6 — Under the hood (optional technical detail) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Under the hood — one connection, redacted</h2>
+        <p>Each connection is just a few lines of config. Here's the warehouse one — useful to recognize, but you never write it by hand often.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-property">"redshift"</span>: {</span>
+<span class="code-line">  <span class="code-property">"command"</span>: <span class="code-string">"uvx"</span>,</span>
+<span class="code-line">  <span class="code-property">"args"</span>: [<span class="code-string">"awslabs.redshift-mcp-server@latest"</span>],</span>
+<span class="code-line">  <span class="code-property">"env"</span>: {</span>
+<span class="code-line">    <span class="code-property">"AWS_PROFILE"</span>: <span class="code-string">"&lt;aws-account&gt;_DataRedshift"</span>,</span>
+<span class="code-line">    <span class="code-property">"AWS_REGION"</span>: <span class="code-string">"us-west-2"</span></span>
+<span class="code-line">  }</span>
+<span class="code-line">}</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Names a connection called <code>redshift</code>.</p>
+              <p class="tl"><span class="term" data-definition="uvx is a tiny command that downloads a Python tool and runs it in one step, then cleans up — so you don't have to install it permanently first.">uvx</span> downloads and runs a small helper program on the fly.</p>
+              <p class="tl">The <span class="term" data-definition="An environment variable (env var) is a named setting passed to a program from outside its code — a clean way to hand it values like which account to use, without writing them into the program itself.">settings</span> say <em>which</em> account and region — the actual secrets live outside this file, never in plain text.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">A note on what you're seeing</strong>
+            <p>Real configs hold live <span class="term" data-definition="A credential is a secret that proves who you are to a system — a password, token, or key. Leak one and someone else can act as you.">credential</span>s — connection strings, client secrets, tokens. <strong>Everything shown in this course is redacted</strong>, and that discipline is itself part of the setup (more in the last module).</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

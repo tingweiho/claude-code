@@ -1,0 +1,332 @@
+<section class="module" id="module-4" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">The Automation Layer</h1>
+      <p class="module-subtitle">The always-on system — the work that happens when I am not at the keyboard.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1 — Three mechanisms -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Three kinds of automation</h2>
+        <p>Where the last module was hands-on work I <em>drive</em>, this layer is the mirror image: work that runs <em>without</em> me — while I am asleep or in meetings. A lot of my <span class="term" data-definition="Claude Code is Anthropic's command-line tool — you type instructions to an AI agent in your terminal and it edits files, runs commands, and does real work on your machine.">Claude Code</span> day happens this way. Think of it like a smart home: three kinds of automation, each tripped by a different trigger, each able to touch different things. Knowing which is which is the whole skill — they differ in <em>what they can touch</em>, and most people only know one of the three.</p>
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">&#128161;</div>
+            <h4 class="pattern-title">Hooks</h4>
+            <p class="pattern-desc">Motion-sensor lights. Fire on an <strong>event</strong> — a session ends, a file is saved. Local and instant.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">&#9200;</div>
+            <h4 class="pattern-title">Local cron</h4>
+            <p class="pattern-desc">A sprinkler timer. Fires on a <strong>clock</strong>. Local and <span class="term" data-definition="Headless means running with no interactive screen or logged-in session — a program does its job in the background with nobody watching, so it cannot use anything that needs you to be signed in.">headless</span> — no login session, so no connected apps.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">&#9729;&#65039;</div>
+            <h4 class="pattern-title">Cloud triggers</h4>
+            <p class="pattern-desc">A house-sitter. Fires on a clock <strong>in the cloud</strong>, and <em>can</em> answer the door — it reaches connected apps like Slack, Gmail, and Calendar.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2 — Hooks -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Hooks — event-driven, local</h2>
+        <p>A <span class="term" data-definition="A hook is a small script that the tool runs automatically whenever a specific thing happens — like a doorbell wired to a chime. You decide the event; it decides what runs.">hook</span> is <span class="term" data-definition="Event-driven means the action runs in response to something happening (an event), not on a fixed schedule. The trigger is 'when X occurs', not 'at 9am'.">event-driven</span>: it watches for one specific moment and runs a script the instant it arrives. Here are the three wired into my setup right now.</p>
+        <div class="badge-list">
+          <div class="badge-item">
+            <code class="badge-code">Stop</code>
+            <span class="badge-desc">When a session ends, run <code>log_usage.sh</code> — logs tokens and cost to a ledger.</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">slack_update_canvas</code>
+            <span class="badge-desc">When the project canvas changes, run <code>canvas_backup_sync.sh</code> — mirrors it to a local file.</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">statusLine</code>
+            <span class="badge-desc">Runs <code>statusline-command.sh</code> — the model / context% / git line in my terminal.</span>
+          </div>
+        </div>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-property">"Stop"</span>: [{ <span class="code-property">"hooks"</span>: [{</span>
+<span class="code-line">  <span class="code-property">"type"</span>: <span class="code-string">"command"</span>,</span>
+<span class="code-line">  <span class="code-property">"command"</span>: <span class="code-string">"bash ~/.claude/log_usage.sh"</span>,</span>
+<span class="code-line">  <span class="code-property">"timeout"</span>: <span class="code-number">10</span></span>
+<span class="code-line">}]}]</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">When a session ends (the <code>Stop</code> event), do the following...</p>
+              <p class="tl">...run a shell command...</p>
+              <p class="tl">...specifically this script, <code>log_usage.sh</code>...</p>
+              <p class="tl">...and give it 10 seconds to finish.</p>
+              <p class="tl">It reads how many tokens I burned and appends the cost to a spreadsheet.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3 — Local cron -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Local cron — clock-driven, local</h2>
+        <p>A <span class="term" data-definition="Cron is the classic timer built into Mac and Linux — you give it a schedule and a command, and it runs that command on the dot, forever, without you doing anything.">cron</span> job is a timed task on my own machine: at a fixed clock time, run this. My one active job keeps my code <span class="term" data-definition="A branch is a parallel copy of the project where you make changes without touching the main version — like editing a draft so the published page stays safe until you are ready.">branches</span> from drifting.</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-number">0</span> <span class="code-number">6,8,10,12,14,16</span> * * <span class="code-number">1-5</span>   ~/.claude/auto_rebase.sh</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">At minute 0 of 6am, 8, 10, noon, 2pm, and 4pm...</p>
+              <p class="tl">...Monday through Friday...</p>
+              <p class="tl">...run <code>auto_rebase.sh</code>: pull the main branch into my working branches so I never drift far behind.</p>
+            </div>
+          </div>
+        </div>
+        <div class="callout callout-accent">
+          <div class="callout-icon">&#128161;</div>
+          <div class="callout-content">
+            <strong class="callout-title">It merges; it never rebases</strong>
+            <p>Despite the name, the script <span class="term" data-definition="Merging combines two lines of work by adding a new commit that joins them, keeping both histories intact. Rebasing rewrites your work to look like it was always built on top of the latest main — cleaner, but it can manufacture confusing conflicts.">merges rather than rebases</span>. Merging avoids the false conflicts that history-rewriting creates. A hard-won rule — saved to memory so I never relearn it.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4 — Cloud triggers / daily rhythm -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Cloud triggers — the daily rhythm</h2>
+        <p>These run as <span class="term" data-definition="CCR (a cloud scheduled trigger) is a Claude agent that runs in the cloud on a schedule. Because it runs signed in, it can reach connected apps like Slack and Gmail — unlike a local cron job.">cloud scheduled triggers (CCR)</span>: clock-driven like cron, but in the cloud and signed in, so they can reach my <span class="term" data-definition="A connector (or connected app) links Claude to an outside service like Slack or Gmail, with your permission, so it can read and post on your behalf.">connected apps</span>. Four of them shape my whole day.</p>
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong><code>daily-digest</code> &middot; morning</strong>
+              <p>Stitches my project canvas, unread Slack, calendar, Gmail, and Gemini meeting notes into one briefing — then <span class="term" data-definition="A DM (direct message) is a private one-to-one message in Slack — just between you and the sender, not a public channel.">DMs</span> it to me before I've opened a single tab.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong><code>daily-progress-check</code> (EOD) &middot; evening</strong>
+              <p>Reconstructs what I actually shipped — pulling commits and merge requests from my GitLab notification emails, since my technical work never lands in Slack — then proposes tracker updates.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong><code>canvas-updater</code> &middot; night</strong>
+              <p>Applies the approved updates to the project canvas.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong><code>gmail-auto-label</code> &middot; every 2 hours</strong>
+              <p>A silent inbox janitor: labels and files mail by sender, archives the noise.</p>
+              <p style="font-family: var(--font-display); font-style: italic; color: var(--color-text-secondary); font-size: var(--text-sm); margin-top: var(--space-1);">(Yes — Gmail's own filters never quite work for me, somehow. So I let Claude do it. Don't judge me 🫣)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4.5 — What the agents read -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What they read to know my day</h2>
+        <p>My day is scattered across half a dozen tools. The agents gather it so I don't have to — and each source fills a gap the others can't.</p>
+
+        <div class="icon-rows stagger-children">
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📧</div>
+            <div>
+              <strong>GitLab notification emails</strong>
+              <p>My technical progress — commits, <span class="term" data-definition="A merge request (MR) is a proposal to fold one branch of code into the main codebase, where it gets reviewed and tested before being accepted. GitHub calls the same thing a pull request.">merge requests</span>, reviews — lives in <span class="term" data-definition="GitLab is a platform for storing code and managing how it ships: it hosts your repositories, runs automated tests, and handles code review. Think Google Docs for source code, with approvals and version history.">GitLab</span>, not Slack. Reading its email notifications is how Claude knows what I shipped.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-1)">💬</div>
+            <div>
+              <strong>Slack messages</strong>
+              <p>Scans my channels and threads for decisions, discussions, and anything aimed at me — so a buried "hey, can you…" doesn't slip past.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📝</div>
+            <div>
+              <strong>Gemini meeting notes</strong>
+              <p>Reads the auto-generated <span class="term" data-definition="Gemini is Google's AI assistant. In Google Meet it can sit in on a call and write up notes and action items automatically — so there's a text record of what was said without anyone taking minutes.">Gemini</span> notes from my calls, so meeting outcomes reach the brief without me typing a recap.</p>
+            </div>
+          </div>
+          <div class="icon-row animate-in">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📅</div>
+            <div>
+              <strong>Calendar, Jira &amp; Confluence</strong>
+              <p>What happened, what's coming next, and any tickets or docs that mention me.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔗</div>
+          <div class="callout-content">
+            <strong class="callout-title">Grounded, not guessed</strong>
+            <p>Every line in a brief must trace back to a real artifact the agent read that run — a specific GitLab email, Slack thread, or meeting note. No synthesis, no inventing progress that didn't happen.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4.7 — The tracker canvas structure -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The tracker: one canvas, project radar</h2>
+        <p>All of this points at a single <span class="term" data-definition="A Slack canvas is a living document that lives inside Slack — like a Google Doc pinned to a channel, with headings, checklists, and links that anyone on the team can open.">Slack canvas</span>. Its structure is what makes progress legible at a glance: projects bucketed by priority, each one self-describing.</p>
+
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; max-width: 600px; margin: var(--space-8) auto;">
+          <div style="padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-light); font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg);">📝 Project Tracker — Ting-Wei</div>
+          <div style="padding: var(--space-4) var(--space-5);">
+            <div style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-error); font-weight: 700;">🔴 P1 — Do First</div>
+            <div style="border: 1px solid var(--color-border); border-left: 3px solid var(--color-accent); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); margin: var(--space-3) 0;">
+              <strong>Activation funnel deep-dive</strong>
+              <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-2); line-height: 1.9;">
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">Scope</span> Growth</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">Channel</span> <span style="color: var(--color-teach);">#growth-analytics</span></div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">Status</span> 🟡 In progress</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">ETA</span> End of June</div>
+                <div><span style="color: var(--color-text-muted); display:inline-block; width:60px;">Next</span> Review cohort definitions with Growth, then rebuild the model</div>
+                <div style="margin-top: var(--space-1);"><span style="color: var(--color-text-muted);">Log</span></div>
+                <div style="padding-left: var(--space-4);">• 06-11 — Shared v1 numbers async; flagged a tracking gap</div>
+                <div style="padding-left: var(--space-4);">• 06-09 — Kicked off; scoped the funnel stages</div>
+              </div>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 2.2; border-top: 1px dashed var(--color-border); padding-top: var(--space-2); margin-top: var(--space-2);">
+              <div>🟠 P2 — High Priority <span style="color: var(--color-text-muted);">· 2</span></div>
+              <div>🟡 P3 — Medium Priority <span style="color: var(--color-text-muted);">· 3</span></div>
+              <div>🟢 P4 — Lower Priority <span style="color: var(--color-text-muted);">· 4</span></div>
+              <div>✅ Completed <span style="color: var(--color-text-muted);">· 20+</span></div>
+              <div>💬 Monitoring channels <span style="color: var(--color-text-muted);">· 12</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="caption">A real entry, anonymized — the shape is exactly what I use.</p>
+
+        <p>Every project carries the same four fields, and each one answers a question I'd otherwise have to chase down:</p>
+        <div class="badge-list animate-in">
+          <div class="badge-item">
+            <code class="badge-code">Status</code>
+            <span class="badge-desc">Where does it stand right now? — 🟡 in progress, 🔴 blocked, ⏸️ deprioritized</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">ETA</code>
+            <span class="badge-desc">When will it land? — the date I'm steering toward</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Next</code>
+            <span class="badge-desc">What's the very next action? — so I never reopen a project cold</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Log</code>
+            <span class="badge-desc">What's happened, with dates? — a timestamped trail I can reconstruct from</span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🛰️</div>
+          <div class="callout-content">
+            <strong class="callout-title">Checking progress = opening one doc</strong>
+            <p>Priority order at the top, status and next-action on every card, a dated log underneath. The morning digest reads the top buckets; the EOD agent appends to the <code>Log</code>. I never edit it by hand — I just say <em>"add update to [project]: …"</em> or <em>"set [project] ETA to …"</em> and the <code>canvas-tracker</code> skill rewrites it.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5 — HERO: data-flow animation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Trace the loop: EOD &rarr; canvas</h2>
+        <p>Watch one full cycle. This is a human-in-the-loop that defaults to <em>yes</em> — silence ships the proposal, so the tracker stays current even on my busiest days.</p>
+        <div class="flow-animation" data-steps='[
+ {"highlight":"flow-eod-1","label":"Evening: the EOD agent drafts what I shipped today"},
+ {"highlight":"flow-eod-2","label":"It sends that draft to my Slack DM","packet":true,"from":"eod-1","to":"eod-2"},
+ {"highlight":"flow-eod-3","label":"I reply with tweaks — or say nothing","packet":true,"from":"eod-2","to":"eod-3"},
+ {"highlight":"flow-eod-4","label":"At night, canvas-updater reads that thread","packet":true,"from":"eod-3","to":"eod-4"},
+ {"highlight":"flow-eod-5","label":"It rewrites the project tracker — default-approve if I stayed quiet","packet":true,"from":"eod-4","to":"eod-5"}
+]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-eod-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">&#127769;</div>
+              <span>EOD agent</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">&#128172;</div>
+              <span>My DM</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">&#129489;</div>
+              <span>Me</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">&#9999;&#65039;</div>
+              <span>canvas-updater</span>
+            </div>
+            <div class="flow-actor" id="flow-eod-5">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">&#128203;</div>
+              <span>Tracker canvas</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet-eod"></div>
+
+          <div class="flow-step-label" id="flow-label-eod">Click "Next Step" to begin</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">Next Step</button>
+            <button class="btn flow-reset-btn">Restart</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6 — The payoff: before & after -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What the rhythm actually solves</h2>
+        <p>None of this is automation for its own sake. The daily rhythm exists to kill specific, daily pain.</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-error)">
+            <div class="pattern-icon" style="background: var(--color-error)">😵‍💫</div>
+            <h4 class="pattern-title">Before</h4>
+            <ul class="pattern-desc" style="margin: 0; padding-left: 1.1em">
+              <li>Overnight changes scattered across Slack, email, calendar, and Jira — no single picture each morning.</li>
+              <li>My shipped work lived in GitLab; by evening I'd half-forget what I'd actually done.</li>
+              <li>The project tracker drifted stale — I kept meaning to update it.</li>
+              <li>Team and manager visibility depended on me remembering to post.</li>
+            </ul>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-success)">
+            <div class="pattern-icon" style="background: var(--color-success)">😌</div>
+            <h4 class="pattern-title">After</h4>
+            <ul class="pattern-desc" style="margin: 0; padding-left: 1.1em">
+              <li>One grounded morning brief, stitched from every source, waiting in my DM.</li>
+              <li>EOD captures the day's commits and merge requests straight from GitLab emails.</li>
+              <li>The tracker updates itself nightly — silence just means "ship it."</li>
+              <li>Status is automatic; nothing slips through the cracks.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">⏳</div>
+          <div class="callout-content">
+            <strong class="callout-title">The real win is attention, not minutes</strong>
+            <p>I start the day already oriented and end it without writing a status update. The rhythm carries the context so I can spend my focus on the actual work.</p>
+          </div>
+        </div>
+
+        <p class="caption">Next up: how Claude <em>remembers</em> corrections like "merge, never rebase" — so I only have to say them once.</p>
+      </section>
+
+    </div>
+  </div>
+</section>
